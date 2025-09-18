@@ -23,6 +23,8 @@ export default defineConfig([
     'build',
     '.eslintrc.cjs',
     'eslint.config.js',
+    'src/components/ui/*.tsx',
+    'src/hooks/*.ts',
   ]),
   {
     files: ['**/*.{ts,tsx}'],
