@@ -1,9 +1,10 @@
-import { Button } from './components/ui/button';
+import Layout from './layout';
 
 export const App = () => {
   return (
-    <div className='bg-black flex min-h-screen flex-col items-center justify-center'>
-      <Button variant='outline'>Button</Button>
-    </div>
+    <Layout>
+      <h1>Hello world!</h1>
+      <p>This is my first React app.</p>
+    </Layout>
   );
 };

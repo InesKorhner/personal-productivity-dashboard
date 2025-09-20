@@ -31,5 +31,5 @@
     "forceConsistentCasingInFileNames": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "index.tsx"]
+  "include": ["src", "index.tsx", "src/layout.tsx"]
 }
