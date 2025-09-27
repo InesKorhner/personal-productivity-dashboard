@@ -1,3 +1,4 @@
+import { MainContent } from './components/MainContent';
 import Layout from './layout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TasksPage from '@/pages/TasksPage';
@@ -12,6 +13,7 @@ export const App = () => {
     <Router>
       <Layout>
         <Routes>
+           <Route path="/" element={<MainContent />} /> 
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/habits" element={<HabitTrackerPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
