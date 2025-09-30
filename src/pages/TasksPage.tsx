@@ -1,5 +1,9 @@
+import { AddTaskForm } from '@/components/AddTaskForm';
+
 export default function TasksPage () {
     return (
-        <div>This is Tasks page</div>
+        <div>
+            <AddTaskForm/>
+        </div>
     )
 }
