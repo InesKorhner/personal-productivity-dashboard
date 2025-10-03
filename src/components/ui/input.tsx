@@ -7,6 +7,7 @@ function Input({
   type,
   value,
   onChange,
+  ...props
 }: React.ComponentProps<'input'>) {
   return (
     <input
@@ -20,6 +21,7 @@ function Input({
         'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
         className,
       )}
+      {...props}
     />
   );
 }

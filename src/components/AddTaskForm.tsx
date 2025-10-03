@@ -12,7 +12,7 @@ import {
 import { useState } from 'react';
 import type { Task } from '@/types';
 
-interface AddTaskFormProps {
+interface AddTaskFormProps  {
     onAddTask: (task: Task) => void
 }
 
@@ -38,6 +38,7 @@ export function AddTaskForm({onAddTask}: AddTaskFormProps) {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         className="min-w-0 flex-grow px-4 py-2"
+        
       />
 
       <Select value={category} onValueChange={setCategory}>
