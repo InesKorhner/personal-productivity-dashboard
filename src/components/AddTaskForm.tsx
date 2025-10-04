@@ -10,7 +10,9 @@ import {
   SelectValue,
 } from './ui/select';
 import { useState } from 'react';
-import type { Task } from '@/types';
+import { TaskStatus, type Task } from '@/types';
+
+
 
 interface AddTaskFormProps  {
     onAddTask: (task: Task) => void
@@ -23,7 +25,7 @@ export function AddTaskForm({onAddTask}: AddTaskFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (!inputValue || !category) return
-        onAddTask({id: Date.now().toString(), text: inputValue, category, completed: false})
+        onAddTask({id: Date.now().toString(), text: inputValue, category, status: TaskStatus.TODO, deleted: false, deletedAt: null})
         setInputValue('')
         setCategory('')
     }
