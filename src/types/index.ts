@@ -5,14 +5,13 @@ export type Task = {
   status: TaskStatus;
   deleted: boolean;
   deletedAt: number | null;
+  notes?: string;
 }
 
 export interface TaskListProps {
   tasks: Task[];  }
 
-  export const TaskStatus = {
-    TODO: 'TODO',
-    IN_PROGRESS: 'IN_PROGRESS',
-    DONE: 'DONE',
-  } as const;
-  export type TaskStatus = typeof TaskStatus[keyof typeof TaskStatus];
+  export enum TaskStatus {
+    TODO= 'TODO',
+    DONE= 'DONE',
+  } 
