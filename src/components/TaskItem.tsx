@@ -5,6 +5,8 @@ interface TaskItemProps {
   onStatusChange: (taskId: string, newStatus: TaskStatus) => void;
   onDelete: (taskId: string) => void;
   onUndo: (taskId: string) => void;
+  onPermanentDelete: (taskId: string) => void;
+  onSelectTask: (taskId: string | null) => void;
 }
 
 export function TaskItem({
@@ -12,36 +14,22 @@ export function TaskItem({
   onStatusChange,
   onDelete,
   onUndo,
+  onPermanentDelete,
+  onSelectTask,
 }: TaskItemProps) {
-  const getStatusColor = (status: TaskStatus): string => {
-    switch (status) {
-      case TaskStatus.TODO:
-        return 'bg-gray-200 text-gray-700';
-      case TaskStatus.IN_PROGRESS:
-        return 'bg-blue-200 text-blue-800';
-      case TaskStatus.DONE:
-        return 'bg-green-200 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-600';
-    }
-  };
-  const getNextStatus = (status: TaskStatus): TaskStatus => {
-    switch (status) {
-      case TaskStatus.TODO:
-        return TaskStatus.IN_PROGRESS;
-      case TaskStatus.IN_PROGRESS:
-        return TaskStatus.DONE;
-      case TaskStatus.DONE:
-        return TaskStatus.TODO;
-      default:
-        return TaskStatus.TODO;
-    }
+  const isDone = task.status === TaskStatus.DONE;
+
+  const toggleDone = () => {
+    onStatusChange(task.id, isDone ? TaskStatus.TODO : TaskStatus.DONE);
   };
 
-  if (task.deleted) {
-    return (
-      <li className="flex items-center justify-between rounded border bg-gray-100 p-2">
-        <span className="text-gray-500 italic">{task.text} (deleted)</span>
+  return task.deleted ? (
+      <li className="flex items-center justify-between rounded border px-1 py-1 max-w-[250px]">
+      <div className="flex-1 cursor-pointer" onClick={() => onSelectTask(task.id)}>
+        <p className="font-medium text-gray-600">{task.text} <span className="text-xs italic text-gray-400">(deleted)</span></p>
+      </div>
+
+      <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => onUndo(task.id)}
@@ -49,47 +37,44 @@ export function TaskItem({
         >
           Undo
         </button>
-      </li>
-    );
-  }
-   return (
-    <li className="flex items-center justify-between rounded border p-2">
-      <div>
-        <p className="font-medium">{task.text}</p>
-        <p className="text-sm text-gray-500">{task.category}</p>
-      </div>
-
-      {!task.deleted ? (
-        <div className="flex items-center gap-2">
-          <span className={`rounded px-2 py-1 text-xs font-semibold ${getStatusColor(task.status)}`}>
-            {task.status.replace('_', ' ')}
-          </span>
-
-          <button
-            type="button"
-            className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700"
-            onClick={() => onStatusChange(task.id, getNextStatus(task.status))}
-          >
-            Next
-          </button>
-
-          <button
-            type="button"
-            className="rounded bg-red-100 px-2 py-1 text-xs text-red-700"
-            onClick={() => onDelete(task.id)}
-          >
-            Delete
-          </button>
-        </div>
-      ) : (
         <button
           type="button"
-          className="rounded bg-green-100 px-2 py-1 text-xs text-green-700"
-          onClick={() => onUndo(task.id)}
+          onClick={() => onPermanentDelete(task.id)}
+          className="rounded bg-red-100 px-2 py-1 text-sm text-red-700"
         >
-          Undo
+          Delete permanently
         </button>
-      )}
+      </div>
+    </li>
+  ) : (
+<li className="flex items-center justify-between rounded border px-2 py-1 max-w-[300px]">
+     <div className="flex items-center gap-1">
+  <input
+    type="checkbox"
+    checked={isDone}
+    onChange={toggleDone}
+    aria-label="Mark completed"
+  />
+  <div
+    className="cursor-pointer"
+    onClick={() => onSelectTask(task.id)}
+  >
+    <p className={`font-medium ${isDone ? 'line-through text-gray-400' : ''}`}>{task.text}</p>
+  </div>
+</div>
+
+
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => onDelete(task.id)}
+          className="rounded bg-red-100 px-2 py-1 text-xs text-red-700"
+          aria-label="Move to trash"
+        >
+          🗑️
+        </button>
+      </div>
     </li>
   );
 }
+

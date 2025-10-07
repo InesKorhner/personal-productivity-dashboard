@@ -6,14 +6,28 @@ interface TaskListProps {
   onStatusChange: (taskId: string, newStatus: TaskStatus) => void;
   onDelete: (taskId: string) => void;
     onUndo: (taskId: string) => void;
+    onPermanentDelete: (taskId: string) => void;
+  onSelectTask: (taskId: string | null) => void;
 }
 
-export function TaskList({ tasks, onStatusChange, onDelete, onUndo }: TaskListProps) {
+export function TaskList({ tasks, onStatusChange, onDelete, onUndo, onPermanentDelete, onSelectTask }: TaskListProps) {
   return (
-    <ul className="mt-14 ml-8 w-full max-w-3xl space-y-2">
-      {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} onStatusChange={onStatusChange} onDelete={onDelete} onUndo={onUndo}/>
-      ))}
+    <ul className="space-y-2 px-0">
+      {tasks.length === 0 ? (
+        <li className="text-sm text-gray-500">No tasks here</li>
+      ) : (
+        tasks.map((task) => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            onStatusChange={onStatusChange}
+            onDelete={onDelete}
+            onUndo={onUndo}
+            onPermanentDelete={onPermanentDelete}
+            onSelectTask={onSelectTask}
+          />
+        ))
+      )}
     </ul>
   );
 }

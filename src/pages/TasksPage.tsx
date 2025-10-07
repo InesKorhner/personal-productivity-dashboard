@@ -1,22 +1,34 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
 import { TaskList } from '@/components/TaskList';
-import type { TaskStatus, Task } from '@/types';
+import { TaskStatus, type Task } from '@/types';
 import { useState } from 'react';
+import { CategoryList } from '@/components/CategoryList';
+
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+const [selectedView, setSelectedView] = useState<'category' | 'completed' | 'deleted'>('category');
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+
+const categories = ['MyList', 'Work', 'Exercise', 'Study', 'Other'];
+
+const handleAddTask = (newTask: Task) => {
+  setTasks((prev) => [...prev, newTask])
+}
+
 
   const handleStatusChange = (taskId: string, newStatus: TaskStatus) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
+    setTasks((prev) =>
+      prev.map((task) =>
         task.id === taskId ? { ...task, status: newStatus } : task,
       ),
     );
   };
 
   const handleDelete = (taskId: string) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
+    setTasks((prev) =>
+      prev.map((task) =>
         task.id === taskId
           ? {
               ...task,
@@ -28,23 +40,82 @@ export default function TasksPage() {
     );
   };
 
-    const handleUndo = (taskId: string) => {
-    setTasks(tasks.map(task =>
-      task.id === taskId ? { ...task, deleted: false, deletedAt: null } : task
-    ));
+     const handleUndo = (taskId: string) => {
+    setTasks((prev) =>
+      prev.map((task) => (task.id === taskId ? { ...task, deleted: false, deletedAt: null } : task))
+    );
   };
-  return (
-    <div>
-      <AddTaskForm onAddTask={(newTask) => setTasks([...tasks, newTask])} />
-      <TaskList
-        tasks={tasks}
-        onStatusChange={handleStatusChange}
-        onDelete={handleDelete}
-        onUndo={handleUndo}
-      />
+
+   const handlePermanentDelete = (taskId: string) => {
+    setTasks((prev) => prev.filter((t) => t.id !== taskId));
+    if (selectedTaskId === taskId) setSelectedTaskId(null);
+  };
+
+  const handleSelectTask = (taskId: string | null) => {
+    setSelectedTaskId(taskId);
+  };
+
+   const handleSaveNotes = (taskId: string, notes: string) => {
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, notes } : t)));
+  };
+
+  const visibleTasks = tasks.filter((t) => {
+    if (selectedView === 'category') {
+      return !t.deleted && t.status !== TaskStatus.DONE && (!selectedCategory || t.category === selectedCategory);
+    }
+    if (selectedView === 'completed') {
+      return !t.deleted && t.status === TaskStatus.DONE && (!selectedCategory || t.category === selectedCategory);
+    }
+    return t.deleted;
+  });
+    const selectedTask = tasks.find((t) => t.id === selectedTaskId) ?? null;
+
+
+   return (
+  <div className="grid grid-cols-[250px_1fr_400px] gap-6 p-6 h-screen">
+    <CategoryList
+      categories={categories}
+      selectedCategory={selectedCategory}
+      selectedView={selectedView}
+      onSelectCategory={setSelectedCategory}
+      onSelectView={setSelectedView}
+    />
+
+       <div className="flex flex-col gap-4">
+        <AddTaskForm onAddTask={handleAddTask} selectedCategory={selectedCategory} />
+        <TaskList
+          tasks={visibleTasks}
+          onStatusChange={handleStatusChange}
+          onDelete={handleDelete}
+          onUndo={handleUndo}
+          onPermanentDelete={handlePermanentDelete}
+          onSelectTask={handleSelectTask}
+        />
+      </div>
+       <aside className="col-start-3 col-span-1 p-4 border-l h-full overflow-y-auto">
+        <div className="mb-3 text-sm font-semibold">Notes</div>
+        {selectedTask ? (
+          <>
+            <div className="mb-2 text-xs text-gray-500">Task: {selectedTask.text}</div>
+            <textarea
+              value={selectedTask.notes ?? ''}
+              onChange={(e) => handleSaveNotes(selectedTask.id, e.target.value)}
+              className="w-full h-full p-4 border rounded resize-none" 
+              placeholder="Write notes for the selected task..."
+            />
+            <div className="mt-2 text-sm text-gray-500">
+              {selectedTask.category} • {selectedTask.status.replace('_', ' ')}
+            </div>
+          </>
+        ) : (
+          <div className="text-sm text-gray-500">Select a task to see / edit notes</div>
+        )}
+      </aside>
     </div>
   );
+
+
+
 }
 
-// backup before reorganizing TaskPage
 
