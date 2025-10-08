@@ -7,6 +7,7 @@ interface TaskItemProps {
   onUndo: (taskId: string) => void;
   onPermanentDelete: (taskId: string) => void;
   onSelectTask: (taskId: string | null) => void;
+  isCompletedView: boolean;
 }
 
 export function TaskItem({
@@ -16,6 +17,7 @@ export function TaskItem({
   onUndo,
   onPermanentDelete,
   onSelectTask,
+  isCompletedView = false,
 }: TaskItemProps) {
   const isDone = task.status === TaskStatus.DONE;
 
@@ -63,7 +65,9 @@ export function TaskItem({
         />
         <div className="cursor-pointer" onClick={() => onSelectTask(task.id)}>
           <p
-            className={`font-medium ${isDone ? 'text-gray-400 line-through' : ''}`}
+            className={`cursor-pointer font-medium transition-all ${
+              isCompletedView ? 'opacity-50' : 'opacity-100'
+            }`}
           >
             {task.text}
           </p>

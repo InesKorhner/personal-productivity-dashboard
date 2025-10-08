@@ -59,25 +59,8 @@ export default function TasksPage() {
       prev.map((t) => (t.id === taskId ? { ...t, notes } : t)),
     );
   };
-  const visibleTasks = tasks.filter((t) => {
-    if (selectedView === 'category') {
-      return (
-        !t.deleted &&
-        t.status !== TaskStatus.DONE &&
-        (!selectedCategory || t.category === selectedCategory)
-      );
-    }
-    if (selectedView === 'completed') {
-      return (
-        !t.deleted &&
-        t.status === TaskStatus.DONE &&
-        (!selectedCategory || t.category === selectedCategory)
-      );
-    }
-    return t.deleted;
-  });
+
   const selectedTask = tasks.find((t) => t.id === selectedTaskId) ?? null;
-  
 
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
@@ -94,14 +77,37 @@ export default function TasksPage() {
           onAddTask={handleAddTask}
           selectedCategory={selectedCategory}
         />
+
         <TaskList
-          tasks={visibleTasks}
+          tasks={tasks.filter(
+            (t) => !t.deleted && t.status !== TaskStatus.DONE,
+          )}
           onStatusChange={handleStatusChange}
           onDelete={handleDelete}
           onUndo={handleUndo}
           onPermanentDelete={handlePermanentDelete}
           onSelectTask={handleSelectTask}
+          isCompletedView={false}
         />
+
+        {tasks.some((t) => t.status === TaskStatus.DONE && !t.deleted) && (
+          <div className="mt-4">
+            <h3 className="mb-2 text-sm font-semibold text-gray-500">
+              Completed
+            </h3>
+            <TaskList
+              tasks={tasks.filter(
+                (t) => t.status === TaskStatus.DONE && !t.deleted,
+              )}
+              onStatusChange={handleStatusChange}
+              onDelete={handleDelete}
+              onUndo={handleUndo}
+              onPermanentDelete={handlePermanentDelete}
+              onSelectTask={handleSelectTask}
+              isCompletedView={true}
+            />
+          </div>
+        )}
       </div>
       <aside className="col-span-1 col-start-3 h-full overflow-y-auto border-l p-4">
         <div className="mb-3 text-sm font-semibold">Notes</div>
@@ -113,7 +119,7 @@ export default function TasksPage() {
             <textarea
               value={selectedTask.notes ?? ''}
               onChange={(e) => handleSaveNotes(selectedTask.id, e.target.value)}
-              className="h-90 w-full text-sm resize-none rounded border p-4"
+              className="h-90 w-full resize-none rounded border p-4 text-sm"
               placeholder="Write notes for the selected task"
             />
             <div className="mt-2 text-sm text-gray-500">
