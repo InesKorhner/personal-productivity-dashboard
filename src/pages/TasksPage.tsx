@@ -4,20 +4,20 @@ import { TaskStatus, type Task } from '@/types';
 import { useState } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 
-
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-const [selectedView, setSelectedView] = useState<'category' | 'completed' | 'deleted'>('category');
+  const [selectedView, setSelectedView] = useState<
+    'category' | 'completed' | 'deleted'
+  >('category');
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
-const categories = ['MyList', 'Work', 'Exercise', 'Study', 'Other'];
+  const categories = ['MyList', 'Work', 'Exercise', 'Study', 'Other'];
 
-const handleAddTask = (newTask: Task) => {
-  setTasks((prev) => [...prev, newTask])
-}
-
-
+  const handleAddTask = (newTask: Task) => {
+    setTasks((prev) => [...prev, newTask]);
+    setSelectedTaskId(newTask.id);
+  };
   const handleStatusChange = (taskId: string, newStatus: TaskStatus) => {
     setTasks((prev) =>
       prev.map((task) =>
@@ -25,7 +25,6 @@ const handleAddTask = (newTask: Task) => {
       ),
     );
   };
-
   const handleDelete = (taskId: string) => {
     setTasks((prev) =>
       prev.map((task) =>
@@ -39,50 +38,62 @@ const handleAddTask = (newTask: Task) => {
       ),
     );
   };
-
-     const handleUndo = (taskId: string) => {
+  const handleUndo = (taskId: string) => {
     setTasks((prev) =>
-      prev.map((task) => (task.id === taskId ? { ...task, deleted: false, deletedAt: null } : task))
+      prev.map((task) =>
+        task.id === taskId
+          ? { ...task, deleted: false, deletedAt: null }
+          : task,
+      ),
     );
   };
-
-   const handlePermanentDelete = (taskId: string) => {
+  const handlePermanentDelete = (taskId: string) => {
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
     if (selectedTaskId === taskId) setSelectedTaskId(null);
   };
-
   const handleSelectTask = (taskId: string | null) => {
     setSelectedTaskId(taskId);
   };
-
-   const handleSaveNotes = (taskId: string, notes: string) => {
-    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, notes } : t)));
+  const handleSaveNotes = (taskId: string, notes: string) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, notes } : t)),
+    );
   };
-
   const visibleTasks = tasks.filter((t) => {
     if (selectedView === 'category') {
-      return !t.deleted && t.status !== TaskStatus.DONE && (!selectedCategory || t.category === selectedCategory);
+      return (
+        !t.deleted &&
+        t.status !== TaskStatus.DONE &&
+        (!selectedCategory || t.category === selectedCategory)
+      );
     }
     if (selectedView === 'completed') {
-      return !t.deleted && t.status === TaskStatus.DONE && (!selectedCategory || t.category === selectedCategory);
+      return (
+        !t.deleted &&
+        t.status === TaskStatus.DONE &&
+        (!selectedCategory || t.category === selectedCategory)
+      );
     }
     return t.deleted;
   });
-    const selectedTask = tasks.find((t) => t.id === selectedTaskId) ?? null;
+  const selectedTask = tasks.find((t) => t.id === selectedTaskId) ?? null;
+  
 
+  return (
+    <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
+      <CategoryList
+        categories={categories}
+        selectedCategory={selectedCategory}
+        selectedView={selectedView}
+        onSelectCategory={setSelectedCategory}
+        onSelectView={setSelectedView}
+      />
 
-   return (
-  <div className="grid grid-cols-[250px_1fr_400px] gap-6 p-6 h-screen">
-    <CategoryList
-      categories={categories}
-      selectedCategory={selectedCategory}
-      selectedView={selectedView}
-      onSelectCategory={setSelectedCategory}
-      onSelectView={setSelectedView}
-    />
-
-       <div className="flex flex-col gap-4">
-        <AddTaskForm onAddTask={handleAddTask} selectedCategory={selectedCategory} />
+      <div className="flex flex-col gap-4">
+        <AddTaskForm
+          onAddTask={handleAddTask}
+          selectedCategory={selectedCategory}
+        />
         <TaskList
           tasks={visibleTasks}
           onStatusChange={handleStatusChange}
@@ -92,30 +103,29 @@ const handleAddTask = (newTask: Task) => {
           onSelectTask={handleSelectTask}
         />
       </div>
-       <aside className="col-start-3 col-span-1 p-4 border-l h-full overflow-y-auto">
+      <aside className="col-span-1 col-start-3 h-full overflow-y-auto border-l p-4">
         <div className="mb-3 text-sm font-semibold">Notes</div>
         {selectedTask ? (
           <>
-            <div className="mb-2 text-xs text-gray-500">Task: {selectedTask.text}</div>
+            <div className="mb-2 text-sm text-gray-500">
+              Task: {selectedTask.text}
+            </div>
             <textarea
               value={selectedTask.notes ?? ''}
               onChange={(e) => handleSaveNotes(selectedTask.id, e.target.value)}
-              className="w-full h-full p-4 border rounded resize-none" 
-              placeholder="Write notes for the selected task..."
+              className="h-90 w-full text-sm resize-none rounded border p-4"
+              placeholder="Write notes for the selected task"
             />
             <div className="mt-2 text-sm text-gray-500">
               {selectedTask.category} • {selectedTask.status.replace('_', ' ')}
             </div>
           </>
         ) : (
-          <div className="text-sm text-gray-500">Select a task to see / edit notes</div>
+          <div className="text-sm text-gray-500">
+            Select a task to see / edit notes
+          </div>
         )}
       </aside>
     </div>
   );
-
-
-
 }
-
-

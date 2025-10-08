@@ -24,9 +24,15 @@ export function TaskItem({
   };
 
   return task.deleted ? (
-      <li className="flex items-center justify-between rounded border px-1 py-1 max-w-[250px]">
-      <div className="flex-1 cursor-pointer" onClick={() => onSelectTask(task.id)}>
-        <p className="font-medium text-gray-600">{task.text} <span className="text-xs italic text-gray-400">(deleted)</span></p>
+    <li className="flex max-w-[250px] items-center justify-between rounded border px-1 py-1">
+      <div
+        className="flex-1 cursor-pointer"
+        onClick={() => onSelectTask(task.id)}
+      >
+        <p className="font-medium text-gray-600">
+          {task.text}{' '}
+          <span className="text-xs text-gray-400 italic">(deleted)</span>
+        </p>
       </div>
 
       <div className="flex items-center gap-2">
@@ -47,22 +53,22 @@ export function TaskItem({
       </div>
     </li>
   ) : (
-<li className="flex items-center justify-between rounded border px-2 py-1 max-w-[300px]">
-     <div className="flex items-center gap-1">
-  <input
-    type="checkbox"
-    checked={isDone}
-    onChange={toggleDone}
-    aria-label="Mark completed"
-  />
-  <div
-    className="cursor-pointer"
-    onClick={() => onSelectTask(task.id)}
-  >
-    <p className={`font-medium ${isDone ? 'line-through text-gray-400' : ''}`}>{task.text}</p>
-  </div>
-</div>
-
+    <li className="flex max-w-[300px] items-center justify-between rounded border px-2 py-1">
+      <div className="flex items-center gap-1">
+        <input
+          type="checkbox"
+          checked={isDone}
+          onChange={toggleDone}
+          aria-label="Mark completed"
+        />
+        <div className="cursor-pointer" onClick={() => onSelectTask(task.id)}>
+          <p
+            className={`font-medium ${isDone ? 'text-gray-400 line-through' : ''}`}
+          >
+            {task.text}
+          </p>
+        </div>
+      </div>
 
       <div className="flex items-center gap-2">
         <button
@@ -77,4 +83,3 @@ export function TaskItem({
     </li>
   );
 }
-
