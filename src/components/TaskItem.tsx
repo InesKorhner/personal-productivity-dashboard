@@ -22,7 +22,10 @@ export function TaskItem({
   const isDone = task.status === TaskStatus.DONE;
 
   const toggleDone = () => {
-    onStatusChange(task.id, isDone ? TaskStatus.TODO : TaskStatus.DONE);
+    onStatusChange(
+      task.id,
+      task.status === TaskStatus.DONE ? TaskStatus.TODO : TaskStatus.DONE
+    );
   };
 
   return task.deleted ? (
@@ -36,21 +39,20 @@ export function TaskItem({
           <span className="text-xs text-gray-400 italic">(deleted)</span>
         </p>
       </div>
-
       <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => onUndo(task.id)}
           className="rounded bg-yellow-200 px-2 py-1 text-sm text-yellow-800"
         >
-          Undo
+          Restore
         </button>
         <button
           type="button"
           onClick={() => onPermanentDelete(task.id)}
           className="rounded bg-red-100 px-2 py-1 text-sm text-red-700"
         >
-          Delete permanently
+          Delete forever
         </button>
       </div>
     </li>
@@ -63,7 +65,12 @@ export function TaskItem({
           onChange={toggleDone}
           aria-label="Mark completed"
         />
-        <div className="cursor-pointer" onClick={() => onSelectTask(task.id)}>
+        <div
+          className="cursor-pointer"
+          onClick={() => {
+            onSelectTask(task.id);
+          }}
+        >
           <p
             className={`cursor-pointer font-medium transition-all ${
               isCompletedView ? 'opacity-50' : 'opacity-100'

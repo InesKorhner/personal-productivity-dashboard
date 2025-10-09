@@ -18,6 +18,7 @@ export default function TasksPage() {
     setTasks((prev) => [...prev, newTask]);
     setSelectedTaskId(newTask.id);
   };
+
   const handleStatusChange = (taskId: string, newStatus: TaskStatus) => {
     setTasks((prev) =>
       prev.map((task) =>
@@ -25,19 +26,17 @@ export default function TasksPage() {
       ),
     );
   };
+
   const handleDelete = (taskId: string) => {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === taskId
-          ? {
-              ...task,
-              deleted: !task.deleted,
-              deletedAt: !task.deleted ? Date.now() : null,
-            }
+          ? { ...task, deleted: true, deletedAt: Date.now() }
           : task,
       ),
     );
   };
+
   const handleUndo = (taskId: string) => {
     setTasks((prev) =>
       prev.map((task) =>
@@ -47,20 +46,32 @@ export default function TasksPage() {
       ),
     );
   };
+
   const handlePermanentDelete = (taskId: string) => {
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
     if (selectedTaskId === taskId) setSelectedTaskId(null);
   };
+
   const handleSelectTask = (taskId: string | null) => {
     setSelectedTaskId(taskId);
   };
+
   const handleSaveNotes = (taskId: string, notes: string) => {
     setTasks((prev) =>
       prev.map((t) => (t.id === taskId ? { ...t, notes } : t)),
     );
   };
 
-  const selectedTask = tasks.find((t) => t.id === selectedTaskId) ?? null;
+  const selectedTask: Task | null =
+    tasks.find((t) => t.id === selectedTaskId) ?? null;
+
+  const todoTasks = tasks.filter(
+    (t) => !t.deleted && t.status !== TaskStatus.DONE,
+  );
+  const completedTasks = tasks.filter(
+    (t) => !t.deleted && t.status === TaskStatus.DONE,
+  );
+  const deletedTasks = tasks.filter((t) => t.deleted);
 
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
@@ -78,37 +89,62 @@ export default function TasksPage() {
           selectedCategory={selectedCategory}
         />
 
-        <TaskList
-          tasks={tasks.filter(
-            (t) => !t.deleted && t.status !== TaskStatus.DONE,
-          )}
-          onStatusChange={handleStatusChange}
-          onDelete={handleDelete}
-          onUndo={handleUndo}
-          onPermanentDelete={handlePermanentDelete}
-          onSelectTask={handleSelectTask}
-          isCompletedView={false}
-        />
-
-        {tasks.some((t) => t.status === TaskStatus.DONE && !t.deleted) && (
-          <div className="mt-4">
-            <h3 className="mb-2 text-sm font-semibold text-gray-500">
-              Completed
-            </h3>
+        {selectedView === 'category' && (
+          <>
             <TaskList
-              tasks={tasks.filter(
-                (t) => t.status === TaskStatus.DONE && !t.deleted,
-              )}
+              tasks={todoTasks}
               onStatusChange={handleStatusChange}
               onDelete={handleDelete}
               onUndo={handleUndo}
               onPermanentDelete={handlePermanentDelete}
               onSelectTask={handleSelectTask}
-              isCompletedView={true}
+              isCompletedView={false}
             />
-          </div>
+
+            {completedTasks.length > 0 && (
+              <div className="mt-4">
+                <h3 className="mb-2 text-sm font-semibold text-gray-500">
+                  Completed
+                </h3>
+                <TaskList
+                  tasks={completedTasks}
+                  onStatusChange={handleStatusChange}
+                  onDelete={handleDelete}
+                  onUndo={handleUndo}
+                  onPermanentDelete={handlePermanentDelete}
+                  onSelectTask={handleSelectTask}
+                  isCompletedView={true}
+                />
+              </div>
+            )}
+          </>
+        )}
+
+        {selectedView === 'completed' && (
+          <TaskList
+            tasks={completedTasks}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+            onUndo={handleUndo}
+            onPermanentDelete={handlePermanentDelete}
+            onSelectTask={handleSelectTask}
+            isCompletedView={true}
+          />
+        )}
+
+        {selectedView === 'deleted' && deletedTasks.length > 0 && (
+          <TaskList
+            tasks={deletedTasks}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+            onUndo={handleUndo}
+            onPermanentDelete={handlePermanentDelete}
+            onSelectTask={handleSelectTask}
+            isCompletedView={false}
+          />
         )}
       </div>
+
       <aside className="col-span-1 col-start-3 h-full overflow-y-auto border-l p-4">
         <div className="mb-3 text-sm font-semibold">Notes</div>
         {selectedTask ? (
