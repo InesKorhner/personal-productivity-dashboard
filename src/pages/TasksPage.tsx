@@ -1,12 +1,29 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
 import { TaskList } from '@/components/TaskList';
 import { TaskStatus, type Task } from '@/types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 
 export default function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const savedTask = localStorage.getItem('tasks');
+    return savedTask ? JSON.parse(savedTask) : [];
+  });
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    () => {
+      const savedCategory = localStorage.getItem('selectedCategory');
+      return savedCategory || 'MyList';
+    },
+  );
+
+  useEffect(() => {
+    localStorage.setItem('selectedCategory', selectedCategory ?? '');
+  }, [selectedCategory]);
+
   const [selectedView, setSelectedView] = useState<
     'category' | 'completed' | 'deleted'
   >('category');
@@ -66,10 +83,10 @@ export default function TasksPage() {
     tasks.find((t) => t.id === selectedTaskId) ?? null;
 
   const todoTasks = tasks.filter(
-    (t) => !t.deleted && t.status !== TaskStatus.DONE,
+    (t) => !t.deleted && t.status !== TaskStatus.DONE && t.category === selectedCategory,
   );
   const completedTasks = tasks.filter(
-    (t) => !t.deleted && t.status === TaskStatus.DONE,
+    (t) => !t.deleted && t.status === TaskStatus.DONE && t.category ===  selectedCategory,
   );
   const deletedTasks = tasks.filter((t) => t.deleted);
 
