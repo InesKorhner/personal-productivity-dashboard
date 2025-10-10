@@ -80,13 +80,21 @@ export default function TasksPage() {
   };
 
   const selectedTask: Task | null =
-    tasks.find((t) => t.id === selectedTaskId) ?? null;
+    tasks.find(
+      (t) => t.id === selectedTaskId && t.category === selectedCategory,
+    ) ?? null;
 
   const todoTasks = tasks.filter(
-    (t) => !t.deleted && t.status !== TaskStatus.DONE && t.category === selectedCategory,
+    (t) =>
+      !t.deleted &&
+      t.status !== TaskStatus.DONE &&
+      t.category === selectedCategory,
   );
   const completedTasks = tasks.filter(
-    (t) => !t.deleted && t.status === TaskStatus.DONE && t.category ===  selectedCategory,
+    (t) =>
+      !t.deleted &&
+      t.status === TaskStatus.DONE &&
+      t.category === selectedCategory,
   );
   const deletedTasks = tasks.filter((t) => t.deleted);
 
