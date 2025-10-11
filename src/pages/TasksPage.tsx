@@ -120,6 +120,14 @@ export default function TasksPage() {
     onSelectTask: handleSelectTask,
   };
 
+  const getTaskList = (tasks: Task[], isCompletedView: boolean) => (
+    <TaskList
+      {...taskListProps}
+      tasks={tasks}
+      isCompletedView={isCompletedView}
+    />
+  );
+
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
       <CategoryList
@@ -138,47 +146,23 @@ export default function TasksPage() {
 
         {selectedView === 'category' && (
           <>
-            <TaskList
-              {...taskListProps}
-              tasks={todoTasks}
-              isCompletedView={false}
-            />
-
+            {getTaskList(todoTasks, false)}
             {completedTasks.length > 0 && (
               <div className="mt-4">
                 <h3 className="mb-2 text-sm font-semibold text-gray-500">
                   Completed
                 </h3>
-
-                <TaskList
-                  {...taskListProps}
-                  tasks={todoTasks}
-                  isCompletedView={true}
-                />
+                {getTaskList(completedTasks, true)}
               </div>
             )}
           </>
         )}
 
-        {selectedView === 'completed' && (
-          <TaskList
-            {...taskListProps}
-            tasks={completedTasks}
-            isCompletedView={true}
-          />
-        )}
+        {selectedView === 'completed' && getTaskList(completedTasks, true)}
 
-        {selectedView === 'deleted' && deletedTasks.length > 0 && (
-          <TaskList
-            tasks={deletedTasks}
-            onStatusChange={handleStatusChange}
-            onDelete={handleDelete}
-            onUndo={handleUndo}
-            onPermanentDelete={handlePermanentDelete}
-            onSelectTask={handleSelectTask}
-            isCompletedView={false}
-          />
-        )}
+        {selectedView === 'deleted' &&
+          deletedTasks.length > 0 &&
+          getTaskList(deletedTasks, false)}
       </div>
 
       <aside className="col-span-1 col-start-3 h-full overflow-y-auto border-l p-4">
