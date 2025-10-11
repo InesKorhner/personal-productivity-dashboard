@@ -1,14 +1,20 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
 import { TaskList } from '@/components/TaskList';
 import { TaskStatus, type Task } from '@/types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>(() => {
-    const savedTask = localStorage.getItem('tasks');
-    return savedTask ? JSON.parse(savedTask) : [];
+    try {
+      const savedTask = localStorage.getItem('tasks');
+      return savedTask ? JSON.parse(savedTask) : [];
+    } catch (error) {
+      console.error('Failed to parse tasks from localStorage', error);
+      return [];
+    }
   });
+
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
@@ -84,19 +90,35 @@ export default function TasksPage() {
       (t) => t.id === selectedTaskId && t.category === selectedCategory,
     ) ?? null;
 
-  const todoTasks = tasks.filter(
-    (t) =>
-      !t.deleted &&
-      t.status !== TaskStatus.DONE &&
-      t.category === selectedCategory,
+  const todoTasks = useMemo(
+    () =>
+      tasks.filter(
+        (t) =>
+          !t.deleted &&
+          t.status !== TaskStatus.DONE &&
+          t.category === selectedCategory,
+      ),
+    [tasks, selectedCategory],
   );
-  const completedTasks = tasks.filter(
-    (t) =>
-      !t.deleted &&
-      t.status === TaskStatus.DONE &&
-      t.category === selectedCategory,
+  const completedTasks = useMemo(
+    () =>
+      tasks.filter(
+        (t) =>
+          !t.deleted &&
+          t.status === TaskStatus.DONE &&
+          t.category === selectedCategory,
+      ),
+    [tasks, selectedCategory],
   );
-  const deletedTasks = tasks.filter((t) => t.deleted);
+  const deletedTasks = useMemo(() => tasks.filter((t) => t.deleted), [tasks]);
+
+  const taskListProps = {
+    onStatusChange: handleStatusChange,
+    onDelete: handleDelete,
+    onUndo: handleUndo,
+    onPermanentDelete: handlePermanentDelete,
+    onSelectTask: handleSelectTask,
+  };
 
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
@@ -117,12 +139,8 @@ export default function TasksPage() {
         {selectedView === 'category' && (
           <>
             <TaskList
+              {...taskListProps}
               tasks={todoTasks}
-              onStatusChange={handleStatusChange}
-              onDelete={handleDelete}
-              onUndo={handleUndo}
-              onPermanentDelete={handlePermanentDelete}
-              onSelectTask={handleSelectTask}
               isCompletedView={false}
             />
 
@@ -131,13 +149,10 @@ export default function TasksPage() {
                 <h3 className="mb-2 text-sm font-semibold text-gray-500">
                   Completed
                 </h3>
+
                 <TaskList
-                  tasks={completedTasks}
-                  onStatusChange={handleStatusChange}
-                  onDelete={handleDelete}
-                  onUndo={handleUndo}
-                  onPermanentDelete={handlePermanentDelete}
-                  onSelectTask={handleSelectTask}
+                  {...taskListProps}
+                  tasks={todoTasks}
                   isCompletedView={true}
                 />
               </div>
@@ -147,12 +162,8 @@ export default function TasksPage() {
 
         {selectedView === 'completed' && (
           <TaskList
+            {...taskListProps}
             tasks={completedTasks}
-            onStatusChange={handleStatusChange}
-            onDelete={handleDelete}
-            onUndo={handleUndo}
-            onPermanentDelete={handlePermanentDelete}
-            onSelectTask={handleSelectTask}
             isCompletedView={true}
           />
         )}

@@ -24,7 +24,7 @@ export function TaskItem({
   const toggleDone = () => {
     onStatusChange(
       task.id,
-      task.status === TaskStatus.DONE ? TaskStatus.TODO : TaskStatus.DONE
+      task.status === TaskStatus.DONE ? TaskStatus.TODO : TaskStatus.DONE,
     );
   };
 
@@ -65,12 +65,7 @@ export function TaskItem({
           onChange={toggleDone}
           aria-label="Mark completed"
         />
-        <div
-          className="cursor-pointer"
-          onClick={() => {
-            onSelectTask(task.id);
-          }}
-        >
+        <div className="cursor-pointer" onClick={() => onSelectTask(task.id)}>
           <p
             className={`cursor-pointer font-medium transition-all ${
               isCompletedView ? 'opacity-50' : 'opacity-100'
