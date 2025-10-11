@@ -31,7 +31,7 @@ export function TaskList({
           onUndo={onUndo}
           onPermanentDelete={onPermanentDelete}
           onSelectTask={onSelectTask}
-          isCompletedView={isCompletedView ?? false}
+          isCompletedView={isCompletedView}
         />
       ))}
     </ul>
