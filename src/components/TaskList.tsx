@@ -8,7 +8,6 @@ interface TaskListProps {
   onUndo: (taskId: string) => void;
   onPermanentDelete: (taskId: string) => void;
   onSelectTask: (taskId: string | null) => void;
-  isCompletedView: boolean;
 }
 
 export function TaskList({
@@ -18,7 +17,6 @@ export function TaskList({
   onUndo,
   onPermanentDelete,
   onSelectTask,
-  isCompletedView = false,
 }: TaskListProps) {
   return (
     <ul className="space-y-2 px-0">
@@ -31,7 +29,6 @@ export function TaskList({
           onUndo={onUndo}
           onPermanentDelete={onPermanentDelete}
           onSelectTask={onSelectTask}
-          isCompletedView={isCompletedView}
         />
       ))}
     </ul>
