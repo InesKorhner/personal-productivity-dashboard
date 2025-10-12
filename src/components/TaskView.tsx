@@ -25,15 +25,25 @@ export function TaskView({
   onPermanentDelete,
   onSelectTask,
 }: TaskViewProps) {
-  const todoTasks = useMemo(
-    () => tasks.filter((t) => !t.deleted && t.status === TaskStatus.TODO),
-    [tasks],
-  );
-  const completedTasks = useMemo(
-    () => tasks.filter((t) => !t.deleted && t.status === TaskStatus.DONE),
-    [tasks],
-  );
-  const deletedTasks = useMemo(() => tasks.filter((t) => t.deleted), [tasks]);
+  const { todoTasks, completedTasks, deletedTasks } = useMemo(() => {
+    const lists = {
+      todoTasks: [] as Task[],
+      completedTasks: [] as Task[],
+      deletedTasks: [] as Task[],
+    };
+
+    for (const task of tasks) {
+      if (task.deleted) {
+        lists.deletedTasks.push(task);
+      } else if (task.status === TaskStatus.DONE) {
+        lists.completedTasks.push(task);
+      } else if (task.status === TaskStatus.TODO) {
+        lists.todoTasks.push(task);
+      }
+    }
+
+    return lists;
+  }, [tasks]);
 
   return (
     <div>
