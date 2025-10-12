@@ -105,10 +105,9 @@ export default function TasksPage() {
       tasks.filter(
         (t) =>
           !t.deleted &&
-          t.status === TaskStatus.DONE &&
-          t.category === selectedCategory,
+          t.status === TaskStatus.DONE
       ),
-    [tasks, selectedCategory],
+    [tasks],
   );
   const deletedTasks = useMemo(() => tasks.filter((t) => t.deleted), [tasks]);
 
