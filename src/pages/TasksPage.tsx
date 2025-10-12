@@ -1,8 +1,8 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
-import { TaskList } from '@/components/TaskList';
-import { TaskStatus, type Task } from '@/types';
+import type { TaskStatus, Task } from '@/types';
 import { useState, useEffect, useMemo } from 'react';
 import { CategoryList } from '@/components/CategoryList';
+import { TaskView } from '@/components/TaskView';
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>(() => {
@@ -90,27 +90,6 @@ export default function TasksPage() {
       (t) => t.id === selectedTaskId && t.category === selectedCategory,
     ) ?? null;
 
-  const todoTasks = useMemo(
-    () =>
-      tasks.filter(
-        (t) =>
-          !t.deleted &&
-          t.status !== TaskStatus.DONE &&
-          t.category === selectedCategory,
-      ),
-    [tasks, selectedCategory],
-  );
-  const completedTasks = useMemo(
-    () =>
-      tasks.filter(
-        (t) =>
-          !t.deleted &&
-          t.status === TaskStatus.DONE
-      ),
-    [tasks],
-  );
-  const deletedTasks = useMemo(() => tasks.filter((t) => t.deleted), [tasks]);
-
   const taskListProps = {
     onStatusChange: handleStatusChange,
     onDelete: handleDelete,
@@ -119,12 +98,9 @@ export default function TasksPage() {
     onSelectTask: handleSelectTask,
   };
 
-  const getTaskList = (tasks: Task[], isCompletedView: boolean) => (
-    <TaskList
-      {...taskListProps}
-      tasks={tasks}
-      isCompletedView={isCompletedView}
-    />
+  const categoryTasks = useMemo(
+    () => tasks.filter((t) => t.category === selectedCategory),
+    [tasks, selectedCategory],
   );
 
   return (
@@ -144,24 +120,21 @@ export default function TasksPage() {
         />
 
         {selectedView === 'category' && (
-          <>
-            {getTaskList(todoTasks, false)}
-            {completedTasks.length > 0 && (
-              <div className="mt-4">
-                <h3 className="mb-2 text-sm font-semibold text-gray-500">
-                  Completed
-                </h3>
-                {getTaskList(completedTasks, true)}
-              </div>
-            )}
-          </>
+          <TaskView
+            {...taskListProps}
+            tasks={categoryTasks}
+            showToDo
+            showCompleted
+          />
         )}
 
-        {selectedView === 'completed' && getTaskList(completedTasks, true)}
+        {selectedView === 'completed' && (
+          <TaskView {...taskListProps} tasks={tasks} showCompleted />
+        )}
 
-        {selectedView === 'deleted' &&
-          deletedTasks.length > 0 &&
-          getTaskList(deletedTasks, false)}
+        {selectedView === 'deleted' && (
+          <TaskView {...taskListProps} tasks={tasks} showDeleted />
+        )}
       </div>
 
       <aside className="col-span-1 col-start-3 h-full overflow-y-auto border-l p-4">
