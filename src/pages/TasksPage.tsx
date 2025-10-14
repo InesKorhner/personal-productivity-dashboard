@@ -3,6 +3,7 @@ import type { TaskStatus, Task } from '@/types';
 import { useState, useEffect, useMemo } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 import { TaskView } from '@/components/TaskView';
+import { NotesAside } from '@/components/NotesAside';
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>(() => {
@@ -136,30 +137,7 @@ export default function TasksPage() {
           <TaskView {...taskListProps} tasks={tasks} showDeleted />
         )}
       </div>
-
-      <aside className="col-span-1 col-start-3 h-full overflow-y-auto border-l p-4">
-        <div className="mb-3 text-sm font-semibold">Notes</div>
-        {selectedTask ? (
-          <>
-            <div className="mb-2 text-sm text-gray-500">
-              Task: {selectedTask.text}
-            </div>
-            <textarea
-              value={selectedTask.notes ?? ''}
-              onChange={(e) => handleSaveNotes(selectedTask.id, e.target.value)}
-              className="h-90 w-full resize-none rounded border p-4 text-sm"
-              placeholder="Write notes for the selected task"
-            />
-            <div className="mt-2 text-sm text-gray-500">
-              {selectedTask.category} • {selectedTask.status.replace('_', ' ')}
-            </div>
-          </>
-        ) : (
-          <div className="text-sm text-gray-500">
-            Select a task to see / edit notes
-          </div>
-        )}
-      </aside>
+      <NotesAside selectedTask={selectedTask} onSaveNotes={handleSaveNotes} />
     </div>
   );
 }
