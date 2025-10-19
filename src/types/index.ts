@@ -17,6 +17,7 @@ export interface TaskListProps {
   } 
 
   export type Habit = {
+  id: string;
   name: string;
   frequency: 'Daily' | 'Weekly' | '3x/week';
   section: 'Morning' | 'Afternoon' | 'Evening' | 'Other';

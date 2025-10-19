@@ -17,7 +17,7 @@ export function AddHabitForm({ onSave, onCancel }: AddHabitFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSave({ name, frequency, section, startDate })
+    onSave({  id: Date.now().toString(), name, frequency, section, startDate })
     setName('')
   }
 

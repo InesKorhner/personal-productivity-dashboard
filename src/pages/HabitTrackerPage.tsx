@@ -2,6 +2,7 @@ import React from 'react';
 import type { Habit } from '@/types';
 import { AddHabitButton } from '@/components/AddHabitButton';
 import { AddHabitForm } from '@/components/AddHabitForm';
+import { HabitList } from '@/components/HabitList';
 
 export function HabitTrackerPage() {
   const [showForm, setShowForm] = React.useState(false);
@@ -13,21 +14,24 @@ export function HabitTrackerPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
+    <div className="mx-auto max-w-4xl px-4">
       <AddHabitButton
         onClick={() => setShowForm(!showForm)}
-        noHabitsText={habits.length === 0 ? 'No habits yet. Try adding your first habit.' : undefined}
+        noHabitsText={
+          habits.length === 0
+            ? 'No habits yet. Try adding your first habit.'
+            : undefined
+        }
       />
-
       {showForm && (
         <AddHabitForm
           onSave={handleAddHabit}
           onCancel={() => setShowForm(false)}
         />
       )}
-
-      {/* Ovde kasnije ide HabitList */}
+      <div className="p-6">
+        <HabitList habits={habits} />
+      </div>{' '}
     </div>
   );
 }
-
