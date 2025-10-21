@@ -100,7 +100,9 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
               <Button variant="outline">Cancel</Button>
             </DialogClose>
 
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" className="bg-[#4772FA]">
+              Save
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

@@ -16,7 +16,7 @@ export function HabitList({ habits }: HabitListProps) {
   return (
     <ul className="space-y-2">
       {habits.map((habit) => (
-        <HabitItem key={habit.id} habit={habit} />
+        <HabitItem key={habit.id} habit={habit} totalCheckIns={0} currentStreak={0} />
       ))}
     </ul>
   );
