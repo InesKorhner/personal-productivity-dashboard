@@ -3,9 +3,11 @@ import { HabitItem } from './HabitItem';
 
 interface HabitListProps {
   habits: Habit[];
+  checkIns: Record<string, Record<string, boolean>>;
+  onToggleCheckIn: (habitId: string, date: string) => void;
 }
 
-export function HabitList({ habits }: HabitListProps) {
+export function HabitList({ habits, checkIns, onToggleCheckIn }: HabitListProps) {
   if (habits.length === 0) {
     return (
       <div className="mt-4 text-center text-gray-500">
@@ -16,7 +18,12 @@ export function HabitList({ habits }: HabitListProps) {
   return (
     <ul className="space-y-2">
       {habits.map((habit) => (
-        <HabitItem key={habit.id} habit={habit} totalCheckIns={0} currentStreak={0} />
+        <HabitItem
+          key={habit.id}
+          habit={habit}
+          checkIns={checkIns[habit.id] || {}}
+          onToggleCheckIn={onToggleCheckIn}
+        />
       ))}
     </ul>
   );

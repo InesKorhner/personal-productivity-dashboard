@@ -1,27 +1,30 @@
 import type { Habit } from '@/types';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import React from 'react';
 
 interface HabitItemProps {
   habit: Habit;
-  totalCheckIns: number;
-  currentStreak: number;
+  checkIns: Record<string, boolean>;
+  onToggleCheckIn: (habitId: string, date: string) => void;
 }
 
 export function HabitItem({
   habit,
-  totalCheckIns,
-  currentStreak,
+  checkIns,
+  onToggleCheckIn,
 }: HabitItemProps) {
-  const [checkIns, setCheckIns] = React.useState<Record<string, boolean>>({});
-
   const today = new Date();
   const lastDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(today.getDate() - i);
     return d.toISOString().slice(0, 10);
   }).reverse();
+  const totalCheckIns = Object.values(checkIns).filter(Boolean).length;
 
+  let currentStreak = 0;
+  for (let i = lastDays.length - 1; i >= 0; i--) {
+    if (checkIns[lastDays[i]]) currentStreak++;
+    else break;
+  }
   return (
     <li className="flex items-center justify-between rounded-lg border p-1.5 shadow-sm">
       <div>
@@ -61,13 +64,11 @@ export function HabitItem({
             <div
               key={date}
               onClick={() => {
-                if (!isDisabled) {
-                  setCheckIns((prev) => ({ ...prev, [date]: !done }));
-                }
+                if (!isDisabled) onToggleCheckIn(habit.id, date);
               }}
-              className={`h-4 w-4 rounded-full border ${
-                done ? 'bg-green-500' : 'bg-gray-200'
-              } ${isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              className={`h-4 w-4 rounded-full border ${done ? 'bg-green-500' : 'bg-gray-200'} ${
+                isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+              }`}
               title={date}
             />
           );

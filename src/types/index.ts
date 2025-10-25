@@ -23,3 +23,5 @@ export interface TaskListProps {
   section: 'Morning' | 'Afternoon' | 'Evening' | 'Other';
   startDate: string; // YYYY-MM-DD
 };
+
+export type CheckIns = Record<string, Record<string, boolean>>;
