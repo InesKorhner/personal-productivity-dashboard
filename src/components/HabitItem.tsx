@@ -3,28 +3,30 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 interface HabitItemProps {
   habit: Habit;
-  checkIns: Record<string, boolean>;
   onToggleCheckIn: (habitId: string, date: string) => void;
 }
 
-export function HabitItem({
-  habit,
-  checkIns,
-  onToggleCheckIn,
-}: HabitItemProps) {
+export function HabitItem({ habit, onToggleCheckIn }: HabitItemProps) {
   const today = new Date();
   const lastDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(today.getDate() - i);
     return d.toISOString().slice(0, 10);
   }).reverse();
-  const totalCheckIns = Object.values(checkIns).filter(Boolean).length;
 
+  const totalCheckIns = (habit.checkIns || []).filter(
+    (c) => c.isChecked,
+  ).length;
+  const checkIns = habit.checkIns || [];
   let currentStreak = 0;
   for (let i = lastDays.length - 1; i >= 0; i--) {
-    if (checkIns[lastDays[i]]) currentStreak++;
+    const dayCheckIn = checkIns.find((c) => c.date === lastDays[i]);
+    if (dayCheckIn?.isChecked) currentStreak++;
     else break;
   }
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
   return (
     <li className="flex items-center justify-between rounded-lg border p-1.5 shadow-sm">
       <div>
@@ -54,9 +56,9 @@ export function HabitItem({
       </div>
       <div className="mt-2 flex space-x-1">
         {lastDays.map((date) => {
-          const done = checkIns[date] || false;
-          const todayStart = new Date();
-          todayStart.setHours(0, 0, 0, 0);
+          const check = habit.checkIns.find((c) => c.date === date);
+          const done = check ? check.isChecked : false;
+
           const isDisabled =
             new Date(date).setHours(0, 0, 0, 0) > todayStart.getTime();
 

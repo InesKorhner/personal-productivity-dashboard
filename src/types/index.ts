@@ -21,7 +21,12 @@ export interface TaskListProps {
   name: string;
   frequency: 'Daily' | 'Weekly' | '3x/week';
   section: 'Morning' | 'Afternoon' | 'Evening' | 'Other';
-  startDate: string; // YYYY-MM-DD
+  startDate: string; 
+  checkIns: CheckIn[];
 };
 
-export type CheckIns = Record<string, Record<string, boolean>>;
+export type CheckIn = {
+date: string;
+isChecked: boolean;
+}
+

@@ -30,8 +30,18 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({ id: Date.now().toString(), name, frequency, section, startDate });
+    onSave({
+      id: `${Date.now()}-${Math.random()}`,
+      name,
+      frequency,
+      section,
+      startDate,
+      checkIns: [],
+    });
     setName('');
+    setFrequency('Daily');
+    setSection('Morning');
+    setStartDate(new Date().toISOString().slice(0, 10));
     setOpen(false);
   };
   return (
