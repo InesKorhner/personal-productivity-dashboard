@@ -2,7 +2,7 @@ import { MainContent } from './components/MainContent';
 import Layout from './layout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TasksPage from '@/pages/TasksPage';
-import HabitTrackerPage from '@/pages/HabitTrackerPage';
+import {HabitTrackerPage} from '@/pages/HabitTrackerPage';
 import CalendarPage from '@/pages/CalendarPage';
 import StatsPage from '@/pages/StatsPage';
 import SearchPage from '@/pages/SearchPage';

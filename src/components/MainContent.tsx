@@ -31,8 +31,8 @@ export function MainContent() {
       onMouseLeave={plugin.current.reset}
     >
       <CarouselContent>
-        {quotes.map((quote, index) => (
-          <CarouselItem key={index}>
+        {quotes.map((quote) => (
+          <CarouselItem key={quote}>
             <div>{quote}</div>
           </CarouselItem>
         ))}

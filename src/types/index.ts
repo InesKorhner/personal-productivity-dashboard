@@ -15,3 +15,18 @@ export interface TaskListProps {
     TODO= 'TODO',
     DONE= 'DONE',
   } 
+
+  export type Habit = {
+  id: string;
+  name: string;
+  frequency: 'Daily' | 'Weekly' | '3x/week';
+  section: 'Morning' | 'Afternoon' | 'Evening' | 'Other';
+  startDate: string; 
+  checkIns: CheckIn[];
+};
+
+export type CheckIn = {
+date: string;
+isChecked: boolean;
+}
+
