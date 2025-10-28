@@ -1,5 +1,6 @@
 import type { Habit } from '@/types';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { triggerConfetti } from '@/lib/confetti';
 
 interface HabitItemProps {
   habit: Habit;
@@ -66,7 +67,10 @@ export function HabitItem({ habit, onToggleCheckIn }: HabitItemProps) {
             <div
               key={date}
               onClick={() => {
-                if (!isDisabled) onToggleCheckIn(habit.id, date);
+                if (!isDisabled) {
+                  onToggleCheckIn(habit.id, date);
+                  if (!done) triggerConfetti();
+                }
               }}
               className={`h-4 w-4 rounded-full border ${done ? 'bg-green-500' : 'bg-gray-200'} ${
                 isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
