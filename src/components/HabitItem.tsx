@@ -8,7 +8,6 @@ interface HabitItemProps {
 }
 
 export function HabitItem({ habit, onToggleCheckIn }: HabitItemProps) {
-
   const today = new Date();
   const lastDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
@@ -68,8 +67,10 @@ export function HabitItem({ habit, onToggleCheckIn }: HabitItemProps) {
             <div
               key={date}
               onClick={() => {
-                if (!isDisabled) onToggleCheckIn(habit.id, date);
-                if (!done) triggerConfetti();
+                if (!isDisabled) {
+                  onToggleCheckIn(habit.id, date);
+                  if (!done) triggerConfetti();
+                }
               }}
               className={`h-4 w-4 rounded-full border ${done ? 'bg-green-500' : 'bg-gray-200'} ${
                 isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
