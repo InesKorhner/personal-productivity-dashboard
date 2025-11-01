@@ -10,9 +10,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import type { Habit } from '@/types';
-import React from 'react';
 import { CalendarInForm } from './CalendarInForm';
 import { Plus } from 'lucide-react';
+import React from 'react';
 
 type AddHabitFormProps = {
   onSave: (habit: Habit) => void;

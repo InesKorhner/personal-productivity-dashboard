@@ -44,11 +44,19 @@ export function HabitTrackerPage() {
     );
   };
 
+  const handleDeleteHabit = (habitId: string) => {
+    setHabits((prev) => prev.filter((h) => h.id !== habitId));
+  };
+
   return (
     <div className="mx-auto max-w-4xl px-4">
       <AddHabitDialog onSave={handleAddHabit} />
       <div className="p-6">
-        <HabitList habits={habits} onToggleCheckIn={handleToggleCheckIn} />
+        <HabitList
+          habits={habits}
+          onToggleCheckIn={handleToggleCheckIn}
+          onDelete={handleDeleteHabit}
+        />
       </div>
     </div>
   );

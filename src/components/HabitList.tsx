@@ -4,9 +4,10 @@ import { HabitItem } from './HabitItem';
 interface HabitListProps {
   habits: Habit[];
   onToggleCheckIn: (habitId: string, date: string) => void;
+  onDelete: (habitId: string) => void;
 }
 
-export function HabitList({ habits, onToggleCheckIn }: HabitListProps) {
+export function HabitList({ habits, onToggleCheckIn, onDelete}: HabitListProps) {
   if (habits.length === 0) {
     return (
       <div className="mt-4 text-center text-gray-500">
@@ -21,6 +22,7 @@ export function HabitList({ habits, onToggleCheckIn }: HabitListProps) {
           key={habit.id}
           habit={habit}
           onToggleCheckIn={onToggleCheckIn}
+          onDelete={onDelete}
         />
       ))}
     </ul>
