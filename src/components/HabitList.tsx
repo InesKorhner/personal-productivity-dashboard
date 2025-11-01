@@ -5,9 +5,10 @@ interface HabitListProps {
   habits: Habit[];
   onToggleCheckIn: (habitId: string, date: string) => void;
   onDelete: (habitId: string) => void;
+  onEdit: (habit: Habit) => void;
 }
 
-export function HabitList({ habits, onToggleCheckIn, onDelete}: HabitListProps) {
+export function HabitList({ habits, onToggleCheckIn, onDelete, onEdit}: HabitListProps) {
   if (habits.length === 0) {
     return (
       <div className="mt-4 text-center text-gray-500">
@@ -23,6 +24,7 @@ export function HabitList({ habits, onToggleCheckIn, onDelete}: HabitListProps) 
           habit={habit}
           onToggleCheckIn={onToggleCheckIn}
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       ))}
     </ul>

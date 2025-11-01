@@ -6,12 +6,14 @@ interface HabitItemProps {
   habit: Habit;
   onToggleCheckIn: (habitId: string, date: string) => void;
   onDelete: (habitId: string) => void;
+  onEdit: (habit: Habit) => void;
 }
 
 export function HabitItem({
   habit,
   onToggleCheckIn,
   onDelete,
+  onEdit,
 }: HabitItemProps) {
   const today = new Date();
   const lastDays = Array.from({ length: 7 }, (_, i) => {
@@ -67,7 +69,7 @@ export function HabitItem({
           );
         })}
         <div className="mx-3 h-4 border-l border-gray-300"></div>
-        <button type="button">
+        <button type="button" onClick={() => onEdit(habit)}>
           <Edit2 size={16} />
         </button>
         <button type="button" onClick={() => onDelete(habit.id)}>
