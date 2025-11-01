@@ -1,13 +1,20 @@
 import type { Habit } from '@/types';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { triggerConfetti } from '@/lib/confetti';
+import { Edit2, Trash2 } from 'lucide-react';
 
 interface HabitItemProps {
   habit: Habit;
   onToggleCheckIn: (habitId: string, date: string) => void;
+  onDelete: (habitId: string) => void;
+  onEdit: (habit: Habit) => void;
 }
 
-export function HabitItem({ habit, onToggleCheckIn }: HabitItemProps) {
+export function HabitItem({
+  habit,
+  onToggleCheckIn,
+  onDelete,
+  onEdit,
+}: HabitItemProps) {
   const today = new Date();
   const lastDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
@@ -29,33 +36,15 @@ export function HabitItem({ habit, onToggleCheckIn }: HabitItemProps) {
   todayStart.setHours(0, 0, 0, 0);
 
   return (
-    <li className="flex items-center justify-between rounded-lg border p-1.5 shadow-sm">
-      <div>
-        <p className="text-sm">{habit.name}</p>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="mr-2 cursor-default text-xs text-gray-400">
-              {totalCheckIns}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Total Check-Ins</p>
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <span className="cursor-default text-xs text-gray-400">
-              {currentStreak}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Current Streak</p>
-          </TooltipContent>
-        </Tooltip>
+    <li className="flex w-150 items-center justify-between rounded-lg border px-2 py-1 text-sm">
+      <div className="flex flex-col items-start text-left">
+        <p className="text-base font-medium text-gray-800">{habit.name}</p>
+        <div className="mt-1 flex space-x-4 text-xs text-gray-500">
+          <span>Check-Ins: {totalCheckIns}</span>
+          <span>Streak: {currentStreak}</span>
+        </div>
       </div>
-      <div className="mt-2 flex space-x-1">
+      <div className="flex space-x-2">
         {lastDays.map((date) => {
           const check = habit.checkIns.find((c) => c.date === date);
           const done = check ? check.isChecked : false;
@@ -72,13 +61,20 @@ export function HabitItem({ habit, onToggleCheckIn }: HabitItemProps) {
                   if (!done) triggerConfetti();
                 }
               }}
-              className={`h-4 w-4 rounded-full border ${done ? 'bg-green-500' : 'bg-gray-200'} ${
+              className={`h-4 w-4 rounded-full border ${done ? 'bg-blue-500' : 'bg-gray-200'} ${
                 isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
               }`}
               title={date}
             />
           );
         })}
+        <div className="mx-3 h-4 border-l border-gray-300"></div>
+        <button type="button" onClick={() => onEdit(habit)} aria-label="Edit habit">
+          <Edit2 size={16} />
+        </button>
+        <button type="button" onClick={() => onDelete(habit.id)} title="Delete Habit">
+          <Trash2 size={16} />
+        </button>
       </div>
     </li>
   );

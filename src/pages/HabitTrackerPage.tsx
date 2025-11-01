@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import type { Habit } from '@/types';
 import { HabitList } from '@/components/HabitList';
 import { AddHabitDialog } from '@/components/AddHabitDialog';
+import { EditHabitDialog } from '@/components/EditHabitDialog';
 
 export function HabitTrackerPage() {
   const [habits, setHabits] = React.useState<Habit[]>(() => {
@@ -14,6 +15,7 @@ export function HabitTrackerPage() {
       return [];
     }
   });
+  const [editingHabit, setEditingHabit] = React.useState<Habit | null>(null);
 
   useEffect(() => {
     localStorage.setItem('habits', JSON.stringify(habits));
@@ -44,12 +46,41 @@ export function HabitTrackerPage() {
     );
   };
 
+  const handleDeleteHabit = (habitId: string) => {
+    setHabits((prev) => prev.filter((h) => h.id !== habitId));
+  };
+
+  const handleEditHabit = (habit: Habit) => {
+    setEditingHabit(habit);
+  };
+
+  const handleSaveEdit = (updatedHabit: Habit) => {
+    setHabits((prev) =>
+      prev.map((h) => (h.id === updatedHabit.id ? updatedHabit : h)),
+    );
+    setEditingHabit(null);
+  };
+
   return (
     <div className="mx-auto max-w-4xl px-4">
       <AddHabitDialog onSave={handleAddHabit} />
       <div className="p-6">
-        <HabitList habits={habits} onToggleCheckIn={handleToggleCheckIn} />
+        <HabitList
+          habits={habits}
+          onToggleCheckIn={handleToggleCheckIn}
+          onDelete={handleDeleteHabit}
+          onEdit={handleEditHabit}
+        />
       </div>
+      {editingHabit && (
+        <EditHabitDialog
+          key={editingHabit.id}
+          habit={editingHabit}
+          open={!!editingHabit}
+          onOpenChange={(open) => !open && setEditingHabit(null)}
+          onSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 }
