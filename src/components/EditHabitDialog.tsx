@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import type { Habit } from '@/types';
+import { FREQUENCIES, SECTIONS, type Frequencies, type Habit, type Sections } from '@/types';
 import { CalendarInForm } from './CalendarInForm';
 import React from 'react';
 
@@ -74,13 +74,15 @@ export function EditHabitDialog({
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    frequency: e.target.value as Habit['frequency'],
+                    frequency: e.target.value as Frequencies,
                   }))
                 }
               >
-                <option>Daily</option>
-                <option>Weekly</option>
-                <option>3x/week</option>
+                {FREQUENCIES.map((frequency) => (
+                  <option key={frequency} value={frequency}>
+                    {frequency}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -92,14 +94,15 @@ export function EditHabitDialog({
                 onChange={(e) =>
                   setFormData((prev) => ({
                     ...prev,
-                    section: e.target.value as Habit['section'],
+                    section: e.target.value as Sections,
                   }))
                 }
               >
-                <option>Morning</option>
-                <option>Afternoon</option>
-                <option>Evening</option>
-                <option>Other</option>
+                {SECTIONS.map((section) => (
+                  <option key={section} value={section}>
+                    {section}
+                  </option>
+                ))}
               </select>
             </div>
             <CalendarInForm

@@ -69,10 +69,10 @@ export function HabitItem({
           );
         })}
         <div className="mx-3 h-4 border-l border-gray-300"></div>
-        <button type="button" onClick={() => onEdit(habit)}>
+        <button type="button" onClick={() => onEdit(habit)} aria-label="Edit habit">
           <Edit2 size={16} />
         </button>
-        <button type="button" onClick={() => onDelete(habit.id)}>
+        <button type="button" onClick={() => onDelete(habit.id)} title="Delete Habit">
           <Trash2 size={16} />
         </button>
       </div>
