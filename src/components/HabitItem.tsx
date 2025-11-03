@@ -66,10 +66,10 @@ export function HabitItem({
           return (
             <div
               key={date}
-              onClick={() => {
+              onClick={(e) => {
                 if (!isDisabled) {
                   onToggleCheckIn(habit.id, date);
-                  if (!done) triggerConfetti();
+                  if (!done) triggerConfetti(e.clientX, e.clientY);
                 }
               }}
               className={`flex h-[24px] w-[24px] items-center justify-center rounded-full border text-[12px] ${
