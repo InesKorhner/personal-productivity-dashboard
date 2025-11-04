@@ -8,9 +8,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { FREQUENCIES, SECTIONS, type Frequencies, type Habit, type Sections } from '@/types';
+import {
+  FREQUENCIES,
+  SECTIONS,
+  type Habit,
+  type Sections,
+} from '@/types';
 import { CalendarInForm } from './CalendarInForm';
 import React from 'react';
+import { Slider } from './ui/slider';
 
 type EditHabitDialogProps = {
   habit: Habit;
@@ -68,22 +74,22 @@ export function EditHabitDialog({
 
             <div className="mb-2">
               <label className="block text-sm font-medium">Frequency</label>
-              <select
-                className="w-full rounded border p-2"
-                value={formData.frequency}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    frequency: e.target.value as Frequencies,
-                  }))
+              <Slider
+                value={[formData.frequency]}
+                min={1}
+                max={7}
+                step={1}
+                onValueChange={(value: number[]) =>
+                  setFormData((prev) => ({ ...prev, frequency: value[0] }))
                 }
-              >
-                {FREQUENCIES.map((frequency) => (
-                  <option key={frequency} value={frequency}>
-                    {frequency}
-                  </option>
-                ))}
-              </select>
+              />
+              <span>{formData.frequency} times per week</span>
+
+              {FREQUENCIES.map((frequency) => (
+                <option key={frequency} value={frequency}>
+                  {frequency}
+                </option>
+              ))}
             </div>
 
             <div className="mb-2">

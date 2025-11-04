@@ -13,6 +13,15 @@ import type { Habit } from '@/types';
 import { CalendarInForm } from './CalendarInForm';
 import { Plus } from 'lucide-react';
 import React from 'react';
+import { Slider } from './ui/slider';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+import { Label } from './ui/label';
 
 type AddHabitFormProps = {
   onSave: (habit: Habit) => void;
@@ -22,7 +31,7 @@ type AddHabitFormProps = {
 export function AddHabitDialog({ onSave }: AddHabitFormProps) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
-  const [frequency, setFrequency] = React.useState<Habit['frequency']>('Daily');
+  const [frequencyCount, setFrequencyCount] = React.useState<number>(1);
   const [section, setSection] = React.useState<Habit['section']>('Morning');
   const [startDate, setStartDate] = React.useState(
     new Date().toISOString().slice(0, 10),
@@ -33,13 +42,13 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
     onSave({
       id: `${Date.now()}-${Math.random()}`,
       name,
-      frequency,
+      frequency: frequencyCount,
       section,
       startDate,
       checkIns: [],
     });
     setName('');
-    setFrequency('Daily');
+    setFrequencyCount(1);
     setSection('Morning');
     setStartDate(new Date().toISOString().slice(0, 10));
     setOpen(false);
@@ -56,48 +65,65 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Create Habit</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="">
               Set up a new habit and start tracking your progress today.
             </DialogDescription>
           </DialogHeader>
           <div className="mb-2 grid gap-4">
-            <div className="grid gap-0">
-              <label className="block text-sm font-medium">Habit Name</label>
+            <div className="grid gap-1.5">
+              <Label htmlFor="habit-name">Habit Name</Label>
               <input
-                className="w-full rounded border p-2"
+                id="habit-name"
+                className="border-input bg-background placeholder:text-muted-foreground flex h-9 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:outline-none"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
 
-            <div className="mb-2">
-              <label className="block text-sm font-medium">Frequency</label>
-              <select
-                className="w-full rounded border p-2"
-                value={frequency}
-                onChange={(e) =>
-                  setFrequency(e.target.value as Habit['frequency'])
-                }
-              >
-                <option>Daily</option>
-                <option>Weekly</option>
-                <option>3x/week</option>
-              </select>
+            <div className="flex flex-col items-start space-x-2">
+              <label className="mb-2 block text-sm font-medium">
+                Frequency
+              </label>
+              <div className="relative w-full">
+                <Slider
+                  value={[frequencyCount]} // trenutna vrednost slider-a
+                  min={1}
+                  max={7}
+                  step={1}
+                  onValueChange={(value: number[]) =>
+                    setFrequencyCount(value[0])
+                  }
+                  className="relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col"
+                />
+                <div className="absolute top-1/2 left-0 flex h-0.5 w-full -translate-y-1/2 justify-between">
+                  {Array.from({ length: 7 }, (_, i) => (
+                    <span key={i} className="block h-1 w-0.5 bg-gray-400" />
+                  ))}
+                </div>
+              </div>
+              <span className="mt-2 text-sm">
+                {frequencyCount} times per week
+              </span>
             </div>
 
             <div className="mb-2">
-              <label className="block text-sm font-medium">Section</label>
-              <select
-                className="w-full rounded border p-2"
+              <label className="mt-2 block text-sm font-medium">Section</label>
+
+              <Select
                 value={section}
-                onChange={(e) => setSection(e.target.value as Habit['section'])}
+                onValueChange={(value) => setSection(value as Habit['section'])}
               >
-                <option>Morning</option>
-                <option>Afternoon</option>
-                <option>Evening</option>
-                <option>Other</option>
-              </select>
+                <SelectTrigger className="mt-2 w-[380px]">
+                  <SelectValue placeholder="Select section" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Morning">Morning</SelectItem>
+                  <SelectItem value="Afternoon">Afternoon</SelectItem>
+                  <SelectItem value="Evening">Evening</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <CalendarInForm
               value={new Date(startDate)}

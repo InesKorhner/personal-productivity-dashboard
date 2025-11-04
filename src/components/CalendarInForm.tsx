@@ -29,7 +29,7 @@ export function CalendarInForm({
 
   return (
     <div className="flex flex-col gap-3">
-      <Label htmlFor={id} className="px-1">
+      <Label htmlFor={id} className="px-1 mb-0.5">
         {label}
       </Label>
       <Popover open={open} onOpenChange={setOpen}>
