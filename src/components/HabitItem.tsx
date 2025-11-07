@@ -47,7 +47,7 @@ export function HabitItem({
   todayStart.setHours(0, 0, 0, 0);
 
   return (
-    <li className="flex w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
+    <li className="flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
       <div className="flex flex-col items-start text-left">
         <p className="text-base font-medium text-gray-800">{habit.name}</p>
         <div className="mt-1 flex space-x-4 text-xs text-gray-500">

@@ -65,12 +65,12 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Create Habit</DialogTitle>
-            <DialogDescription className="">
+            <DialogDescription className="mb-3">
               Set up a new habit and start tracking your progress today.
             </DialogDescription>
           </DialogHeader>
           <div className="mb-2 grid gap-4">
-            <div className="grid gap-1.5">
+            <div className="grid gap-3">
               <Label htmlFor="habit-name">Habit Name</Label>
               <input
                 id="habit-name"
@@ -87,14 +87,13 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
               </label>
               <div className="relative w-full">
                 <Slider
-                  value={[frequencyCount]} // trenutna vrednost slider-a
+                  value={[frequencyCount]}
                   min={1}
                   max={7}
                   step={1}
                   onValueChange={(value: number[]) =>
                     setFrequencyCount(value[0])
                   }
-                  className="relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col"
                 />
                 <div className="absolute top-1/2 left-0 flex h-0.5 w-full -translate-y-1/2 justify-between">
                   {Array.from({ length: 7 }, (_, i) => (
@@ -107,14 +106,13 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
               </span>
             </div>
 
-            <div className="mb-2">
-              <label className="mt-2 block text-sm font-medium">Section</label>
-
+            <div className="mb-2 flex flex-col gap-3">
+              <Label className="px-1 mb-1 mt-2">Section</Label>
               <Select
                 value={section}
                 onValueChange={(value) => setSection(value as Habit['section'])}
               >
-                <SelectTrigger className="mt-2 w-[380px]">
+                <SelectTrigger className="w-full [&_svg]:opacity-100">
                   <SelectValue placeholder="Select section" />
                 </SelectTrigger>
                 <SelectContent>
