@@ -25,7 +25,7 @@ export interface TaskListProps {
   export type Habit = {
   id: string;
   name: string;
-  frequency: Frequencies;
+  frequency: number;
   section: Sections;
   startDate: string; 
   checkIns: CheckIn[];
