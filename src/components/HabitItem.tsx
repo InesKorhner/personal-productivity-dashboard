@@ -87,6 +87,7 @@ export function HabitItem({
           type="button"
           onClick={() => onEdit(habit)}
           aria-label="Edit habit"
+          title='Edit Habit'
         >
           <Edit2 size={16} />
         </button>

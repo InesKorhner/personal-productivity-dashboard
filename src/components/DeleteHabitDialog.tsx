@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface DeleteHabitDialogProps {
   habitName: string;
@@ -26,15 +27,16 @@ export function DeleteHabitDialog({
   const handleConfirm = () => {
     onConfirm();
     setOpen(false);
+    toast.success(`Habit "${habitName}" deleted successfully`, {
+      position: 'top-center',
+    })
+    ;
   };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <button
-          type="button"
-          title={`Delete ${habitName}`}
-        >
+        <button type="button" title={`Delete ${habitName}`}>
           <Trash2 size={16} />
         </button>
       </AlertDialogTrigger>
@@ -48,10 +50,7 @@ export function DeleteHabitDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-[#4772FA]"
-            onClick={handleConfirm}
-          >
+          <AlertDialogAction className="bg-[#4772FA]" onClick={handleConfirm}>
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>
