@@ -1,6 +1,7 @@
 import type { Habit } from '@/types';
 import { triggerConfetti } from '@/lib/confetti';
-import { Edit2, Trash2 } from 'lucide-react';
+import { Edit2 } from 'lucide-react';
+import { DeleteHabitDialog } from './DeleteHabitDialog';
 
 interface HabitItemProps {
   habit: Habit;
@@ -86,16 +87,14 @@ export function HabitItem({
           type="button"
           onClick={() => onEdit(habit)}
           aria-label="Edit habit"
+          title='Edit Habit'
         >
           <Edit2 size={16} />
         </button>
-        <button
-          type="button"
-          onClick={() => onDelete(habit.id)}
-          title="Delete Habit"
-        >
-          <Trash2 size={16} />
-        </button>
+        <DeleteHabitDialog
+          habitName={habit.name}
+          onConfirm={() => onDelete(habit.id)}
+        />
       </div>
     </li>
   );

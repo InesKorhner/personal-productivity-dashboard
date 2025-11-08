@@ -3,6 +3,7 @@ import type { Habit } from '@/types';
 import { HabitList } from '@/components/HabitList';
 import { AddHabitDialog } from '@/components/AddHabitDialog';
 import { EditHabitDialog } from '@/components/EditHabitDialog';
+import { toast } from 'sonner';
 
 export function HabitTrackerPage() {
   const [habits, setHabits] = React.useState<Habit[]>(() => {
@@ -47,7 +48,13 @@ export function HabitTrackerPage() {
   };
 
   const handleDeleteHabit = (habitId: string) => {
+    const habitToDelete = habits.find((h) => h.id === habitId);
+    const habitName = habitToDelete?.name || 'habit';
+
     setHabits((prev) => prev.filter((h) => h.id !== habitId));
+    toast.success(`Habit "${habitName}" deleted successfully`, {
+      position: 'top-center',
+    });
   };
 
   const handleEditHabit = (habit: Habit) => {
