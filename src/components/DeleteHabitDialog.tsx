@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 interface DeleteHabitDialogProps {
   habitName: string;
@@ -27,10 +26,7 @@ export function DeleteHabitDialog({
   const handleConfirm = () => {
     onConfirm();
     setOpen(false);
-    toast.success(`Habit "${habitName}" deleted successfully`, {
-      position: 'top-center',
-    })
-    ;
+  
   };
 
   return (
