@@ -117,7 +117,7 @@ export function EditHabitDialog({
                   <SelectItem value="Morning">Morning</SelectItem>
                   <SelectItem value="Afternoon">Afternoon</SelectItem>
                   <SelectItem value="Evening">Evening</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
+                  <SelectItem value="Other">Others</SelectItem>
                 </SelectContent>
               </Select>
             </div>

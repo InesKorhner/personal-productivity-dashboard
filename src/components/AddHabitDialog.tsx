@@ -32,7 +32,7 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [frequencyCount, setFrequencyCount] = React.useState<number>(1);
-  const [section, setSection] = React.useState<Habit['section']>('Morning');
+  const [section, setSection] = React.useState<Habit['section']>('Other');
   const [startDate, setStartDate] = React.useState(
     new Date().toISOString().slice(0, 10),
   );
@@ -49,7 +49,7 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
     });
     setName('');
     setFrequencyCount(1);
-    setSection('Morning');
+    setSection('Other');
     setStartDate(new Date().toISOString().slice(0, 10));
     setOpen(false);
   };
@@ -119,7 +119,7 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
                   <SelectItem value="Morning">Morning</SelectItem>
                   <SelectItem value="Afternoon">Afternoon</SelectItem>
                   <SelectItem value="Evening">Evening</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
+                  <SelectItem value="Other">Others</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -16,17 +16,32 @@ export function HabitList({ habits, onToggleCheckIn, onDelete, onEdit}: HabitLis
       </div>
     );
   }
+  const groupedHabits = {
+    Morning: habits.filter(h => h.section === 'Morning'),
+    Afternoon: habits.filter(h => h.section === 'Afternoon'),
+    Evening: habits.filter(h => h.section === 'Evening'),
+    Others: habits.filter(h => h.section === 'Other'),
+  };
   return (
-    <ul className="space-y-2">
-      {habits.map((habit) => (
-        <HabitItem
-          key={habit.id}
-          habit={habit}
-          onToggleCheckIn={onToggleCheckIn}
-          onDelete={onDelete}
-          onEdit={onEdit}
-        />
+    <div className="space-y-6">
+      {Object.entries(groupedHabits).map(([section, sectionHabits]) => (
+        sectionHabits.length > 0 && (
+          <div key={section}>
+            <h2 className="text-sm font-semibold text-gray-800 mb-2">{section}</h2>
+            <ul className="space-y-2">
+              {sectionHabits.map(habit => (
+                <HabitItem
+                  key={habit.id}
+                  habit={habit}
+                  onToggleCheckIn={onToggleCheckIn}
+                  onDelete={onDelete}
+                  onEdit={onEdit}
+                />
+              ))}
+            </ul>
+          </div>
+        )
       ))}
-    </ul>
+    </div>
   );
 }
