@@ -17,7 +17,7 @@ export interface TaskListProps {
   } 
 
   export const FREQUENCIES = ['Daily', 'Weekly', '3x/week'] as const;
-  export const SECTIONS = ['Morning', 'Afternoon', 'Evening', 'Other'] as const;
+  export const SECTIONS = ['Morning', 'Afternoon', 'Evening', 'Others'] as const;
   
   export type Frequencies = typeof FREQUENCIES[number];
   export type Sections = typeof SECTIONS[number];
