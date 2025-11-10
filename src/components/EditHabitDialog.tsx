@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { Label } from './ui/label';
+import { SECTIONS } from '@/types';
 
 type EditHabitDialogProps = {
   habit: Habit;
@@ -34,8 +35,6 @@ export function EditHabitDialog({
   onOpenChange,
   onSave,
 }: EditHabitDialogProps) {
-  // Initialize form data from habit props
-  // The component will remount when habit.id changes (via key prop)
   const [formData, setFormData] = React.useState({
     name: habit.name,
     frequency: habit.frequency,
@@ -114,10 +113,11 @@ export function EditHabitDialog({
                   <SelectValue placeholder="Select section" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Morning">Morning</SelectItem>
-                  <SelectItem value="Afternoon">Afternoon</SelectItem>
-                  <SelectItem value="Evening">Evening</SelectItem>
-                  <SelectItem value="Other">Others</SelectItem>
+                  {SECTIONS.map((sectionValue) => (
+                    <SelectItem key={sectionValue} value={sectionValue}>
+                      {sectionValue}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

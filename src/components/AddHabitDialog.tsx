@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import type { Habit } from '@/types';
+import type { Habit, Sections } from '@/types';
 import { CalendarInForm } from './CalendarInForm';
 import { Plus } from 'lucide-react';
 import React from 'react';
@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from './ui/select';
 import { Label } from './ui/label';
+import { SECTIONS } from '@/types';
 
 type AddHabitFormProps = {
   onSave: (habit: Habit) => void;
@@ -32,7 +33,7 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [frequencyCount, setFrequencyCount] = React.useState<number>(1);
-  const [section, setSection] = React.useState<Habit['section']>('Other');
+  const [section, setSection] = React.useState<Habit['section']>('Others');
   const [startDate, setStartDate] = React.useState(
     new Date().toISOString().slice(0, 10),
   );
@@ -49,7 +50,7 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
     });
     setName('');
     setFrequencyCount(1);
-    setSection('Other');
+    setSection('Others');
     setStartDate(new Date().toISOString().slice(0, 10));
     setOpen(false);
   };
@@ -107,19 +108,20 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
             </div>
 
             <div className="mb-2 flex flex-col gap-3">
-              <Label className="px-1 mb-1 mt-2">Section</Label>
+              <Label className="mt-2 mb-1 px-1">Section</Label>
               <Select
                 value={section}
-                onValueChange={(value) => setSection(value as Habit['section'])}
+                onValueChange={(value) => setSection(value as Sections)}
               >
                 <SelectTrigger className="w-full [&_svg]:opacity-100">
                   <SelectValue placeholder="Select section" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Morning">Morning</SelectItem>
-                  <SelectItem value="Afternoon">Afternoon</SelectItem>
-                  <SelectItem value="Evening">Evening</SelectItem>
-                  <SelectItem value="Other">Others</SelectItem>
+                  {SECTIONS.map((sectionValue) => (
+                    <SelectItem key={sectionValue} value={sectionValue}>
+                      {sectionValue}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
