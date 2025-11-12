@@ -15,11 +15,14 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue) return;
- const newTaskCategory = selectedCategory || 'MyList'; 
+    if (!inputValue.trim()) return;
+    
+    // Default to 'MyList' if no category selected (shouldn't happen, but safe fallback)
+    const newTaskCategory = selectedCategory || 'MyList';
+    
     onAddTask({
       id: Date.now().toString(),
-      text: inputValue,
+      text: inputValue.trim(),
       category: newTaskCategory,
       status: TaskStatus.TODO,
       deleted: false,
@@ -28,21 +31,22 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
     });
     setInputValue('');
   };
+  
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-6 flex w-full items-center gap-4 px-4"
+      className="mb-4 flex w-full items-center gap-3"
     >
       <Input
         type="text"
-        placeholder="Add Task"
+        placeholder="Add a new task..."
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        className="max-w-xl flex-1 px-4 py-2"
+        className="flex-1 px-4 py-2"
       />
 
-      <Button type="submit">
-        Submit
+      <Button type="submit" className="shrink-0">
+        Add
       </Button>
     </form>
   );

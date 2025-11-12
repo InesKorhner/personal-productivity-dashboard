@@ -1,5 +1,6 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
 import type { TaskStatus, Task } from '@/types';
+import { CATEGORIES } from '@/types';
 import { useState, useEffect, useMemo } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 import { TaskView } from '@/components/TaskView';
@@ -35,8 +36,6 @@ export default function TasksPage() {
     'category' | 'completed' | 'deleted'
   >('category');
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
-
-  const categories = ['MyList', 'Work', 'Exercise', 'Study', 'Other'];
 
   const handleAddTask = (newTask: Task) => {
     setTasks((prev) => [...prev, newTask]);
@@ -107,7 +106,7 @@ export default function TasksPage() {
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
       <CategoryList
-        categories={categories}
+        categories={CATEGORIES}
         selectedCategory={selectedCategory}
         selectedView={selectedView}
         onSelectCategory={setSelectedCategory}
