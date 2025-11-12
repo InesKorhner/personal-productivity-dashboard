@@ -1,7 +1,9 @@
 import { cn } from '@/lib/utils';
+import { Trash2, CheckCircle2 } from 'lucide-react';
+import type { Categories } from '@/types';
 
 interface CategoryListProps {
-  categories: string[];
+  categories: readonly Categories[];
   selectedCategory: string | null;
   selectedView: 'category' | 'completed' | 'deleted';
   onSelectCategory: (category: string) => void;
@@ -23,12 +25,15 @@ export function CategoryList({
           <li key={c}>
             <button
               type="button"
-              onClick={() => { onSelectView('category'); onSelectCategory(c); }}
+              onClick={() => {
+                onSelectView('category');
+                onSelectCategory(c);
+              }}
               className={cn(
-                'w-full text-left px-3 py-2 rounded-md hover:bg-gray-100',
+                'w-full rounded-md px-3 py-2 text-left hover:bg-gray-100',
                 selectedView === 'category' && selectedCategory === c
                   ? 'bg-primary/10 font-medium'
-                  : ''
+                  : '',
               )}
             >
               {c}
@@ -43,22 +48,26 @@ export function CategoryList({
           <button
             type="button"
             onClick={() => onSelectView('completed')}
-            className={cn('w-full text-left px-3 py-2 rounded-md hover:bg-gray-100',
-              selectedView === 'completed' ? 'bg-primary/10 font-medium' : ''
+            className={cn(
+              'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors hover:bg-gray-100',
+              selectedView === 'completed' ? 'bg-primary/10 font-medium' : '',
             )}
           >
-            ✅ Completed
+            <CheckCircle2 size={16} />
+            <span>Completed</span>
           </button>
         </li>
         <li>
           <button
             type="button"
             onClick={() => onSelectView('deleted')}
-            className={cn('w-full text-left px-3 py-2 rounded-md hover:bg-gray-100',
-              selectedView === 'deleted' ? 'bg-primary/10 font-medium' : ''
+            className={cn(
+              'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors hover:bg-gray-100',
+              selectedView === 'deleted' ? 'bg-primary/10 font-medium' : '',
             )}
           >
-            🗑️ Trash
+            <Trash2 size={16} />
+            <span>Trash</span>
           </button>
         </li>
       </ul>

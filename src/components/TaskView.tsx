@@ -46,46 +46,70 @@ export function TaskView({
   }, [tasks]);
 
   return (
-    <div>
-      {showToDo && todoTasks.length > 0 && (
+    <div className="space-y-6">
+      {showToDo && (
         <>
-          <h3>To Do</h3>
-          <TaskList
-            tasks={todoTasks}
-            onStatusChange={onStatusChange}
-            onDelete={onDelete}
-            onUndo={onUndo}
-            onPermanentDelete={onPermanentDelete}
-            onSelectTask={onSelectTask}
-          />
+          {todoTasks.length > 0 ? (
+            <>
+              <h3 className="mb-3 text-lg font-semibold text-gray-800">To Do</h3>
+              <TaskList
+                tasks={todoTasks}
+                onStatusChange={onStatusChange}
+                onDelete={onDelete}
+                onUndo={onUndo}
+                onPermanentDelete={onPermanentDelete}
+                onSelectTask={onSelectTask}
+              />
+            </>
+          ) : (
+            <div className="py-8 text-center text-sm text-gray-500">
+              No tasks to do
+            </div>
+          )}
         </>
       )}
 
-      {showCompleted && completedTasks.length > 0 && (
+      {showCompleted && (
         <>
-          <h3>Completed</h3>
-          <TaskList
-            tasks={completedTasks}
-            onStatusChange={onStatusChange}
-            onDelete={onDelete}
-            onUndo={onUndo}
-            onPermanentDelete={onPermanentDelete}
-            onSelectTask={onSelectTask}
-          />
+          {completedTasks.length > 0 ? (
+            <>
+              <h3 className="mb-3 text-lg font-semibold text-gray-800">Completed</h3>
+              <TaskList
+                tasks={completedTasks}
+                onStatusChange={onStatusChange}
+                onDelete={onDelete}
+                onUndo={onUndo}
+                onPermanentDelete={onPermanentDelete}
+                onSelectTask={onSelectTask}
+              />
+            </>
+          ) : (
+            <div className="py-8 text-center text-sm text-gray-500">
+              No completed tasks
+            </div>
+          )}
         </>
       )}
 
-      {showDeleted && deletedTasks.length > 0 && (
+      {showDeleted && (
         <>
-          <h3>Deleted</h3>
-          <TaskList
-            tasks={deletedTasks}
-            onStatusChange={onStatusChange}
-            onDelete={onDelete}
-            onUndo={onUndo}
-            onPermanentDelete={onPermanentDelete}
-            onSelectTask={onSelectTask}
-          />
+          {deletedTasks.length > 0 ? (
+            <>
+              <h3 className="mb-3 text-lg font-semibold text-gray-800">Deleted</h3>
+              <TaskList
+                tasks={deletedTasks}
+                onStatusChange={onStatusChange}
+                onDelete={onDelete}
+                onUndo={onUndo}
+                onPermanentDelete={onPermanentDelete}
+                onSelectTask={onSelectTask}
+              />
+            </>
+          ) : (
+            <div className="py-8 text-center text-sm text-gray-500">
+              Trash is empty
+            </div>
+          )}
         </>
       )}
     </div>

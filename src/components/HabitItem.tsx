@@ -82,7 +82,7 @@ export function HabitItem({
             </div>
           );
         })}
-        <div className="mx-3 h-4 border-l border-gray-300"></div>
+        <div className="mx-3 h-6 border-l border-gray-300"></div>
         <button
           type="button"
           onClick={() => onEdit(habit)}
