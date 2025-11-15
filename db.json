@@ -34,6 +34,24 @@
       "deleted": false,
       "deletedAt": null,
       "notes": ""
+    },
+    {
+      "id": "1763247352897",
+      "text": "FSF",
+      "category": "Exercise",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "1763247984461",
+      "text": "ines korhner",
+      "category": "Exercise",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
     }
   ]
 }

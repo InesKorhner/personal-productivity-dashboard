@@ -7,19 +7,17 @@ import { TaskView } from '@/components/TaskView';
 import { NotesAside } from '@/components/NotesAside';
 
 export default function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    try {
-      const savedTask = localStorage.getItem('tasks');
-      return savedTask ? JSON.parse(savedTask) : [];
-    } catch (error) {
-      console.error('Failed to parse tasks from localStorage', error);
-      return [];
-    }
-  });
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  async function loadTasks() {
+    const response = await fetch('http://localhost:3001/tasks');
+    const data = await response.json();
+    setTasks(data);
+  }
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+    loadTasks();
+  }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     () => {
@@ -37,41 +35,77 @@ export default function TasksPage() {
   >('category');
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
-  const handleAddTask = (newTask: Task) => {
-    setTasks((prev) => [...prev, newTask]);
-    setSelectedTaskId(newTask.id);
+  const handleAddTask = async (newTask: Task) => {
+    const response = await fetch('http://localhost:3001/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newTask),
+    });
+    const data = await response.json();
+    setTasks((prev) => [...prev, data]);
+    setSelectedTaskId(data.id);
   };
 
-  const handleStatusChange = (taskId: string, newStatus: TaskStatus) => {
+  const handleStatusChange = async (taskId: string, newStatus: TaskStatus) => {
+    const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    const updatedTask = await response.json();
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, status: newStatus } : task,
-      ),
+      prev.map((task) => (task.id === taskId ? updatedTask : task)),
     );
   };
 
-  const handleDelete = (taskId: string) => {
+  const handleDelete = async (taskId: string) => {
+    const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        deleted: true,
+        deletedAt: Date.now(),
+      }),
+    });
+
+    const updatedTask = await response.json();
+
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId
-          ? { ...task, deleted: true, deletedAt: Date.now() }
-          : task,
-      ),
+      prev.map((task) => (task.id === taskId ? updatedTask : task)),
     );
   };
 
-  const handleUndo = (taskId: string) => {
+  const handleUndo = async (taskId: string) => {
+    const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        deleted: false,
+        deletedAt: null,
+      }),
+    });
+
+    const updatedTask = await response.json();
+
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId
-          ? { ...task, deleted: false, deletedAt: null }
-          : task,
-      ),
+      prev.map((task) => (task.id === taskId ? updatedTask : task)),
     );
   };
 
-  const handlePermanentDelete = (taskId: string) => {
-    setTasks((prev) => prev.filter((t) => t.id !== taskId));
+  const handlePermanentDelete = async (taskId: string) => {
+    await fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: 'DELETE',
+    });
+
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
     if (selectedTaskId === taskId) setSelectedTaskId(null);
   };
 
@@ -79,10 +113,18 @@ export default function TasksPage() {
     setSelectedTaskId(taskId);
   };
 
-  const handleSaveNotes = (taskId: string, notes: string) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, notes } : t)),
-    );
+  const handleSaveNotes = async (taskId: string, notes: string) => {
+    const response = await fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ notes }),
+    });
+
+    const updatedTask = await response.json();
+
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
   };
 
   const selectedTask: Task | null =
