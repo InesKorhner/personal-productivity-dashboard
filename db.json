@@ -1,0 +1,39 @@
+{
+  "habits": [
+    {
+      "id": "1",
+      "name": "Example Habit",
+      "frequency": 7,
+      "section": "Morning",
+      "startDate": "2024-01-01"
+    }
+  ],
+  "checkIns": [
+    {
+      "id": "1",
+      "habitId": "1",
+      "date": "2024-01-15",
+      "isChecked": true
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "text": "Example Task",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "1763243647318",
+      "text": "fsfs",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    }
+  ]
+}
