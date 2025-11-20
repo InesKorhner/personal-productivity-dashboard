@@ -21,7 +21,7 @@
       "id": "1",
       "text": "Example Task",
       "category": "MyList",
-      "status": "TODO",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
@@ -40,14 +40,168 @@
       "text": "FSF",
       "category": "Exercise",
       "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
+      "deleted": true,
+      "deletedAt": 1763565635585,
       "notes": ""
     },
     {
       "id": "1763247984461",
       "text": "ines korhner",
       "category": "Exercise",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": 1763565636890,
+      "notes": ""
+    },
+    {
+      "id": "1763565629372",
+      "text": "gdgd",
+      "category": "Exercise",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": 1763565638677,
+      "notes": ""
+    },
+    {
+      "id": "1763565632722",
+      "text": "gdg",
+      "category": "Exercise",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": 1763565639098,
+      "notes": ""
+    },
+    {
+      "id": "1763565641601",
+      "text": "gdg",
+      "category": "Exercise",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": "gdgd"
+    },
+    {
+      "id": "1763565659607",
+      "text": "fsf",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "1763565663110",
+      "text": "fsf",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "f443",
+      "text": "fs",
+      "category": "MyList"
+    },
+    {
+      "id": "f51a",
+      "text": "fsf",
+      "category": "Work"
+    },
+    {
+      "id": "0870",
+      "text": "fsfsf",
+      "category": "Exercise"
+    },
+    {
+      "id": "e1e9",
+      "text": "fsf",
+      "category": "Exercise"
+    },
+    {
+      "id": "824c",
+      "text": "fsf",
+      "category": "Exercise"
+    },
+    {
+      "id": "30e9",
+      "text": "Test task",
+      "category": "MyList"
+    },
+    {
+      "id": "5ff9",
+      "text": "dada",
+      "category": "Work"
+    },
+    {
+      "id": "bf2b",
+      "text": "gdgd",
+      "category": "Work"
+    },
+    {
+      "id": "3356",
+      "text": "gdg",
+      "category": "Work"
+    },
+    {
+      "id": "b51f",
+      "text": "gd",
+      "category": "Work"
+    },
+    {
+      "id": "92ce",
+      "text": "dadada",
+      "category": "Work"
+    },
+    {
+      "id": "4208",
+      "text": "fsfs",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "ce95",
+      "text": "fsf",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": "njjn"
+    },
+    {
+      "id": "68e7",
+      "text": "jjj",
+      "category": "Work",
+      "status": "DONE",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "2d62",
+      "text": "khkhnk",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "75d6",
+      "text": "nkjn",
+      "category": "Work",
+      "status": "DONE",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "0b43",
+      "text": "dsd",
+      "category": "Work",
       "status": "TODO",
       "deleted": false,
       "deletedAt": null,
