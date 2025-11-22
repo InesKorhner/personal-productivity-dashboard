@@ -80,7 +80,7 @@ export default function TasksPage() {
         throw new Error('Failed to save task to server');
       }
       const data = await response.json();
-      
+
       setTasks((prev) => [...prev, data]);
       setSelectedTaskId(data.id);
       setError(null);
@@ -93,14 +93,6 @@ export default function TasksPage() {
   };
 
   const handleStatusChange = async (taskId: string, newStatus: TaskStatus) => {
-    const previousStatus = tasks.find((t) => t.id === taskId)?.status;
-
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, status: newStatus } : task,
-      ),
-    );
-
     try {
       const response = await fetch(getApiUrl(`tasks/${taskId}`), {
         method: 'PATCH',
@@ -118,23 +110,13 @@ export default function TasksPage() {
       );
     } catch (err) {
       console.error('Error updating task status:', err);
-      if (previousStatus) {
-        setTasks((prev) =>
-          prev.map((task) =>
-            task.id === taskId ? { ...task, status: previousStatus } : task,
-          ),
-        );
-      }
+      const message =
+        err instanceof Error ? err.message : 'Failed to update task status';
+      setError(message);
     }
   };
 
   const handleDelete = async (taskId: string) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, deleted: true } : task,
-      ),
-    );
-
     try {
       const response = await fetch(getApiUrl(`tasks/${taskId}`), {
         method: 'PATCH',
@@ -154,25 +136,13 @@ export default function TasksPage() {
       );
     } catch (err) {
       console.error('Error deleting task:', err);
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === taskId
-            ? { ...task, deleted: false, deletedAt: null }
-            : task,
-        ),
-      );
+      const message =
+        err instanceof Error ? err.message : 'Failed to delete task';
+      setError(message);
     }
   };
 
   const handleUndo = async (taskId: string) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId
-          ? { ...task, deleted: false, deletedAt: null }
-          : task,
-      ),
-    );
-
     try {
       const response = await fetch(getApiUrl(`tasks/${taskId}`), {
         method: 'PATCH',
@@ -192,24 +162,13 @@ export default function TasksPage() {
       );
     } catch (err) {
       console.error('Error undoing task deletion:', err);
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === taskId
-            ? {
-                ...task,
-                deleted: true,
-                deletedAt: task.deletedAt || Date.now(),
-              }
-            : task,
-        ),
-      );
+      const message =
+        err instanceof Error ? err.message : 'Failed to undo task deletion';
+      setError(message);
     }
   };
 
   const handlePermanentDelete = async (taskId: string) => {
-    setTasks((prev) => prev.filter((t) => t.id !== taskId));
-    if (selectedTaskId === taskId) setSelectedTaskId(null);
-
     try {
       const response = await fetch(getApiUrl(`tasks/${taskId}`), {
         method: 'DELETE',
@@ -217,9 +176,15 @@ export default function TasksPage() {
       if (!response.ok) {
         throw new Error('Failed to permanently delete task');
       }
+      setTasks((prev) => prev.filter((t) => t.id !== taskId));
+      if (selectedTaskId === taskId) setSelectedTaskId(null);
     } catch (err) {
       console.error('Error permanently deleting task:', err);
-      loadTasks();
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Failed to permanently delete task';
+      setError(message);
     }
   };
 
@@ -228,12 +193,6 @@ export default function TasksPage() {
   };
 
   const handleSaveNotes = async (taskId: string, notes: string) => {
-    const originalTask = tasks.find((t) => t.id === taskId);
-
-    setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, notes } : t)),
-    );
-
     try {
       const response = await fetch(getApiUrl(`tasks/${taskId}`), {
         method: 'PATCH',
@@ -249,11 +208,9 @@ export default function TasksPage() {
       setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
     } catch (err) {
       console.error('Error saving notes:', err);
-      if (originalTask) {
-        setTasks((prev) =>
-          prev.map((t) => (t.id === taskId ? originalTask : t)),
-        );
-      }
+      const message =
+        err instanceof Error ? err.message : 'Failed to save notes';
+      setError(message);
     }
   };
 

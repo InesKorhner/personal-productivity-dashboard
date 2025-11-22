@@ -25,7 +25,7 @@ import { Label } from './ui/label';
 import { SECTIONS } from '@/types';
 
 type AddHabitFormProps = {
-  onSave: (habit: Habit) => void;
+  onSave: (habitData: Omit<Habit, 'id' | 'checkIns'>) => Promise<void>;
   onCancel?: () => void;
 };
 
@@ -38,21 +38,24 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
     new Date().toISOString().slice(0, 10),
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
-      id: `${Date.now()}-${Math.random()}`,
-      name,
-      frequency: frequencyCount,
-      section,
-      startDate,
-      checkIns: [],
-    });
-    setName('');
-    setFrequencyCount(1);
-    setSection('Others');
-    setStartDate(new Date().toISOString().slice(0, 10));
-    setOpen(false);
+    try {
+      await onSave({
+        name,
+        frequency: frequencyCount,
+        section,
+        startDate,
+      });
+      setName('');
+      setFrequencyCount(1);
+      setSection('Others');
+      setStartDate(new Date().toISOString().slice(0, 10));
+      setOpen(false);
+    } catch (err) {
+      // Error is handled in parent component
+      console.error('Error saving habit:', err);
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
