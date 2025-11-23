@@ -39,13 +39,16 @@ export function HabitTrackerPage() {
         checkIns:
           checkInsData
             .filter(
-              (checkIn: CheckIn & { habitId: string }) =>
-                checkIn.habitId === habit.id,
+              (checkIn: CheckIn & { habitId: string | null }) =>
+                checkIn.habitId === habit.id && checkIn.habitId !== null,
             )
-            .map((checkIn: CheckIn & { habitId: string }) => ({
-              date: checkIn.date,
-              isChecked: checkIn.isChecked,
-            })) || [],
+            .map(
+              (checkIn: CheckIn & { habitId: string }): CheckIn => ({
+                id: checkIn.id,
+                date: checkIn.date,
+                isChecked: checkIn.isChecked,
+              }),
+            ) || [],
       }));
 
       setHabits(habitsWithCheckIns);
@@ -63,7 +66,9 @@ export function HabitTrackerPage() {
     loadHabits();
   }, []);
 
-  const handleAddHabit = async (habitData: Omit<Habit, 'id' | 'checkIns'>) => {
+  const handleAddHabit = async (
+    habitData: Omit<Habit, 'id' | 'checkIns'>,
+  ): Promise<boolean> => {
     try {
       const response = await fetch(getApiUrl('habits'), {
         method: 'POST',
@@ -93,6 +98,7 @@ export function HabitTrackerPage() {
       toast.success(`Habit "${newHabit.name}" added successfully`, {
         position: 'top-center',
       });
+      return true;
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Failed to add habit';
@@ -101,6 +107,7 @@ export function HabitTrackerPage() {
       toast.error(message, {
         position: 'top-center',
       });
+      return false;
     }
   };
 
@@ -112,54 +119,72 @@ export function HabitTrackerPage() {
     const newCheckedState = existingCheckIn ? !existingCheckIn.isChecked : true;
 
     try {
+      let updatedCheckIn: CheckIn;
+
       if (existingCheckIn) {
-        const allCheckInsResponse = await fetch(getApiUrl('checkIns'));
-        if (!allCheckInsResponse.ok) {
-          throw new Error('Failed to fetch checkIns');
-        }
-        const allCheckIns = await allCheckInsResponse.json();
-        const checkInToUpdate = allCheckIns.find(
-          (checkIn: CheckIn & { habitId: string; id: string }) =>
-            checkIn.habitId === habitId && checkIn.date === date,
+        const response = await fetch(
+          getApiUrl(`checkIns/${existingCheckIn.id}`),
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              isChecked: newCheckedState,
+            }),
+          },
         );
 
-        if (checkInToUpdate) {
-          const response = await fetch(
-            getApiUrl(`checkIns/${checkInToUpdate.id}`),
-            {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                isChecked: newCheckedState,
-              }),
-            },
-          );
-
-          if (!response.ok) {
-            throw new Error('Failed to update checkIn');
-          }
+        if (!response.ok) {
+          throw new Error('Failed to update checkIn');
         }
+
+        const data = await response.json();
+        updatedCheckIn = {
+          id: data.id,
+          date: data.date,
+          isChecked: data.isChecked,
+        };
       } else {
+        const newCheckInData: Omit<CheckIn, 'id'> & { habitId: string } = {
+          habitId,
+          date,
+          isChecked: newCheckedState,
+        };
         const response = await fetch(getApiUrl('checkIns'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            habitId,
-            date,
-            isChecked: newCheckedState,
-          }),
+          body: JSON.stringify(newCheckInData),
         });
 
         if (!response.ok) {
           throw new Error('Failed to create checkIn');
         }
+
+        const data = await response.json();
+        updatedCheckIn = {
+          id: data.id,
+          date: data.date,
+          isChecked: data.isChecked,
+        };
       }
 
-      await loadHabits();
+      // Update local state with server response (no full reload needed)
+      setHabits((prev) =>
+        prev.map((h) => {
+          if (h.id !== habitId) return h;
+
+          const checkInExists = h.checkIns.some((c) => c.date === date);
+          const updatedCheckIns = checkInExists
+            ? h.checkIns.map((c) => (c.date === date ? updatedCheckIn : c))
+            : [...h.checkIns, updatedCheckIn];
+
+          return { ...h, checkIns: updatedCheckIns };
+        }),
+      );
+      setError(null);
     } catch (err) {
       console.error('Error toggling checkIn:', err);
       const message =
@@ -170,7 +195,9 @@ export function HabitTrackerPage() {
 
   const handleDeleteHabit = async (habitId: string) => {
     const habitToDelete = habits.find((h) => h.id === habitId);
-    const habitName = habitToDelete?.name || 'habit';
+    if (!habitToDelete) return;
+
+    const habitName = habitToDelete.name;
 
     try {
       const habitResponse = await fetch(getApiUrl(`habits/${habitId}`), {
@@ -181,21 +208,13 @@ export function HabitTrackerPage() {
         throw new Error('Failed to delete habit');
       }
 
-      const allCheckInsResponse = await fetch(getApiUrl('checkIns'));
-      if (allCheckInsResponse.ok) {
-        const allCheckIns = await allCheckInsResponse.json();
-        const checkInsToDelete = allCheckIns.filter(
-          (checkIn: CheckIn & { habitId: string; id?: string }) =>
-            checkIn.habitId === habitId,
-        );
-        await Promise.all(
-          checkInsToDelete.map(async (checkIn: CheckIn & { id: string }) => {
-            await fetch(getApiUrl(`checkIns/${checkIn.id}`), {
-              method: 'DELETE',
-            });
-          }),
-        );
-      }
+      await Promise.all(
+        habitToDelete.checkIns.map(async (checkIn) => {
+          await fetch(getApiUrl(`checkIns/${checkIn.id}`), {
+            method: 'DELETE',
+          });
+        }),
+      );
 
       setHabits((prev) => prev.filter((h) => h.id !== habitId));
       setError(null);

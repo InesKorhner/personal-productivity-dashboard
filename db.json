@@ -2,10 +2,17 @@
   "habits": [
     {
       "id": "134a",
-      "name": "ines korhner",
+      "name": "cczcz",
       "frequency": 1,
       "section": "Others",
       "startDate": "2025-11-22"
+    },
+    {
+      "id": "b6fe",
+      "name": "czc",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-11-23"
     }
   ],
   "checkIns": [
@@ -80,6 +87,54 @@
       "habitId": "134a",
       "date": "2025-11-16",
       "isChecked": true
+    },
+    {
+      "id": "ac28",
+      "habitId": "134a",
+      "date": "2025-11-23",
+      "isChecked": true
+    },
+    {
+      "id": "8a04",
+      "habitId": "b6fe",
+      "date": "2025-11-19",
+      "isChecked": true
+    },
+    {
+      "id": "3b43",
+      "habitId": "b6fe",
+      "date": "2025-11-20",
+      "isChecked": true
+    },
+    {
+      "id": "8fe0",
+      "habitId": "b6fe",
+      "date": "2025-11-21",
+      "isChecked": true
+    },
+    {
+      "id": "40b1",
+      "habitId": "b6fe",
+      "date": "2025-11-22",
+      "isChecked": true
+    },
+    {
+      "id": "f31e",
+      "habitId": "b6fe",
+      "date": "2025-11-23",
+      "isChecked": true
+    },
+    {
+      "id": "0b5d",
+      "habitId": "b6fe",
+      "date": "2025-11-17",
+      "isChecked": true
+    },
+    {
+      "id": "4619",
+      "habitId": "b6fe",
+      "date": "2025-11-18",
+      "isChecked": true
     }
   ],
   "tasks": [
@@ -142,7 +197,7 @@
       "id": "20e5",
       "text": "fsf",
       "category": "Study",
-      "status": "TODO",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
