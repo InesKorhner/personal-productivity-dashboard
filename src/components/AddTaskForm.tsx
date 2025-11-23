@@ -17,7 +17,6 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
     e.preventDefault();
     if (!inputValue.trim() || isSubmitting) return;
 
-    // Default to 'MyList' if no category selected (shouldn't happen, but safe fallback)
     const newTaskCategory = selectedCategory || 'MyList';
 
     setIsSubmitting(true);

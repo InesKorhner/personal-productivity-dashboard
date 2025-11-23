@@ -23,9 +23,10 @@ import {
 } from './ui/select';
 import { Label } from './ui/label';
 import { SECTIONS } from '@/types';
+import { toast } from 'sonner';
 
 type AddHabitFormProps = {
-  onSave: (habit: Habit) => void;
+  onSave: (habitData: Omit<Habit, 'id' | 'checkIns'>) => Promise<boolean>;
   onCancel?: () => void;
 };
 
@@ -38,21 +39,23 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
     new Date().toISOString().slice(0, 10),
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
-      id: `${Date.now()}-${Math.random()}`,
+    const success = await onSave({
       name,
       frequency: frequencyCount,
       section,
       startDate,
-      checkIns: [],
     });
-    setName('');
-    setFrequencyCount(1);
-    setSection('Others');
-    setStartDate(new Date().toISOString().slice(0, 10));
-    setOpen(false);
+    if (success) {
+      setName('');
+      setFrequencyCount(1);
+      setSection('Others');
+      setStartDate(new Date().toISOString().slice(0, 10));
+      setOpen(false);
+    } else {
+      toast.error('Failed to add habit');
+    }
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
