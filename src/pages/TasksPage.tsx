@@ -8,36 +8,19 @@ import { NotesAside } from '@/components/NotesAside';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, RefreshCw, X } from 'lucide-react';
-import { getApiUrl } from '@/lib/api';
+import {
+  useCreateTask,
+  useDeleteTask,
+  useTasks,
+  useUpdateTask,
+} from '@/lib/useTasks';
+import { toast } from 'sonner';
 
 export default function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  async function loadTasks() {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(getApiUrl('tasks'));
-      if (!response.ok) {
-        throw new Error('Failed to fetch tasks');
-      }
-      const data = await response.json();
-      setTasks(data);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'An unknown error occurred';
-      setError(message);
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadTasks();
-  }, []);
+  const { data: tasks = [], isLoading, error, refetch } = useTasks();
+  const createTask = useCreateTask();
+  const updateTask = useUpdateTask();
+  const deleteTask = useDeleteTask();
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     () => {
@@ -69,122 +52,57 @@ export default function TasksPage() {
         notes: '',
       };
 
-      const response = await fetch(getApiUrl('tasks'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newTask),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to save task to server');
-      }
-      const data = await response.json();
-
-      setTasks((prev) => [...prev, data]);
+      const data = await createTask.mutateAsync(newTask);
       setSelectedTaskId(data.id);
-      setError(null);
+      toast.success('Task created successfully');
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Failed to save task';
-      setError(message);
-      console.error('Error saving task to server:', err);
+      toast.error(message);
     }
   };
 
   const handleStatusChange = async (taskId: string, newStatus: TaskStatus) => {
     try {
-      const response = await fetch(getApiUrl(`tasks/${taskId}`), {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to update task status');
-      }
-      const updatedTask = await response.json();
-      setTasks((prev) =>
-        prev.map((task) => (task.id === taskId ? updatedTask : task)),
-      );
+      await updateTask.mutateAsync({ id: taskId, status: newStatus });
     } catch (err) {
-      console.error('Error updating task status:', err);
       const message =
         err instanceof Error ? err.message : 'Failed to update task status';
-      setError(message);
+      toast.error(message);
     }
   };
 
   const handleDelete = async (taskId: string) => {
     try {
-      const response = await fetch(getApiUrl(`tasks/${taskId}`), {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          deleted: true,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete task');
-      }
-      const updatedTask = await response.json();
-      setTasks((prev) =>
-        prev.map((task) => (task.id === taskId ? updatedTask : task)),
-      );
+      await deleteTask.mutateAsync(taskId);
     } catch (err) {
-      console.error('Error deleting task:', err);
       const message =
         err instanceof Error ? err.message : 'Failed to delete task';
-      setError(message);
+      toast.error(message);
     }
   };
 
   const handleUndo = async (taskId: string) => {
     try {
-      const response = await fetch(getApiUrl(`tasks/${taskId}`), {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          deleted: false,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to undo task deletion');
-      }
-      const updatedTask = await response.json();
-      setTasks((prev) =>
-        prev.map((task) => (task.id === taskId ? updatedTask : task)),
-      );
+      await updateTask.mutateAsync({ id: taskId, deleted: false });
     } catch (err) {
-      console.error('Error undoing task deletion:', err);
       const message =
         err instanceof Error ? err.message : 'Failed to undo task deletion';
-      setError(message);
+      toast.error(message);
     }
   };
 
   const handlePermanentDelete = async (taskId: string) => {
     try {
-      const response = await fetch(getApiUrl(`tasks/${taskId}`), {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to permanently delete task');
-      }
-      setTasks((prev) => prev.filter((t) => t.id !== taskId));
+      await deleteTask.mutateAsync(taskId);
       if (selectedTaskId === taskId) setSelectedTaskId(null);
+      toast.success('Task permanently deleted');
     } catch (err) {
-      console.error('Error permanently deleting task:', err);
       const message =
         err instanceof Error
           ? err.message
           : 'Failed to permanently delete task';
-      setError(message);
+      toast.error(message);
     }
   };
 
@@ -194,29 +112,17 @@ export default function TasksPage() {
 
   const handleSaveNotes = async (taskId: string, notes: string) => {
     try {
-      const response = await fetch(getApiUrl(`tasks/${taskId}`), {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ notes }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to save notes');
-      }
-      const updatedTask = await response.json();
-      setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
+      await updateTask.mutateAsync({ id: taskId, notes });
     } catch (err) {
-      console.error('Error saving notes:', err);
       const message =
         err instanceof Error ? err.message : 'Failed to save notes';
-      setError(message);
+      toast.error(message);
     }
   };
 
   const selectedTask: Task | null =
     tasks.find(
-      (t) => t.id === selectedTaskId && t.category === selectedCategory,
+      (t: Task) => t.id === selectedTaskId && t.category === selectedCategory,
     ) ?? null;
 
   const taskListProps = {
@@ -228,9 +134,11 @@ export default function TasksPage() {
   };
 
   const categoryTasks = useMemo(
-    () => tasks.filter((t) => t.category === selectedCategory),
+    () => tasks.filter((t: Task) => t.category === selectedCategory),
     [tasks, selectedCategory],
   );
+  const errorMessage =
+    error instanceof Error ? error.message : error ? String(error) : null;
 
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
@@ -248,26 +156,21 @@ export default function TasksPage() {
           selectedCategory={selectedCategory}
         />
 
-        {error && (
+        {errorMessage && (
           <div className="border-destructive/50 bg-destructive/10 flex items-center justify-between gap-4 rounded-lg border p-4">
             <div className="flex items-center gap-3">
               <AlertCircle className="text-destructive size-5 shrink-0" />
-              <p className="text-destructive text-sm font-semibold">{error}</p>
+              <p className="text-destructive text-sm font-semibold">
+                {errorMessage}
+              </p>
             </div>
             <div className="flex gap-2">
-              <Button
-                onClick={() => {
-                  setError(null);
-                  loadTasks();
-                }}
-                variant="outline"
-                size="sm"
-              >
+              <Button onClick={() => refetch()} variant="outline" size="sm">
                 <RefreshCw className="size-4" />
                 Retry Load
               </Button>
               <Button
-                onClick={() => setError(null)}
+                onClick={() => {}}
                 variant="ghost"
                 size="sm"
                 aria-label="Dismiss error"
