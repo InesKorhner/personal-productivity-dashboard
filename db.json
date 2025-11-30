@@ -20,6 +20,13 @@
       "frequency": 1,
       "section": "Afternoon",
       "startDate": "2025-11-23"
+    },
+    {
+      "id": "c7df",
+      "name": "citati knjigu",
+      "frequency": 3,
+      "section": "Evening",
+      "startDate": "2025-11-28"
     }
   ],
   "checkIns": [
@@ -70,18 +77,45 @@
       "habitId": "1",
       "date": "2025-11-17",
       "isChecked": true
+    },
+    {
+      "id": "2315",
+      "habitId": "405d",
+      "date": "2025-11-28",
+      "isChecked": false
+    },
+    {
+      "id": "e058",
+      "habitId": "405d",
+      "date": "2025-11-27",
+      "isChecked": true
+    },
+    {
+      "id": "e08b",
+      "habitId": "405d",
+      "date": "2025-11-26",
+      "isChecked": true
+    },
+    {
+      "id": "8952",
+      "habitId": "405d",
+      "date": "2025-11-25",
+      "isChecked": true
+    },
+    {
+      "id": "94a2",
+      "habitId": "405d",
+      "date": "2025-11-24",
+      "isChecked": true
+    },
+    {
+      "id": "0d59",
+      "habitId": "405d",
+      "date": "2025-11-23",
+      "isChecked": true
     }
   ],
   "tasks": [
-    {
-      "id": "1",
-      "text": "Example Task",
-      "category": "MyList",
-      "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
     {
       "id": "1763243647318",
       "text": "fsfs",
@@ -210,51 +244,6 @@
       "notes": ""
     },
     {
-      "id": "ce95",
-      "text": "fsf",
-      "category": "Work",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "njjn"
-    },
-    {
-      "id": "68e7",
-      "text": "jjj",
-      "category": "Work",
-      "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "2d62",
-      "text": "khkhnk",
-      "category": "Work",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "ines korhner"
-    },
-    {
-      "id": "75d6",
-      "text": "nkjn",
-      "category": "Work",
-      "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "0b43",
-      "text": "dsd",
-      "category": "Work",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
       "id": "69a5",
       "text": "fsf",
       "category": "Study",
@@ -262,6 +251,24 @@
       "deleted": false,
       "deletedAt": null,
       "notes": "fsfs"
+    },
+    {
+      "id": "6a45",
+      "text": "kupiti namirnice",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": "jsjfnslnfsfsf"
+    },
+    {
+      "id": "f3a5",
+      "text": "INES KORHNER",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": ""
     }
   ]
 }
