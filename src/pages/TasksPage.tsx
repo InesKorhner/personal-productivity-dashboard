@@ -123,8 +123,7 @@ export default function TasksPage() {
 
   const selectedTask: Task | null =
     tasks.find(
-      (t) => t.id === selectedTaskId && t.category === selectedCategory,
-    ) ?? null;
+      (t) => t.id === selectedTaskId) ?? null;
 
   const taskListProps = {
     onStatusChange: handleStatusChange,
@@ -141,7 +140,6 @@ export default function TasksPage() {
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
-  // Reset dismissed state when a new error occurs
   useEffect(() => {
     if (error) {
       setIsErrorDismissed(false);
