@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getApiUrl } from './api';
 import { type Task } from '@/types';
 
-async function fetchTasks() {
+async function fetchTasks(): Promise<Task[]> {
   const response = await fetch(getApiUrl('tasks'));
   if (!response.ok) {
     throw new Error('Failed to fetch tasks');
@@ -11,7 +11,7 @@ async function fetchTasks() {
 }
 
 export function useTasks() {
-  return useQuery({
+  return useQuery<Task[], Error>({
     queryKey: ['tasks'],
     queryFn: fetchTasks,
   });
@@ -20,8 +20,8 @@ export function useTasks() {
 export function useCreateTask() {
     const queryClient = useQueryClient();
 
-    return useMutation({
-    mutationFn: async (taskData: Omit<Task, 'id'>) => {
+    return useMutation<Task, Error, Omit<Task, 'id'>>({
+    mutationFn: async (taskData) => {
         const response = await fetch(getApiUrl('tasks'), {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -41,8 +41,8 @@ export function useCreateTask() {
 export function useUpdateTask() {
     const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async ({ id, ...updates }: Partial<Task> & { id: string }) => {
+    return useMutation<Task, Error, Partial<Task> & { id: string }>({
+        mutationFn: async ({ id, ...updates }) => {
             const response = await fetch(getApiUrl(`tasks/${id}`), {
                 method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},
@@ -62,15 +62,14 @@ export function useUpdateTask() {
 export function useDeleteTask() {
     const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (id: string) => {
+    return useMutation<void, Error, string>({
+        mutationFn: async (id) => {
             const response = await fetch(getApiUrl(`tasks/${id}`), {
                 method: 'DELETE',
             });
             if (!response.ok) {
                 throw new Error('Failed to delete task');
             }
-            return response.json();
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['tasks']});

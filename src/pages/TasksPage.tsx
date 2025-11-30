@@ -37,6 +37,7 @@ export default function TasksPage() {
     'category' | 'completed' | 'deleted'
   >('category');
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [isErrorDismissed, setIsErrorDismissed] = useState(false);
 
   const handleAddTask = async (taskData: {
     text: string;
@@ -74,7 +75,7 @@ export default function TasksPage() {
 
   const handleDelete = async (taskId: string) => {
     try {
-      await deleteTask.mutateAsync(taskId);
+      await updateTask.mutateAsync({ id: taskId, deleted: true });
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Failed to delete task';
@@ -122,7 +123,7 @@ export default function TasksPage() {
 
   const selectedTask: Task | null =
     tasks.find(
-      (t: Task) => t.id === selectedTaskId && t.category === selectedCategory,
+      (t) => t.id === selectedTaskId && t.category === selectedCategory,
     ) ?? null;
 
   const taskListProps = {
@@ -134,11 +135,18 @@ export default function TasksPage() {
   };
 
   const categoryTasks = useMemo(
-    () => tasks.filter((t: Task) => t.category === selectedCategory),
+    () => tasks.filter((t) => t.category === selectedCategory),
     [tasks, selectedCategory],
   );
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
+
+  // Reset dismissed state when a new error occurs
+  useEffect(() => {
+    if (error) {
+      setIsErrorDismissed(false);
+    }
+  }, [error]);
 
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
@@ -156,7 +164,7 @@ export default function TasksPage() {
           selectedCategory={selectedCategory}
         />
 
-        {errorMessage && (
+        {errorMessage && !isErrorDismissed && (
           <div className="border-destructive/50 bg-destructive/10 flex items-center justify-between gap-4 rounded-lg border p-4">
             <div className="flex items-center gap-3">
               <AlertCircle className="text-destructive size-5 shrink-0" />
@@ -170,7 +178,7 @@ export default function TasksPage() {
                 Retry Load
               </Button>
               <Button
-                onClick={() => {}}
+                onClick={() => setIsErrorDismissed(true)}
                 variant="ghost"
                 size="sm"
                 aria-label="Dismiss error"
