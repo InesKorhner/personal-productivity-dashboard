@@ -93,7 +93,8 @@ export function HabitTrackerPage() {
     try {
       await updateHabit.mutateAsync(updatedHabit);
       setEditingHabit(null);
-      toast.success('Habit updated successfully', {
+
+      toast.success(`Habit "${updatedHabit.name}" updated successfully`, {
         position: 'top-center',
       });
     } catch (err) {

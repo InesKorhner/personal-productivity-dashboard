@@ -100,6 +100,29 @@ export function useDeleteHabit() {
 
   return useMutation<void, Error, string>({
     mutationFn: async (id) => {
+      const checkInsResponse = await fetch(getApiUrl('checkIns'));
+      if (!checkInsResponse.ok) {
+        throw new Error('Failed to fetch check-ins');
+      }
+      const checkInsData = await checkInsResponse.json();
+
+      const associatedCheckIns = checkInsData.filter(
+        (checkIn: CheckIn & { habitId: string | null }) =>
+          checkIn.habitId === id && checkIn.habitId !== null,
+      );
+
+      await Promise.all(
+        associatedCheckIns.map((checkIn: CheckIn & { habitId: string }) =>
+          fetch(getApiUrl(`checkIns/${checkIn.id}`), {
+            method: 'DELETE',
+          }).then((response) => {
+            if (!response.ok) {
+              throw new Error(`Failed to delete check-in ${checkIn.id}`);
+            }
+          }),
+        ),
+      );
+
       const habitResponse = await fetch(getApiUrl(`habits/${id}`), {
         method: 'DELETE',
       });
@@ -116,7 +139,16 @@ export function useDeleteHabit() {
 export function useToggleCheckIn() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<
+  CheckIn,
+  Error,
+  {
+    habitId: string;
+    date: string;
+    existingCheckIn?: CheckIn;
+    newCheckedState: boolean;
+  }
+>({
     mutationFn: async ({
       habitId,
       date,
