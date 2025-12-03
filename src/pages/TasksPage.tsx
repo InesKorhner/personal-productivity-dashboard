@@ -42,6 +42,7 @@ export default function TasksPage() {
   const handleAddTask = async (taskData: {
     text: string;
     category: string;
+    date?: string;
   }) => {
     try {
       const newTask: Omit<Task, 'id'> = {
@@ -51,6 +52,7 @@ export default function TasksPage() {
         deleted: false,
         deletedAt: null,
         notes: '',
+        date: taskData.date, // Use the date from the form
       };
 
       const data = await createTask.mutateAsync(newTask);
@@ -122,8 +124,7 @@ export default function TasksPage() {
   };
 
   const selectedTask: Task | null =
-    tasks.find(
-      (t) => t.id === selectedTaskId) ?? null;
+    tasks.find((t) => t.id === selectedTaskId) ?? null;
 
   const taskListProps = {
     onStatusChange: handleStatusChange,

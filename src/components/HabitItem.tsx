@@ -25,8 +25,8 @@ export function HabitItem({
 
   const lastDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(today);
-    d.setDate(today.getDate() - (6 - i)); // 6-i tako da ide od ponedeljka do danas
-    const jsDay = d.getDay(); // 0..6 (Sunday..Saturday)
+    d.setDate(today.getDate() - (6 - i)); 
+    const jsDay = d.getDay(); 
     const europeanDayIndex = getEuropeanDayIndex(jsDay);
     return {
       label: daysOfWeek[europeanDayIndex],
