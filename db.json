@@ -1,159 +1,40 @@
 {
   "habits": [
     {
-      "id": "405d",
-      "name": "fs",
+      "id": "b56e",
+      "name": "fsfs",
       "frequency": 1,
       "section": "Others",
-      "startDate": "2025-11-23"
-    },
-    {
-      "id": "967e",
-      "name": "ines korhner",
-      "frequency": 1,
-      "section": "Others",
-      "startDate": "2025-12-01"
-    },
-    {
-      "id": "ab90",
-      "name": "gdgd",
-      "frequency": 1,
-      "section": "Others",
-      "startDate": "2025-12-01"
+      "startDate": "2025-12-03"
     }
   ],
   "checkIns": [
     {
-      "id": "1",
-      "habitId": null,
-      "date": "2024-01-15",
-      "isChecked": true
-    },
-    {
-      "id": "7ab5",
-      "habitId": null,
-      "date": "2025-11-20",
-      "isChecked": true
-    },
-    {
-      "id": "9683",
-      "habitId": null,
-      "date": "2025-11-21",
-      "isChecked": true
-    },
-    {
-      "id": "3078",
-      "habitId": null,
-      "date": "2025-11-22",
-      "isChecked": true
-    },
-    {
-      "id": "fb7d",
-      "habitId": null,
-      "date": "2025-11-23",
-      "isChecked": true
-    },
-    {
-      "id": "f931",
-      "habitId": null,
-      "date": "2025-11-18",
-      "isChecked": true
-    },
-    {
-      "id": "d707",
-      "habitId": null,
-      "date": "2025-11-19",
-      "isChecked": true
-    },
-    {
-      "id": "1f06",
-      "habitId": null,
-      "date": "2025-11-17",
-      "isChecked": true
-    },
-    {
-      "id": "2315",
-      "habitId": "405d",
-      "date": "2025-11-28",
-      "isChecked": false
-    },
-    {
-      "id": "e058",
-      "habitId": "405d",
-      "date": "2025-11-27",
-      "isChecked": false
-    },
-    {
-      "id": "e08b",
-      "habitId": "405d",
-      "date": "2025-11-26",
-      "isChecked": false
-    },
-    {
-      "id": "8952",
-      "habitId": "405d",
-      "date": "2025-11-25",
-      "isChecked": false
-    },
-    {
-      "id": "94a2",
-      "habitId": "405d",
-      "date": "2025-11-24",
-      "isChecked": true
-    },
-    {
-      "id": "0d59",
-      "habitId": "405d",
-      "date": "2025-11-23",
-      "isChecked": true
-    },
-    {
-      "id": "091e",
-      "habitId": "405d",
-      "date": "2025-11-29",
-      "isChecked": true
-    },
-    {
-      "id": "704f",
-      "habitId": "405d",
-      "date": "2025-11-30",
-      "isChecked": false
-    },
-    {
-      "id": "3776",
-      "habitId": "405d",
+      "id": "9861",
+      "habitId": "b56e",
       "date": "2025-12-01",
+      "isChecked": true
+    },
+    {
+      "id": "e9c5",
+      "habitId": "b56e",
+      "date": "2025-12-02",
+      "isChecked": true
+    },
+    {
+      "id": "e6f0",
+      "habitId": "b56e",
+      "date": "2025-12-03",
+      "isChecked": true
+    },
+    {
+      "id": "3c58",
+      "habitId": "b56e",
+      "date": "2025-12-04",
       "isChecked": true
     }
   ],
   "tasks": [
-    {
-      "id": "1763243647318",
-      "text": "fsfs",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "1763565659607",
-      "text": "fsf",
-      "category": "Study",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "1763565663110",
-      "text": "fsf",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
     {
       "id": "f443",
       "text": "fs",
@@ -210,22 +91,329 @@
       "category": "Work"
     },
     {
-      "id": "69a5",
+      "id": "6a45",
+      "text": "kupiti namirnice",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "jsjfnslnfsfsf"
+    },
+    {
+      "id": "caa2",
+      "text": "ines",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-02"
+    },
+    {
+      "id": "7f4f",
+      "text": "ines korhner",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "2e1d",
+      "text": "ines",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-02"
+    },
+    {
+      "id": "a1bd",
+      "text": "FSFSFS",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "4daf",
+      "text": "FSFS",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "dc6b",
+      "text": "FSFS",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "0b79",
+      "text": "FSFSFS",
+      "category": "Exercise",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "1781",
+      "text": "ines",
+      "category": "MyList",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "7871",
+      "text": "dfsfs",
+      "category": "MyList",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "759f",
+      "text": "nljn",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "231d",
+      "text": "nkjn",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "36ad",
       "text": "fsf",
       "category": "Study",
       "status": "TODO",
-      "deleted": false,
+      "deleted": true,
       "deletedAt": null,
-      "notes": "fsfs"
+      "notes": ""
     },
     {
-      "id": "8ac9",
-      "text": "gdgd",
-      "category": "Work",
+      "id": "d881",
+      "text": "fsfffs",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-11"
+    },
+    {
+      "id": "a20e",
+      "text": "dada",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-04"
+    },
+    {
+      "id": "ba58",
+      "text": "FSFSFS",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-04"
+    },
+    {
+      "id": "520b",
+      "text": "ines",
+      "category": "Study",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "ede1",
+      "text": "stevan",
+      "category": "Study",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-04"
+    },
+    {
+      "id": "5623",
+      "text": "dkalndjak",
+      "category": "Study",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-02"
+    },
+    {
+      "id": "1445",
+      "text": "khbkhb",
+      "category": "Study",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "b26d",
+      "text": "ines",
+      "category": "Study",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-04"
+    },
+    {
+      "id": "b075",
+      "text": "ines korhner",
+      "category": "Study",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "e0bb",
+      "text": "inees",
+      "category": "Study",
+      "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "3949",
+      "text": "jdjdjdjdjdj",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-04"
+    },
+    {
+      "id": "0f5e",
+      "text": "dsd",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "0ef5",
+      "text": "dada",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-02"
+    },
+    {
+      "id": "5a95",
+      "text": "ffsfdfdfdfd",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "29ce",
+      "text": "ineskaaaaa",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-11"
+    },
+    {
+      "id": "34b8",
+      "text": "dsdsds",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "9a48",
+      "text": "dsfs",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-03"
+    },
+    {
+      "id": "c6ba",
+      "text": "fsfs",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-04"
+    },
+    {
+      "id": "cdef",
+      "text": "fsffs",
+      "category": "Exercise",
       "status": "TODO",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
+    },
+    {
+      "id": "c533",
+      "text": "fssf",
+      "category": "Exercise",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-11"
     }
   ]
 }

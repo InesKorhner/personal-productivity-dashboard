@@ -1,6 +1,8 @@
 import { TaskStatus, type Task } from '@/types';
 import { Trash2, Undo2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { formatTaskDate } from '@/lib/dateUtils';
+import { cn } from '@/lib/utils';
 
 interface TaskItemProps {
   task: Task;
@@ -20,6 +22,7 @@ export function TaskItem({
   onSelectTask,
 }: TaskItemProps) {
   const isDone = task.status === TaskStatus.DONE;
+  const { label: dateLabel, variant: dateVariant } = formatTaskDate(task.date);
 
   const toggleDone = () => {
     onStatusChange(
@@ -87,7 +90,20 @@ export function TaskItem({
         </div>
       </div>
 
-      <div className="ml-3 flex items-center">
+      <div className="ml-3 flex items-center gap-2">
+        {dateLabel && (
+          <span
+            className={cn('text-xs font-medium', {
+              'text-gray-400': isDone,
+              'text-blue-600':
+                !isDone &&
+                (dateVariant === 'today' || dateVariant === 'future'),
+              'text-red-600': !isDone && dateVariant === 'past',
+            })}
+          >
+            {dateLabel}
+          </span>
+        )}
         <Button
           type="button"
           onClick={() => onDelete(task.id)}

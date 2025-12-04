@@ -6,6 +6,7 @@ export type Task = {
   deleted: boolean;
   deletedAt: number | null;
   notes?: string;
+  date?: string;
 };
 
 export interface TaskListProps {
