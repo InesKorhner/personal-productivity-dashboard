@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { format } from 'date-fns';
 import DatePickerButton from '@/components/DatePickerButton';
 
 interface AddTaskFormProps {
@@ -29,9 +30,7 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
       await onAddTask({
         text: inputValue.trim(),
         category: newTaskCategory,
-        date: selectedDate
-    ? selectedDate.toLocaleDateString('sv-SE')
-    : undefined,
+        date: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined,
       });
       setInputValue('');
       setSelectedDate(undefined);

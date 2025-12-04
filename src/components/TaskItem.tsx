@@ -93,14 +93,13 @@ export function TaskItem({
       <div className="ml-3 flex items-center gap-2">
         {dateLabel && (
           <span
-            className={cn(
-              'text-xs font-medium',
-              isDone && 'text-gray-400', 
-
-              !isDone && dateVariant === 'today' && 'text-blue-600',
-              !isDone && dateVariant === 'future' && 'text-blue-600',
-              !isDone && dateVariant === 'past' && 'text-red-600',
-            )}
+            className={cn('text-xs font-medium', {
+              'text-gray-400': isDone,
+              'text-blue-600':
+                !isDone &&
+                (dateVariant === 'today' || dateVariant === 'future'),
+              'text-red-600': !isDone && dateVariant === 'past',
+            })}
           >
             {dateLabel}
           </span>

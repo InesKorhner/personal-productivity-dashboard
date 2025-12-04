@@ -1,34 +1,49 @@
+import {
+  format,
+  startOfDay,
+  isToday,
+  isPast,
+  isFuture,
+  parseISO,
+} from 'date-fns';
+
 export function formatTaskDate(dateInput?: string | Date) {
   if (!dateInput) return { label: null, variant: null };
 
-  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+  let date: Date;
+
+  if (dateInput instanceof Date) {
+    date = dateInput;
+  } else if (typeof dateInput === 'string') {
+    date = dateInput.includes('T') ? new Date(dateInput) : parseISO(dateInput);
+  } else {
+    return { label: null, variant: null };
+  }
+
   if (isNaN(date.getTime())) return { label: null, variant: null };
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const normalizedDate = startOfDay(date);
 
-  const taskDate = new Date(date);
-  taskDate.setHours(0, 0, 0, 0);
-
-  const diff = taskDate.getTime() - today.getTime();
-
-  const formatter = { day: '2-digit', month: 'short' } as const;
-
-  if (diff === 0) {
+  if (isToday(normalizedDate)) {
     return { label: 'Today', variant: 'today' };
   }
 
-  if (diff < 0) {
+  if (isPast(normalizedDate)) {
     return {
-      label: taskDate.toLocaleDateString('en-US', formatter),
+      label: format(normalizedDate, 'd MMM'),
       variant: 'past',
     };
   }
 
+  if (isFuture(normalizedDate)) {
+    return {
+      label: format(normalizedDate, 'd MMM'),
+      variant: 'future',
+    };
+  }
+
   return {
-    label: taskDate.toLocaleDateString('en-US', formatter),
+    label: format(normalizedDate, 'd MMM'),
     variant: 'future',
   };
 }
-
-

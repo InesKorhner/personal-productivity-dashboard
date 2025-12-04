@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useState, type MouseEvent } from 'react';
 import { format } from 'date-fns';
 import { CalendarIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,14 +27,14 @@ export default function DatePickerButton({
   showClearButton = true,
   className,
 }: DatePickerButtonProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleSelect = (date: Date | undefined) => {
     onChange(date);
     setOpen(false);
   };
 
-  const handleClear = (e: React.MouseEvent) => {
+  const handleClear = (e: MouseEvent) => {
     e.stopPropagation();
     onChange(undefined);
   };
