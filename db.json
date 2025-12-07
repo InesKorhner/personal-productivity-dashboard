@@ -34,7 +34,7 @@
       "id": "b413",
       "habitId": "6d99",
       "date": "2025-12-01",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "91b1",
@@ -70,7 +70,7 @@
       "id": "0087",
       "habitId": "6d99",
       "date": "2025-12-02",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "6189",
@@ -88,19 +88,19 @@
       "id": "3f45",
       "habitId": "0221",
       "date": "2025-12-03",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "a440",
       "habitId": "0221",
       "date": "2025-12-04",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "835b",
       "habitId": "0221",
       "date": "2025-12-05",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "c57c",
@@ -118,25 +118,25 @@
       "id": "976f",
       "habitId": "2e90",
       "date": "2025-12-03",
-      "isChecked": false
+      "isChecked": true
     },
     {
       "id": "a74a",
       "habitId": "2e90",
       "date": "2025-12-05",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "86c5",
       "habitId": "2e90",
       "date": "2025-12-06",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "8547",
       "habitId": "2e90",
       "date": "2025-12-02",
-      "isChecked": false
+      "isChecked": true
     },
     {
       "id": "a050",
@@ -148,19 +148,19 @@
       "id": "59e4",
       "habitId": "32fa",
       "date": "2025-12-03",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "6bb5",
       "habitId": "32fa",
       "date": "2025-12-04",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "cdbe",
       "habitId": "32fa",
       "date": "2025-12-05",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "a08c",
@@ -173,6 +173,30 @@
       "habitId": "2e90",
       "date": "2025-12-04",
       "isChecked": true
+    },
+    {
+      "id": "f919",
+      "habitId": "32fa",
+      "date": "2025-12-01",
+      "isChecked": false
+    },
+    {
+      "id": "92b3",
+      "habitId": "32fa",
+      "date": "2025-12-02",
+      "isChecked": false
+    },
+    {
+      "id": "2ed9",
+      "habitId": "32fa",
+      "date": "2025-12-06",
+      "isChecked": false
+    },
+    {
+      "id": "e3e9",
+      "habitId": "32fa",
+      "date": "2025-12-07",
+      "isChecked": false
     }
   ],
   "tasks": [

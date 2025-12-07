@@ -59,19 +59,6 @@ export function HabitItem({
   const percentage =
     goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
 
-  // Determine status color
-  const getProgressColor = () => {
-    if (percentage >= 100) return 'text-green-600 font-semibold'; // Goal met or exceeded
-    if (percentage >= 50) return 'text-yellow-600'; // In progress
-    return 'text-red-600'; // Needs attention
-  };
-
-  const getProgressBarColor = () => {
-    if (percentage >= 100) return 'bg-green-500'; // Goal met or exceeded
-    if (percentage >= 50) return 'bg-yellow-500'; // In progress
-    return 'bg-red-500'; // Needs attention
-  };
-
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
@@ -81,14 +68,14 @@ export function HabitItem({
         <p className="text-base font-medium text-gray-800">{habit.name}</p>
         <div className="mt-1 flex items-center gap-4 text-xs">
           <span className="text-gray-500">Streak: {currentStreak}</span>
-          <span className={getProgressColor()}>
+          <span className="text-gray-500">
             Week: {weeklyCheckedCount}/{goal} ({percentage}%)
           </span>
         </div>
         {/* Progress bar */}
-        <div className="mt-1.5 h-1.5 w-full max-w-[300px] overflow-hidden rounded-full bg-gray-200">
+        <div className="mt-1.5 h-1.5 w-full max-w-[150px] overflow-hidden rounded-full bg-gray-200">
           <div
-            className={`h-full transition-all ${getProgressBarColor()}`}
+            className="h-full bg-blue-500 transition-all"
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />
         </div>
