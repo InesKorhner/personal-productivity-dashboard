@@ -1,31 +1,41 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import { ChevronDownIcon } from 'lucide-react'
+import * as React from 'react';
+import { ChevronDownIcon } from 'lucide-react';
+import { format, startOfDay } from 'date-fns';
 
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
-import { Label } from '@/components/ui/label'
+} from '@/components/ui/popover';
+import { Label } from '@/components/ui/label';
 
 type CalendarInFormProps = {
-  value: Date | undefined
-  onChange: (date: Date) => void
-  label?: string
-  id?: string
-}
+  value: Date | undefined;
+  onChange: (date: Date) => void;
+  label?: string;
+  id?: string;
+  disableFuture?: boolean;
+};
 
 export function CalendarInForm({
   value,
   onChange,
   label = 'Select date',
   id = 'date',
+  disableFuture = false,
 }: CalendarInFormProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
+
+  // Create new date object instead of mutating
+  const today = React.useMemo(() => {
+    const date = new Date();
+    date.setHours(23, 59, 59, 999);
+    return date;
+  }, []);
 
   return (
     <div className="flex flex-col gap-3">
@@ -39,7 +49,7 @@ export function CalendarInForm({
             id={id}
             className="w-48 justify-between font-normal"
           >
-            {value ? value.toLocaleDateString() : 'Select date'}
+            {value ? format(value, 'MMM d, yyyy') : 'Select date'}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
@@ -48,14 +58,18 @@ export function CalendarInForm({
             mode="single"
             selected={value}
             captionLayout="dropdown"
+            disabled={disableFuture ? (date) => date > today : undefined}
             onSelect={(selectedDate) => {
-              if (selectedDate) onChange(selectedDate)
-              setOpen(false)
+              if (selectedDate) {
+                // Use startOfDay to ensure local date without time
+                const localDate = startOfDay(selectedDate);
+                onChange(localDate);
+              }
+              setOpen(false);
             }}
           />
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
-

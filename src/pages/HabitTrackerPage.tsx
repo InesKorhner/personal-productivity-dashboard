@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import type { Habit } from '@/types';
 import { HabitList } from '@/components/HabitList';
 import { AddHabitDialog } from '@/components/AddHabitDialog';
@@ -16,6 +17,7 @@ import {
 } from '@/lib/useHabits';
 
 export function HabitTrackerPage() {
+  const location = useLocation();
   const { data: habits = [], isLoading, error, refetch } = useHabits();
   const createHabit = useCreateHabit();
   const updateHabit = useUpdateHabit();
@@ -23,6 +25,19 @@ export function HabitTrackerPage() {
   const toggleCheckIn = useToggleCheckIn();
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
   const [isErrorDismissed, setIsErrorDismissed] = useState(false);
+
+  // Check if we came from calendar with habit ID to edit
+  useEffect(() => {
+    const editHabitId = (location.state as { editHabitId?: string })?.editHabitId;
+    if (editHabitId && habits.length > 0) {
+      const habitToEdit = habits.find((h) => h.id === editHabitId);
+      if (habitToEdit) {
+        setEditingHabit(habitToEdit);
+        // Clear the state to avoid reopening on re-render
+        window.history.replaceState({}, document.title);
+      }
+    }
+  }, [location.state, habits]);
 
   const handleAddHabit = async (
     habitData: Omit<Habit, 'id' | 'checkIns'>,

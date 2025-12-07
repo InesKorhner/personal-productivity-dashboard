@@ -21,6 +21,7 @@ import {
 } from './ui/select';
 import { Label } from './ui/label';
 import { SECTIONS } from '@/types';
+import { format, parseISO, startOfDay } from 'date-fns';
 
 type EditHabitDialogProps = {
   habit: Habit;
@@ -41,6 +42,11 @@ export function EditHabitDialog({
     section: habit.section,
     startDate: habit.startDate,
   });
+
+  // Parse startDate string to Date object for CalendarInForm
+  const startDateValue = React.useMemo(() => {
+    return parseISO(formData.startDate);
+  }, [formData.startDate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,14 +128,15 @@ export function EditHabitDialog({
               </Select>
             </div>
             <CalendarInForm
-              value={new Date(formData.startDate)}
+              value={startDateValue}
               onChange={(date) =>
                 setFormData((prev) => ({
                   ...prev,
-                  startDate: date.toISOString().slice(0, 10),
+                  startDate: format(startOfDay(date), 'yyyy-MM-dd'),
                 }))
               }
               label="Start Date"
+              disableFuture={true}
             />
           </div>
           <DialogFooter className="mt-5">

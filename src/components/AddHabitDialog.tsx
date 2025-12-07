@@ -24,6 +24,7 @@ import {
 import { Label } from './ui/label';
 import { SECTIONS } from '@/types';
 import { toast } from 'sonner';
+import { format, startOfDay } from 'date-fns';
 
 type AddHabitFormProps = {
   onSave: (habitData: Omit<Habit, 'id' | 'checkIns'>) => Promise<boolean>;
@@ -35,23 +36,26 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
   const [name, setName] = React.useState('');
   const [frequencyCount, setFrequencyCount] = React.useState<number>(1);
   const [section, setSection] = React.useState<Habit['section']>('Others');
-  const [startDate, setStartDate] = React.useState(
-    new Date().toISOString().slice(0, 10),
+  // Use Date object instead of ISO string
+  const [startDate, setStartDate] = React.useState<Date>(() =>
+    startOfDay(new Date()),
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Format date to YYYY-MM-DD using date-fns
+    const startDateString = format(startDate, 'yyyy-MM-dd');
     const success = await onSave({
       name,
       frequency: frequencyCount,
       section,
-      startDate,
+      startDate: startDateString,
     });
     if (success) {
       setName('');
       setFrequencyCount(1);
       setSection('Others');
-      setStartDate(new Date().toISOString().slice(0, 10));
+      setStartDate(startOfDay(new Date()));
       setOpen(false);
     } else {
       toast.error('Failed to add habit');
@@ -129,9 +133,10 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
               </Select>
             </div>
             <CalendarInForm
-              value={new Date(startDate)}
-              onChange={(date) => setStartDate(date.toISOString().slice(0, 10))}
+              value={startDate}
+              onChange={(date) => setStartDate(startOfDay(date))}
               label="Start Date"
+              disableFuture={true}
             />
           </div>
           <DialogFooter>

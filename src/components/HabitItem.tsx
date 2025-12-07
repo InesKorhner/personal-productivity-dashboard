@@ -2,6 +2,7 @@ import type { Habit } from '@/types';
 import { triggerConfetti } from '@/lib/confetti';
 import { Edit2 } from 'lucide-react';
 import { DeleteHabitDialog } from './DeleteHabitDialog';
+import { startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
 
 interface HabitItemProps {
   habit: Habit;
@@ -25,8 +26,8 @@ export function HabitItem({
 
   const lastDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(today);
-    d.setDate(today.getDate() - (6 - i)); 
-    const jsDay = d.getDay(); 
+    d.setDate(today.getDate() - (6 - i));
+    const jsDay = d.getDay();
     const europeanDayIndex = getEuropeanDayIndex(jsDay);
     return {
       label: daysOfWeek[europeanDayIndex],
@@ -34,9 +35,6 @@ export function HabitItem({
     };
   });
 
-  const totalCheckIns = (habit.checkIns || []).filter(
-    (c) => c.isChecked,
-  ).length;
   const checkIns = habit.checkIns || [];
   let currentStreak = 0;
   for (let i = lastDays.length - 1; i >= 0; i--) {
@@ -44,16 +42,55 @@ export function HabitItem({
     if (dayCheckIn?.isChecked) currentStreak++;
     else break;
   }
+
+  // Calculate weekly progress (Monday to Sunday)
+  const weekStart = startOfWeek(today, { weekStartsOn: 1 }); // Monday
+  const weekEnd = endOfWeek(today, { weekStartsOn: 1 }); // Sunday
+
+  // Count checked check-ins in current week
+  const weeklyCheckedCount = checkIns.filter((checkIn) => {
+    if (!checkIn.isChecked) return false;
+    const checkInDate = parseISO(checkIn.date);
+    return isWithinInterval(checkInDate, { start: weekStart, end: weekEnd });
+  }).length;
+
+  // Calculate percentage
+  const goal = habit.frequency; // e.g., 3 times per week
+  const percentage =
+    goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
+
+  // Determine status color
+  const getProgressColor = () => {
+    if (percentage >= 100) return 'text-green-600 font-semibold'; // Goal met or exceeded
+    if (percentage >= 50) return 'text-yellow-600'; // In progress
+    return 'text-red-600'; // Needs attention
+  };
+
+  const getProgressBarColor = () => {
+    if (percentage >= 100) return 'bg-green-500'; // Goal met or exceeded
+    if (percentage >= 50) return 'bg-yellow-500'; // In progress
+    return 'bg-red-500'; // Needs attention
+  };
+
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
   return (
     <li className="flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
-      <div className="flex flex-col items-start text-left">
+      <div className="flex w-full flex-col items-start text-left">
         <p className="text-base font-medium text-gray-800">{habit.name}</p>
-        <div className="mt-1 flex space-x-4 text-xs text-gray-500">
-          <span>Check-Ins: {totalCheckIns}</span>
-          <span>Streak: {currentStreak}</span>
+        <div className="mt-1 flex items-center gap-4 text-xs">
+          <span className="text-gray-500">Streak: {currentStreak}</span>
+          <span className={getProgressColor()}>
+            Week: {weeklyCheckedCount}/{goal} ({percentage}%)
+          </span>
+        </div>
+        {/* Progress bar */}
+        <div className="mt-1.5 h-1.5 w-full max-w-[300px] overflow-hidden rounded-full bg-gray-200">
+          <div
+            className={`h-full transition-all ${getProgressBarColor()}`}
+            style={{ width: `${Math.min(percentage, 100)}%` }}
+          />
         </div>
       </div>
       <div className="flex space-x-2">
@@ -87,7 +124,7 @@ export function HabitItem({
           type="button"
           onClick={() => onEdit(habit)}
           aria-label="Edit habit"
-          title='Edit Habit'
+          title="Edit Habit"
         >
           <Edit2 size={16} />
         </button>
