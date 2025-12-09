@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import type { Habit } from '@/types';
 import { HabitList } from '@/components/HabitList';
@@ -25,19 +25,34 @@ export function HabitTrackerPage() {
   const toggleCheckIn = useToggleCheckIn();
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
   const [isErrorDismissed, setIsErrorDismissed] = useState(false);
+  const processedEditHabitIdRef = useRef<string | null>(null);
 
   // Check if we came from calendar with habit ID to edit
+  // Only process once per navigation to prevent reopening on check-in clicks
   useEffect(() => {
-    const editHabitId = (location.state as { editHabitId?: string })?.editHabitId;
-    if (editHabitId && habits.length > 0) {
+    const editHabitId = (location.state as { editHabitId?: string })
+      ?.editHabitId;
+
+    // Only process if we have a new editHabitId that we haven't processed yet
+    if (
+      editHabitId &&
+      editHabitId !== processedEditHabitIdRef.current &&
+      habits.length > 0
+    ) {
       const habitToEdit = habits.find((h) => h.id === editHabitId);
       if (habitToEdit) {
+        processedEditHabitIdRef.current = editHabitId;
         setEditingHabit(habitToEdit);
         // Clear the state to avoid reopening on re-render
         window.history.replaceState({}, document.title);
       }
     }
-  }, [location.state, habits]);
+
+    // Reset the ref when location changes (new navigation)
+    if (!editHabitId) {
+      processedEditHabitIdRef.current = null;
+    }
+  }, [location.state, location.key, habits]);
 
   const handleAddHabit = async (
     habitData: Omit<Habit, 'id' | 'checkIns'>,

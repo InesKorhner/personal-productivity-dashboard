@@ -2,7 +2,20 @@ import type { Habit } from '@/types';
 import { triggerConfetti } from '@/lib/confetti';
 import { Edit2 } from 'lucide-react';
 import { DeleteHabitDialog } from './DeleteHabitDialog';
-import { startOfWeek, endOfWeek, isWithinInterval, parseISO } from 'date-fns';
+import {
+  startOfWeek,
+  endOfWeek,
+  isWithinInterval,
+  startOfDay,
+  format,
+} from 'date-fns';
+
+// Helper function to parse date-only strings as local dates (not UTC)
+// This prevents timezone shifts when parsing YYYY-MM-DD strings
+function parseLocalDate(dateString: string): Date {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day); // Local date, not UTC
+}
 
 interface HabitItemProps {
   habit: Habit;
@@ -19,23 +32,31 @@ export function HabitItem({
 }: HabitItemProps) {
   const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
-  function getEuropeanDayIndex(jsDay: number) {
-    return (jsDay + 6) % 7;
-  }
   const today = new Date();
 
+  // Calculate weekly progress (Monday to Sunday)
+  // Get the current week boundaries: Monday 00:00:00 to Sunday 23:59:59.999
+  const weekStart = startOfDay(startOfWeek(today, { weekStartsOn: 1 })); // Monday
+  const weekEnd = endOfWeek(today, { weekStartsOn: 1 }); // Sunday end of day
+
+  // Generate current week days (Monday to Sunday)
+  // These are the 7 check-in buttons that match the current week
   const lastDays = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(today);
-    d.setDate(today.getDate() - (6 - i));
-    const jsDay = d.getDay();
-    const europeanDayIndex = getEuropeanDayIndex(jsDay);
+    // Create new date immutably by adding days to weekStart (Monday)
+    const d = new Date(
+      weekStart.getFullYear(),
+      weekStart.getMonth(),
+      weekStart.getDate() + i,
+    );
     return {
-      label: daysOfWeek[europeanDayIndex],
-      date: d.toISOString().slice(0, 10),
+      label: daysOfWeek[i], // Mo, Tu, We, Th, Fr, Sa, Su
+      date: format(d, 'yyyy-MM-dd'), // Format as YYYY-MM-DD in local time
     };
   });
 
   const checkIns = habit.checkIns || [];
+
+  // Calculate current streak (consecutive checked days from today backwards)
   let currentStreak = 0;
   for (let i = lastDays.length - 1; i >= 0; i--) {
     const dayCheckIn = checkIns.find((c) => c.date === lastDays[i].date);
@@ -43,24 +64,24 @@ export function HabitItem({
     else break;
   }
 
-  // Calculate weekly progress (Monday to Sunday)
-  const weekStart = startOfWeek(today, { weekStartsOn: 1 }); // Monday
-  const weekEnd = endOfWeek(today, { weekStartsOn: 1 }); // Sunday
-
-  // Count checked check-ins in current week
+  // Count checked check-ins in current week (Monday to Sunday)
   const weeklyCheckedCount = checkIns.filter((checkIn) => {
     if (!checkIn.isChecked) return false;
-    const checkInDate = parseISO(checkIn.date);
+    // Parse check-in date as local date to avoid timezone issues
+    const checkInDate = startOfDay(parseLocalDate(checkIn.date));
     return isWithinInterval(checkInDate, { start: weekStart, end: weekEnd });
   }).length;
 
-  // Calculate percentage
-  const goal = habit.frequency; // e.g., 3 times per week
+  // Get the goal (frequency: number of times per week)
+  const goal =
+    typeof habit.frequency === 'number' && habit.frequency > 0
+      ? habit.frequency
+      : 1;
+
+  // Calculate percentage: (check-ins completed / goal) * 100
+  // Can exceed 100% if user completes more than the goal
   const percentage =
     goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
-
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
 
   return (
     <li className="flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
@@ -73,7 +94,7 @@ export function HabitItem({
           </span>
         </div>
         {/* Progress bar */}
-        <div className="mt-1.5 h-1.5 w-full max-w-[150px] overflow-hidden rounded-full bg-gray-200">
+        <div className="mt-1.5 h-1.5 w-full max-w-[100px] overflow-hidden rounded-full bg-gray-200">
           <div
             className="h-full bg-blue-500 transition-all"
             style={{ width: `${Math.min(percentage, 100)}%` }}
@@ -85,8 +106,10 @@ export function HabitItem({
           const check = habit.checkIns.find((c) => c.date === date);
           const done = check ? check.isChecked : false;
 
-          const isDisabled =
-            new Date(date).setHours(0, 0, 0, 0) > todayStart.getTime();
+          // Allow check-ins on any day of the current week (Monday to Sunday)
+          // Only disable dates that are beyond the current week (after Sunday)
+          const checkInDate = startOfDay(parseLocalDate(date));
+          const isDisabled = checkInDate.getTime() > weekEnd.getTime();
 
           return (
             <div
