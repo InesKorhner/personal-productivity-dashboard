@@ -55,7 +55,7 @@ export function HabitTrackerPage() {
   }, [location.state, location.key, habits]);
 
   const handleAddHabit = async (
-    habitData: Omit<Habit, 'id' | 'checkIns'>,
+    habitData: Omit<Habit, 'id' | 'checkIns' | 'startDate'>,
   ): Promise<boolean> => {
     try {
       await createHabit.mutateAsync(habitData);

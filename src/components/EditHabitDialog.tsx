@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { type Habit, type Sections } from '@/types';
-import { CalendarInForm } from './CalendarInForm';
 import React from 'react';
 import { Slider } from './ui/slider';
 import {
@@ -21,7 +20,6 @@ import {
 } from './ui/select';
 import { Label } from './ui/label';
 import { SECTIONS } from '@/types';
-import { format, parseISO, startOfDay } from 'date-fns';
 
 type EditHabitDialogProps = {
   habit: Habit;
@@ -40,13 +38,7 @@ export function EditHabitDialog({
     name: habit.name,
     frequency: habit.frequency,
     section: habit.section,
-    startDate: habit.startDate,
   });
-
-  // Parse startDate string to Date object for CalendarInForm
-  const startDateValue = React.useMemo(() => {
-    return parseISO(formData.startDate);
-  }, [formData.startDate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,17 +119,6 @@ export function EditHabitDialog({
                 </SelectContent>
               </Select>
             </div>
-            <CalendarInForm
-              value={startDateValue}
-              onChange={(date) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  startDate: format(startOfDay(date), 'yyyy-MM-dd'),
-                }))
-              }
-              label="Start Date"
-              disableFuture={true}
-            />
           </div>
           <DialogFooter className="mt-5">
             <DialogClose asChild>

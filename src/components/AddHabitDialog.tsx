@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import type { Habit, Sections } from '@/types';
-import { CalendarInForm } from './CalendarInForm';
 import { Plus } from 'lucide-react';
 import React from 'react';
 import { Slider } from './ui/slider';
@@ -24,10 +23,11 @@ import {
 import { Label } from './ui/label';
 import { SECTIONS } from '@/types';
 import { toast } from 'sonner';
-import { format, startOfDay } from 'date-fns';
 
 type AddHabitFormProps = {
-  onSave: (habitData: Omit<Habit, 'id' | 'checkIns'>) => Promise<boolean>;
+  onSave: (
+    habitData: Omit<Habit, 'id' | 'checkIns' | 'startDate'>,
+  ) => Promise<boolean>;
   onCancel?: () => void;
 };
 
@@ -36,26 +36,20 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
   const [name, setName] = React.useState('');
   const [frequencyCount, setFrequencyCount] = React.useState<number>(1);
   const [section, setSection] = React.useState<Habit['section']>('Others');
-  // Use Date object instead of ISO string
-  const [startDate, setStartDate] = React.useState<Date>(() =>
-    startOfDay(new Date()),
-  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Format date to YYYY-MM-DD using date-fns
-    const startDateString = format(startDate, 'yyyy-MM-dd');
+
     const success = await onSave({
       name,
       frequency: frequencyCount,
       section,
-      startDate: startDateString,
     });
+
     if (success) {
       setName('');
       setFrequencyCount(1);
       setSection('Others');
-      setStartDate(startOfDay(new Date()));
       setOpen(false);
     } else {
       toast.error('Failed to add habit');
@@ -132,12 +126,6 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
                 </SelectContent>
               </Select>
             </div>
-            <CalendarInForm
-              value={startDate}
-              onChange={(date) => setStartDate(startOfDay(date))}
-              label="Start Date"
-              disableFuture={true}
-            />
           </div>
           <DialogFooter>
             <DialogClose asChild>

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getApiUrl } from './api';
 import type { CheckIn, Habit } from '@/types';
+import { startOfDay } from 'date-fns/startOfDay';
 
 async function fetchHabits(): Promise<Habit[]> {
   const [habitsResponse, checkInsResponse] = await Promise.all([
@@ -46,7 +47,7 @@ export function useHabits() {
 export function useCreateHabit() {
   const queryClient = useQueryClient();
 
-  return useMutation<Habit, Error, Omit<Habit, 'id' | 'checkIns'>>({
+  return useMutation<Habit, Error, Omit<Habit, 'id' | 'checkIns' | 'startDate'>>({
     mutationFn: async (habitData) => {
       const response = await fetch(getApiUrl('habits'), {
         method: 'POST',
@@ -55,7 +56,7 @@ export function useCreateHabit() {
           name: habitData.name,
           frequency: habitData.frequency,
           section: habitData.section,
-          startDate: habitData.startDate,
+          startDate: startOfDay(new Date()).toUTCString()
         }),
       });
       if (!response.ok) {
@@ -81,7 +82,6 @@ export function useUpdateHabit() {
           name: updatedHabit.name,
           frequency: updatedHabit.frequency,
           section: updatedHabit.section,
-          startDate: updatedHabit.startDate,
         }),
       });
       if (!response.ok) {
