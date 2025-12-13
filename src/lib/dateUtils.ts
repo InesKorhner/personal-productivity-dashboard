@@ -47,3 +47,21 @@ export function formatTaskDate(dateInput?: string | Date) {
     variant: 'future',
   };
 }
+
+export function formatDateforServer(date: Date) {
+  return format(startOfDay(date), 'yyyy-MM-dd');
+}
+
+export function parseLocalDate(dateString: string): Date {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+export function normalizeDateString(dateString: string): string {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    return dateString;
+  }
+
+  const date = new Date(dateString);
+  return formatDateforServer(date);
+}

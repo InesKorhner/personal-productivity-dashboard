@@ -142,10 +142,10 @@ export default function TasksPage() {
     error instanceof Error ? error.message : error ? String(error) : null;
 
   useEffect(() => {
-    if (error) {
+    if (error && isErrorDismissed) {
       setIsErrorDismissed(false);
     }
-  }, [error]);
+  }, [error, isErrorDismissed]);
 
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">

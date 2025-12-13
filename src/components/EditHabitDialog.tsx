@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { type Habit, type Sections } from '@/types';
-import { CalendarInForm } from './CalendarInForm';
 import React from 'react';
 import { Slider } from './ui/slider';
 import {
@@ -39,7 +38,6 @@ export function EditHabitDialog({
     name: habit.name,
     frequency: habit.frequency,
     section: habit.section,
-    startDate: habit.startDate,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -121,16 +119,6 @@ export function EditHabitDialog({
                 </SelectContent>
               </Select>
             </div>
-            <CalendarInForm
-              value={new Date(formData.startDate)}
-              onChange={(date) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  startDate: date.toISOString().slice(0, 10),
-                }))
-              }
-              label="Start Date"
-            />
           </div>
           <DialogFooter className="mt-5">
             <DialogClose asChild>

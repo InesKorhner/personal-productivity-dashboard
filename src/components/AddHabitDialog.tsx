@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import type { Habit, Sections } from '@/types';
-import { CalendarInForm } from './CalendarInForm';
 import { Plus } from 'lucide-react';
 import React from 'react';
 import { Slider } from './ui/slider';
@@ -26,7 +25,9 @@ import { SECTIONS } from '@/types';
 import { toast } from 'sonner';
 
 type AddHabitFormProps = {
-  onSave: (habitData: Omit<Habit, 'id' | 'checkIns'>) => Promise<boolean>;
+  onSave: (
+    habitData: Omit<Habit, 'id' | 'checkIns' | 'startDate'>,
+  ) => Promise<boolean>;
   onCancel?: () => void;
 };
 
@@ -35,23 +36,20 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
   const [name, setName] = React.useState('');
   const [frequencyCount, setFrequencyCount] = React.useState<number>(1);
   const [section, setSection] = React.useState<Habit['section']>('Others');
-  const [startDate, setStartDate] = React.useState(
-    new Date().toISOString().slice(0, 10),
-  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const success = await onSave({
       name,
       frequency: frequencyCount,
       section,
-      startDate,
     });
+
     if (success) {
       setName('');
       setFrequencyCount(1);
       setSection('Others');
-      setStartDate(new Date().toISOString().slice(0, 10));
       setOpen(false);
     } else {
       toast.error('Failed to add habit');
@@ -128,11 +126,6 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
                 </SelectContent>
               </Select>
             </div>
-            <CalendarInForm
-              value={new Date(startDate)}
-              onChange={(date) => setStartDate(date.toISOString().slice(0, 10))}
-              label="Start Date"
-            />
           </div>
           <DialogFooter>
             <DialogClose asChild>

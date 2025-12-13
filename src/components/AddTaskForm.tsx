@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { format } from 'date-fns';
 import DatePickerButton from '@/components/DatePickerButton';
+import { formatDateforServer } from '@/lib/dateUtils';
 
 interface AddTaskFormProps {
   onAddTask: (taskData: {
@@ -30,7 +30,7 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
       await onAddTask({
         text: inputValue.trim(),
         category: newTaskCategory,
-        date: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : undefined,
+        date: selectedDate ? formatDateforServer(selectedDate) : undefined,
       });
       setInputValue('');
       setSelectedDate(undefined);

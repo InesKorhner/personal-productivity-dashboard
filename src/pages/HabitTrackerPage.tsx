@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import type { Habit } from '@/types';
 import { HabitList } from '@/components/HabitList';
 import { AddHabitDialog } from '@/components/AddHabitDialog';
@@ -16,6 +17,7 @@ import {
 } from '@/lib/useHabits';
 
 export function HabitTrackerPage() {
+  const location = useLocation();
   const { data: habits = [], isLoading, error, refetch } = useHabits();
   const createHabit = useCreateHabit();
   const updateHabit = useUpdateHabit();
@@ -23,9 +25,38 @@ export function HabitTrackerPage() {
   const toggleCheckIn = useToggleCheckIn();
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
   const [isErrorDismissed, setIsErrorDismissed] = useState(false);
+  const processedEditHabitIdRef = useRef<string | null>(null);
+
+  // Check if we came from calendar with habit ID to edit
+  // Only process once per navigation to prevent reopening on check-in clicks
+  useEffect(() => {
+    const editHabitId = (location.state as { editHabitId?: string })
+      ?.editHabitId;
+
+    // Only process if we have a new editHabitId that we haven't processed yet
+    if (
+      editHabitId &&
+      editHabitId !== processedEditHabitIdRef.current &&
+      habits.length > 0
+    ) {
+      const habitToEdit = habits.find((h) => h.id === editHabitId);
+      if (habitToEdit && editingHabit?.id !== habitToEdit.id) {
+        processedEditHabitIdRef.current = editHabitId;
+        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
+        setEditingHabit(habitToEdit);
+        // Clear the state to avoid reopening on re-render
+        window.history.replaceState({}, document.title);
+      }
+    }
+
+    // Reset the ref when location changes (new navigation)
+    if (!editHabitId) {
+      processedEditHabitIdRef.current = null;
+    }
+  }, [location.state, habits, editingHabit]);
 
   const handleAddHabit = async (
-    habitData: Omit<Habit, 'id' | 'checkIns'>,
+    habitData: Omit<Habit, 'id' | 'checkIns' | 'startDate'>,
   ): Promise<boolean> => {
     try {
       await createHabit.mutateAsync(habitData);
@@ -107,11 +138,13 @@ export function HabitTrackerPage() {
   };
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
+
   useEffect(() => {
-    if (error) {
+    if (error && isErrorDismissed) {
+      // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
       setIsErrorDismissed(false);
     }
-  }, [error]);
+  }, [error, isErrorDismissed]);
 
   return (
     <div className="mx-auto max-w-4xl px-4">
