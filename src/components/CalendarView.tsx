@@ -1,19 +1,42 @@
 import { useMemo, useState } from 'react';
-import { Calendar, momentLocalizer, type View } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, type View } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { format, startOfDay, isSameDay } from 'date-fns';
+import type { withDragAndDropProps } from 'react-big-calendar/lib/addons/dragAndDrop';
+import {
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  startOfDay,
+  isSameDay,
+  endOfDay,
+} from 'date-fns';
+import { enUS } from 'date-fns/locale/en-US';
 import { type Task, type Habit, TaskStatus } from '@/types';
 import { useUpdateTask } from '@/lib/useTasks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CheckCircle2, ListTodo } from 'lucide-react';
-import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
 
-const localizer = momentLocalizer(moment);
-const DnDCalendar = withDragAndDrop(Calendar);
+const locales = {
+  'en-US': enUS,
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
+
+// Properly type the DnDCalendar with our CalendarEvent type
+const DnDCalendar = withDragAndDrop<CalendarEvent, CalendarEvent['resource']>(
+  Calendar,
+);
 
 interface CalendarViewProps {
   tasks: Task[];
@@ -79,15 +102,7 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
         const taskDate = parseLocalDate(task.date!);
         const start = startOfDay(taskDate);
         // Create end date without mutation
-        const end = new Date(
-          start.getFullYear(),
-          start.getMonth(),
-          start.getDate(),
-          23,
-          59,
-          59,
-          999,
-        );
+        const end = endOfDay(start);
         return {
           id: task.id,
           title: task.text,
@@ -143,17 +158,17 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
   );
 
   // Filter events for day view only
-  // Week and month views: let react-big-calendar handle filtering automatically
-  const dayViewEvents = useMemo(() => {
-    if (currentView !== 'day') return events;
-    return events.filter((event) => isSameDay(event.start, currentDate));
+  const filteredEvents = useMemo(() => {
+    if (currentView === 'day') {
+      return events.filter((event) => isSameDay(event.start, currentDate));
+    }
+    return events;
   }, [events, currentView, currentDate]);
 
   // Handle drag and drop (only for tasks)
-  const handleEventDrop = (args: {
-    event: CalendarEvent | object;
-    start: Date | string;
-  }) => {
+  const handleEventDrop: withDragAndDropProps<CalendarEvent>['onEventDrop'] = (
+    args,
+  ) => {
     const calendarEvent = args.event as CalendarEvent;
 
     // Only allow drag and drop for tasks
@@ -162,8 +177,7 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
       return;
     }
 
-    const startDate =
-      args.start instanceof Date ? args.start : new Date(args.start);
+    const startDate = args.start as Date;
     const task = calendarEvent.resource as Task;
     const newDate = formatDateforServer(startDate);
 
@@ -239,10 +253,9 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
 
   return (
     <div className="h-full">
-      {/* @ts-expect-error - react-big-calendar types are complex, but this works at runtime */}
       <DnDCalendar
         localizer={localizer}
-        events={currentView === 'day' ? dayViewEvents : events}
+        events={filteredEvents}
         startAccessor="start"
         endAccessor="end"
         style={{ height: '100%', minHeight: '600px' }}

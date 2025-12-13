@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import type { Habit } from '@/types';
 import { HabitList } from '@/components/HabitList';
@@ -29,7 +29,7 @@ export function HabitTrackerPage() {
 
   // Check if we came from calendar with habit ID to edit
   // Only process once per navigation to prevent reopening on check-in clicks
-  const handleEditHabitFromLocation = useCallback(() => {
+  useEffect(() => {
     const editHabitId = (location.state as { editHabitId?: string })
       ?.editHabitId;
 
@@ -42,6 +42,7 @@ export function HabitTrackerPage() {
       const habitToEdit = habits.find((h) => h.id === editHabitId);
       if (habitToEdit && editingHabit?.id !== habitToEdit.id) {
         processedEditHabitIdRef.current = editHabitId;
+        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
         setEditingHabit(habitToEdit);
         // Clear the state to avoid reopening on re-render
         window.history.replaceState({}, document.title);
@@ -53,10 +54,6 @@ export function HabitTrackerPage() {
       processedEditHabitIdRef.current = null;
     }
   }, [location.state, habits, editingHabit]);
-
-  useEffect(() => {
-    handleEditHabitFromLocation();
-  }, [handleEditHabitFromLocation]);
 
   const handleAddHabit = async (
     habitData: Omit<Habit, 'id' | 'checkIns' | 'startDate'>,
@@ -142,15 +139,12 @@ export function HabitTrackerPage() {
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
-  const resetErrorDismissed = useCallback(() => {
+  useEffect(() => {
     if (error && isErrorDismissed) {
+      // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
       setIsErrorDismissed(false);
     }
   }, [error, isErrorDismissed]);
-
-  useEffect(() => {
-    resetErrorDismissed();
-  }, [resetErrorDismissed]);
 
   return (
     <div className="mx-auto max-w-4xl px-4">

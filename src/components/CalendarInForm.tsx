@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { ChevronDownIcon } from 'lucide-react';
-import { format, startOfDay } from 'date-fns';
+import { endOfDay, format, startOfDay } from 'date-fns';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -30,12 +30,7 @@ export function CalendarInForm({
 }: CalendarInFormProps) {
   const [open, setOpen] = React.useState(false);
 
-  // Create new date object instead of mutating
-  const today = React.useMemo(() => {
-    const date = new Date();
-    date.setHours(23, 59, 59, 999);
-    return date;
-  }, []);
+  const today = React.useMemo(() => endOfDay(new Date()), []);
 
   return (
     <div className="flex flex-col gap-3">
