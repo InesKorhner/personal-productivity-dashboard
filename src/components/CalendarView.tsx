@@ -10,16 +10,10 @@ import { CheckCircle2, ListTodo } from 'lucide-react';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
-
-// Helper function to parse date-only strings as local dates (not UTC)
-// This prevents timezone shifts when parsing YYYY-MM-DD strings
-function parseLocalDate(dateString: string): Date {
-  const [year, month, day] = dateString.split('-').map(Number);
-  return new Date(year, month - 1, day); // Local date, not UTC
-}
 
 interface CalendarViewProps {
   tasks: Task[];
@@ -171,7 +165,7 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
     const startDate =
       args.start instanceof Date ? args.start : new Date(args.start);
     const task = calendarEvent.resource as Task;
-    const newDate = format(startOfDay(startDate), 'yyyy-MM-dd');
+    const newDate = formatDateforServer(startDate);
 
     updateTask.mutate(
       {

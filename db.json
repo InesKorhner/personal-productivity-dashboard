@@ -55,6 +55,20 @@
       "frequency": 5,
       "section": "Evening",
       "startDate": "Tue, 09 Dec 2025 23:00:00 GMT"
+    },
+    {
+      "id": "5cf8",
+      "name": "dfd",
+      "frequency": 2,
+      "section": "Afternoon",
+      "startDate": "2025-12-13"
+    },
+    {
+      "id": "e603",
+      "name": "gdg",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-13"
     }
   ],
   "checkIns": [
@@ -62,13 +76,13 @@
       "id": "e915",
       "habitId": "ee3e",
       "date": "2025-12-09",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "6d04",
       "habitId": "ee3e",
       "date": "2025-12-08",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "f546",
@@ -98,7 +112,7 @@
       "id": "90c0",
       "habitId": "ee3e",
       "date": "2025-12-10",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "ccb8",
@@ -170,7 +184,7 @@
       "id": "9b7e",
       "habitId": "8501",
       "date": "2025-12-11",
-      "isChecked": false
+      "isChecked": true
     },
     {
       "id": "7ea1",
@@ -182,7 +196,7 @@
       "id": "56c1",
       "habitId": "ee3e",
       "date": "2025-12-13",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "e8a0",
@@ -722,7 +736,7 @@
       "id": "7805",
       "text": "ines",
       "category": "MyList",
-      "status": "DONE",
+      "status": "TODO",
       "deleted": false,
       "deletedAt": null,
       "notes": ""

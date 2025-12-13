@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import type { Habit } from '@/types';
 import { HabitList } from '@/components/HabitList';
@@ -29,7 +29,7 @@ export function HabitTrackerPage() {
 
   // Check if we came from calendar with habit ID to edit
   // Only process once per navigation to prevent reopening on check-in clicks
-  useEffect(() => {
+  const handleEditHabitFromLocation = useCallback(() => {
     const editHabitId = (location.state as { editHabitId?: string })
       ?.editHabitId;
 
@@ -40,7 +40,7 @@ export function HabitTrackerPage() {
       habits.length > 0
     ) {
       const habitToEdit = habits.find((h) => h.id === editHabitId);
-      if (habitToEdit) {
+      if (habitToEdit && editingHabit?.id !== habitToEdit.id) {
         processedEditHabitIdRef.current = editHabitId;
         setEditingHabit(habitToEdit);
         // Clear the state to avoid reopening on re-render
@@ -52,7 +52,11 @@ export function HabitTrackerPage() {
     if (!editHabitId) {
       processedEditHabitIdRef.current = null;
     }
-  }, [location.state, location.key, habits]);
+  }, [location.state, habits, editingHabit]);
+
+  useEffect(() => {
+    handleEditHabitFromLocation();
+  }, [handleEditHabitFromLocation]);
 
   const handleAddHabit = async (
     habitData: Omit<Habit, 'id' | 'checkIns' | 'startDate'>,
@@ -137,11 +141,16 @@ export function HabitTrackerPage() {
   };
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
-  useEffect(() => {
-    if (error) {
+
+  const resetErrorDismissed = useCallback(() => {
+    if (error && isErrorDismissed) {
       setIsErrorDismissed(false);
     }
-  }, [error]);
+  }, [error, isErrorDismissed]);
+
+  useEffect(() => {
+    resetErrorDismissed();
+  }, [resetErrorDismissed]);
 
   return (
     <div className="mx-auto max-w-4xl px-4">

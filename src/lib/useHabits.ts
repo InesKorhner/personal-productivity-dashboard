@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getApiUrl } from './api';
 import type { CheckIn, Habit } from '@/types';
-import { startOfDay } from 'date-fns/startOfDay';
+import { formatDateforServer, normalizeDateString } from './dateUtils';
 
 async function fetchHabits(): Promise<Habit[]> {
   const [habitsResponse, checkInsResponse] = await Promise.all([
@@ -21,16 +21,17 @@ async function fetchHabits(): Promise<Habit[]> {
 
   return habitsData.map((habit: Habit) => ({
     ...habit,
+    startDate: normalizeDateString(habit.startDate),
     checkIns:
       checkInsData
         .filter(
-          (checkIn: CheckIn & { habitId: string | null }) =>
+          (checkIn: CheckIn & { habitId: string }) =>
             checkIn.habitId === habit.id && checkIn.habitId !== null,
         )
         .map(
           (checkIn: CheckIn & { habitId: string }): CheckIn => ({
             id: checkIn.id,
-            date: checkIn.date,
+            date: normalizeDateString(checkIn.date),
             isChecked: checkIn.isChecked,
           }),
         ) || [],
@@ -47,7 +48,11 @@ export function useHabits() {
 export function useCreateHabit() {
   const queryClient = useQueryClient();
 
-  return useMutation<Habit, Error, Omit<Habit, 'id' | 'checkIns' | 'startDate'>>({
+  return useMutation<
+    Habit,
+    Error,
+    Omit<Habit, 'id' | 'checkIns' | 'startDate'>
+  >({
     mutationFn: async (habitData) => {
       const response = await fetch(getApiUrl('habits'), {
         method: 'POST',
@@ -56,7 +61,7 @@ export function useCreateHabit() {
           name: habitData.name,
           frequency: habitData.frequency,
           section: habitData.section,
-          startDate: startOfDay(new Date()).toUTCString()
+          startDate: formatDateforServer(new Date()),
         }),
       });
       if (!response.ok) {
@@ -140,15 +145,15 @@ export function useToggleCheckIn() {
   const queryClient = useQueryClient();
 
   return useMutation<
-  CheckIn,
-  Error,
-  {
-    habitId: string;
-    date: string;
-    existingCheckIn?: CheckIn;
-    newCheckedState: boolean;
-  }
->({
+    CheckIn,
+    Error,
+    {
+      habitId: string;
+      date: string;
+      existingCheckIn?: CheckIn;
+      newCheckedState: boolean;
+    }
+  >({
     mutationFn: async ({
       habitId,
       date,
@@ -175,7 +180,7 @@ export function useToggleCheckIn() {
         const data = await response.json();
         return {
           id: data.id,
-          date: data.date,
+          date: normalizeDateString(data.date),
           isChecked: data.isChecked,
         };
       } else {
@@ -194,7 +199,7 @@ export function useToggleCheckIn() {
         const data = await response.json();
         return {
           id: data.id,
-          date: data.date,
+          date: normalizeDateString(data.date),
           isChecked: data.isChecked,
         };
       }

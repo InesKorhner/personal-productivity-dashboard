@@ -2,20 +2,8 @@ import type { Habit } from '@/types';
 import { triggerConfetti } from '@/lib/confetti';
 import { Edit2 } from 'lucide-react';
 import { DeleteHabitDialog } from './DeleteHabitDialog';
-import {
-  startOfWeek,
-  endOfWeek,
-  isWithinInterval,
-  startOfDay,
-  format,
-} from 'date-fns';
-
-// Helper function to parse date-only strings as local dates (not UTC)
-// This prevents timezone shifts when parsing YYYY-MM-DD strings
-function parseLocalDate(dateString: string): Date {
-  const [year, month, day] = dateString.split('-').map(Number);
-  return new Date(year, month - 1, day); // Local date, not UTC
-}
+import { startOfWeek, endOfWeek, isWithinInterval, startOfDay } from 'date-fns';
+import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
 
 interface HabitItemProps {
   habit: Habit;
@@ -50,7 +38,7 @@ export function HabitItem({
     );
     return {
       label: daysOfWeek[i], // Mo, Tu, We, Th, Fr, Sa, Su
-      date: format(d, 'yyyy-MM-dd'), // Format as YYYY-MM-DD in local time
+      date: formatDateforServer(d),
     };
   });
 
