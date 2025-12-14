@@ -1,7 +1,28 @@
-export function Header () {
-    return (
-        <header className="sticky top-0 w-full bg-white p-4 shadow-md text-center">
+import { useThemeStore } from '@/lib/useThemeStore';
+import { Moon, Sun } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+export function Header() {
+  const { theme, toggleTheme } = useThemeStore();
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 items-center justify-between px-4">
         <h1 className="text-xl font-bold">Productivity Dashboard</h1>
-        </header>
-    )
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          className="h-9 w-9"
+        >
+          {theme === 'light' ? (
+            <Moon className="h-5 w-5" />
+          ) : (
+            <Sun className="h-5 w-5" />
+          )}
+        </Button>
+      </div>
+    </header>
+  );
 }

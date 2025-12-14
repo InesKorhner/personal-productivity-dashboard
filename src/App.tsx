@@ -5,6 +5,7 @@ import { HabitTrackerPage } from '@/pages/HabitTrackerPage';
 import CalendarPage from '@/pages/CalendarPage';
 import ThemePage from '@/pages/ThemePage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from './components/ThemeProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +20,7 @@ const queryClient = new QueryClient({
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
       <Router>
         <Layout>
           <Routes>
@@ -29,6 +31,7 @@ export const App = () => {
           </Routes>
         </Layout>
       </Router>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
