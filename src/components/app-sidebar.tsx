@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import { Calendar, Home, Inbox, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -29,16 +29,8 @@ const items = [
     url: '/calendar',
     icon: Calendar,
   },
-  {
-    title: 'Stats',
-    url: '/stats',
-    icon: Search,
-  },
-  {
-    title: 'Search',
-    url: '/search',
-    icon: Search,
-  },
+ 
+  
   {
     title: 'Theme',
     url: '/theme',

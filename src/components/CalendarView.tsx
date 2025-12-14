@@ -229,15 +229,15 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
 
   // Custom formats to remove time display completely
   const formats = {
-    dayFormat: 'ddd D',
-    dayHeaderFormat: 'ddd M/D',
+    dayFormat: 'ddd d',
+    dayHeaderFormat: 'ddd M/d',
     dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) =>
       `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`,
     eventTimeRangeFormat: () => '', // No time display
     eventTimeRangeStartFormat: () => '',
     eventTimeRangeEndFormat: () => '',
     timeGutterFormat: () => '',
-    monthHeaderFormat: 'MMMM YYYY',
+    monthHeaderFormat: 'MMMM yyyy',
     weekdayFormat: 'ddd',
     selectRangeFormat: ({ start, end }: { start: Date; end: Date }) =>
       `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`,

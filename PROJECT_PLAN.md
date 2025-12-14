@@ -51,7 +51,7 @@
 - [ ] Implement ThemePage UI with light/dark mode switcher (2 hours)
 - [ ] Apply theme classes across all pages (3 hours)
 - [ ] Test theme persistence and transitions (1 hour)
-
+- maybe also add sidebar in zustand, consider it
 **Deliverables:**
 - Working light/dark mode toggle
 - Theme state persisted in localStorage

@@ -251,6 +251,12 @@
       "habitId": "1d68",
       "date": "2025-12-12",
       "isChecked": true
+    },
+    {
+      "id": "53f1",
+      "habitId": "5cf8",
+      "date": "2025-12-13",
+      "isChecked": true
     }
   ],
   "tasks": [
@@ -798,7 +804,7 @@
       "deleted": false,
       "deletedAt": null,
       "notes": "",
-      "date": "2025-12-10"
+      "date": "2025-12-09"
     }
   ]
 }
