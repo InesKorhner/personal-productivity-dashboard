@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Settings } from 'lucide-react';
+import { Calendar, Home, Inbox } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -29,20 +29,13 @@ const items = [
     url: '/calendar',
     icon: Calendar,
   },
- 
-  
-  {
-    title: 'Theme',
-    url: '/theme',
-    icon: Settings,
-  },
 ];
 
 export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className='relative flex items-center justify-between p-2'>
-        <SidebarTrigger className='absolute top-1 right-2 z-50'/>
+      <SidebarHeader className="relative flex items-center justify-between p-2">
+        <SidebarTrigger className="absolute top-1 right-2 z-50" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

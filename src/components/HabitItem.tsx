@@ -4,6 +4,7 @@ import { Edit2 } from 'lucide-react';
 import { DeleteHabitDialog } from './DeleteHabitDialog';
 import { startOfWeek, endOfWeek, isWithinInterval, startOfDay } from 'date-fns';
 import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
+import { cn } from '@/lib/utils';
 
 interface HabitItemProps {
   habit: Habit;
@@ -72,19 +73,19 @@ export function HabitItem({
     goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
 
   return (
-    <li className="flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
+    <li className="border-border bg-card flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
       <div className="flex w-full flex-col items-start text-left">
-        <p className="text-base font-medium text-gray-800">{habit.name}</p>
+        <p className="text-foreground text-base font-medium">{habit.name}</p>
         <div className="mt-1 flex items-center gap-4 text-xs">
-          <span className="text-gray-500">Streak: {currentStreak}</span>
-          <span className="text-gray-500">
+          <span className="text-muted-foreground">Streak: {currentStreak}</span>
+          <span className="text-muted-foreground">
             Week: {weeklyCheckedCount}/{goal} ({percentage}%)
           </span>
         </div>
         {/* Progress bar */}
-        <div className="mt-1.5 h-1.5 w-full max-w-[100px] overflow-hidden rounded-full bg-gray-200">
+        <div className="bg-muted mt-1.5 h-1.5 w-full max-w-[100px] overflow-hidden rounded-full">
           <div
-            className="h-full bg-blue-500 transition-all"
+            className="h-full bg-blue-500 transition-all dark:bg-blue-400"
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />
         </div>
@@ -108,21 +109,28 @@ export function HabitItem({
                   if (!done) triggerConfetti(e.clientX, e.clientY);
                 }
               }}
-              className={`flex h-[24px] w-[24px] items-center justify-center rounded-full border text-[12px] ${
-                done ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-500'
-              } ${isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              className={cn(
+                'flex h-[24px] w-[24px] items-center justify-center rounded-full border text-[12px]',
+                {
+                  'bg-blue-500 text-white dark:bg-blue-400': done,
+                  'bg-muted text-muted-foreground': !done,
+                  'cursor-not-allowed opacity-50': isDisabled,
+                  'cursor-pointer': !isDisabled,
+                },
+              )}
               title={date}
             >
               {label}
             </div>
           );
         })}
-        <div className="mx-3 h-6 border-l border-gray-300"></div>
+        <div className="border-border mx-3 h-6 border-l"></div>
         <button
           type="button"
           onClick={() => onEdit(habit)}
           aria-label="Edit habit"
           title="Edit Habit"
+          className="text-muted-foreground hover:text-foreground"
         >
           <Edit2 size={16} />
         </button>

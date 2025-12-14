@@ -6,15 +6,15 @@ export function Header() {
   const { theme, toggleTheme } = useThemeStore();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between px-4">
+    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
+      <div className="relative container flex h-14 items-center justify-center px-4">
         <h1 className="text-xl font-bold">Productivity Dashboard</h1>
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleTheme}
           aria-label="Toggle theme"
-          className="h-9 w-9"
+          className="absolute right-4 h-9 w-9"
         >
           {theme === 'light' ? (
             <Moon className="h-5 w-5" />
