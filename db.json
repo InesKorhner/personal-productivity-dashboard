@@ -1,116 +1,68 @@
 {
   "habits": [
     {
-      "id": "b9ab",
-      "name": "read book",
-      "frequency": 4,
-      "section": "Evening",
+      "id": "4cd5",
+      "name": "ines korhner",
+      "frequency": 1,
+      "section": "Others",
       "startDate": "2025-12-17"
     },
     {
-      "id": "3e14",
-      "name": "ineees",
-      "frequency": 2,
-      "section": "Afternoon",
+      "id": "772f",
+      "name": "omg",
+      "frequency": 5,
+      "section": "Others",
       "startDate": "2025-12-17"
     },
     {
-      "id": "c65f",
-      "name": "ina kaja ciki",
-      "frequency": 4,
-      "section": "Afternoon",
+      "id": "4744",
+      "name": "hkh",
+      "frequency": 3,
+      "section": "Others",
       "startDate": "2025-12-17"
     }
   ],
   "checkIns": [
     {
-      "id": "ca66",
-      "habitId": "b9ab",
+      "id": "9e03",
+      "habitId": "772f",
       "date": "2025-12-17",
       "isChecked": true
     },
     {
-      "id": "b8db",
-      "habitId": "b9ab",
-      "date": "2025-12-16",
-      "isChecked": true
-    },
-    {
-      "id": "b159",
-      "habitId": "b9ab",
+      "id": "9485",
+      "habitId": "4cd5",
       "date": "2025-12-15",
       "isChecked": true
     },
     {
-      "id": "ba4b",
-      "habitId": "b9ab",
-      "date": "2025-12-14",
-      "isChecked": false
-    },
-    {
-      "id": "bebb",
-      "habitId": "b9ab",
-      "date": "2025-12-13",
-      "isChecked": true
-    },
-    {
-      "id": "9d4b",
-      "habitId": "b9ab",
-      "date": "2025-12-12",
-      "isChecked": true
-    },
-    {
-      "id": "eb8b",
-      "habitId": "b9ab",
-      "date": "2025-12-11",
-      "isChecked": false
-    },
-    {
-      "id": "ac04",
-      "habitId": "3e14",
-      "date": "2025-12-13",
-      "isChecked": true
-    },
-    {
-      "id": "5b2d",
-      "habitId": "3e14",
-      "date": "2025-12-12",
-      "isChecked": true
-    },
-    {
-      "id": "94cc",
-      "habitId": "3e14",
-      "date": "2025-12-14",
-      "isChecked": false
-    },
-    {
-      "id": "bbeb",
-      "habitId": "3e14",
-      "date": "2025-12-15",
-      "isChecked": true
-    },
-    {
-      "id": "c79e",
-      "habitId": "3e14",
+      "id": "4a7a",
+      "habitId": "4cd5",
       "date": "2025-12-16",
       "isChecked": true
     },
     {
-      "id": "8a0d",
-      "habitId": "c65f",
-      "date": "2025-12-12",
-      "isChecked": true
-    },
-    {
-      "id": "41e5",
-      "habitId": "c65f",
-      "date": "2025-12-13",
-      "isChecked": true
-    },
-    {
-      "id": "eab8",
-      "habitId": "c65f",
+      "id": "1a83",
+      "habitId": "4cd5",
       "date": "2025-12-17",
+      "isChecked": true
+    },
+    {
+      "id": "aad0",
+      "habitId": "4744",
+      "date": "2025-12-13",
+      "isChecked": true
+    },
+    {
+      "id": "de01",
+      "habitId": "4744",
+      "date": "2025-12-14",
+      "isChecked": true
+    },
+    {
+      "id": "61dc",
+      "habitId": "4744",
+      "date": "2025-12-15",
       "isChecked": true
     }
   ],
@@ -322,7 +274,7 @@
       "deleted": false,
       "deletedAt": null,
       "notes": "",
-      "date": "2025-12-17"
+      "date": "2025-12-16"
     }
   ]
 }

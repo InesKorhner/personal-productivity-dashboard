@@ -1,5 +1,5 @@
-import { Calendar, Home, Inbox } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Calendar, ListTodo, CheckCircle2 } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 import {
   Sidebar,
@@ -17,12 +17,12 @@ const items = [
   {
     title: 'My Tasks',
     url: '/tasks',
-    icon: Home,
+    icon: ListTodo,
   },
   {
     title: 'Habit Tracker',
     url: '/habits',
-    icon: Inbox,
+    icon: CheckCircle2,
   },
   {
     title: 'Calendar',
@@ -32,6 +32,8 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const location = useLocation();
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="relative flex items-center justify-between p-2">
@@ -41,16 +43,19 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {items.map((item) => {
+                const isActive = location.pathname === item.url;
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={isActive}>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
