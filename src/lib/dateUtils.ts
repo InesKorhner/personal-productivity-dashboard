@@ -4,7 +4,6 @@ import {
   isToday,
   isPast,
   isFuture,
-  parseISO,
 } from 'date-fns';
 
 export function formatTaskDate(dateInput?: string | Date) {
@@ -14,8 +13,8 @@ export function formatTaskDate(dateInput?: string | Date) {
 
   if (dateInput instanceof Date) {
     date = dateInput;
-  } else if (typeof dateInput === 'string') {
-    date = dateInput.includes('T') ? new Date(dateInput) : parseISO(dateInput);
+  }  else if (typeof dateInput === 'string') {
+    date = parseLocalDate(dateInput);
   } else {
     return { label: null, variant: null };
   }

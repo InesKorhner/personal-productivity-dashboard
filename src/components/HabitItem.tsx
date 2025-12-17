@@ -2,7 +2,7 @@ import type { Habit } from '@/types';
 import { triggerConfetti } from '@/lib/confetti';
 import { Edit2 } from 'lucide-react';
 import { DeleteHabitDialog } from './DeleteHabitDialog';
-import { startOfWeek, endOfWeek, isWithinInterval, startOfDay } from 'date-fns';
+import { isWithinInterval, startOfDay, isAfter, subDays } from 'date-fns';
 import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
 import { cn } from '@/lib/utils';
 
@@ -21,31 +21,26 @@ export function HabitItem({
 }: HabitItemProps) {
   const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
-  const today = new Date();
+  const today = startOfDay(new Date());
+  const habitStartDate = startOfDay(parseLocalDate(habit.startDate));
 
-  // Calculate weekly progress (Monday to Sunday)
-  // Get the current week boundaries: Monday 00:00:00 to Sunday 23:59:59.999
-  const weekStart = startOfDay(startOfWeek(today, { weekStartsOn: 1 })); // Monday
-  const weekEnd = endOfWeek(today, { weekStartsOn: 1 }); // Sunday end of day
+  // Last allowed check-in date is the earlier of: creation date or today
+  const lastAllowedDate = today < habitStartDate ? today : habitStartDate;
 
-  // Generate current week days (Monday to Sunday)
-  // These are the 7 check-in buttons that match the current week
+  // Generate rolling 7-day window going backwards from last allowed date
+  // Show the last 7 days: [6 days ago, 5 days ago, ..., yesterday, lastAllowedDate]
   const lastDays = Array.from({ length: 7 }, (_, i) => {
-    // Create new date immutably by adding days to weekStart (Monday)
-    const d = new Date(
-      weekStart.getFullYear(),
-      weekStart.getMonth(),
-      weekStart.getDate() + i,
-    );
+    const daysBack = 6 - i; // 6, 5, 4, 3, 2, 1, 0
+    const d = subDays(lastAllowedDate, daysBack);
     return {
-      label: daysOfWeek[i], // Mo, Tu, We, Th, Fr, Sa, Su
+      label: daysOfWeek[d.getDay() === 0 ? 6 : d.getDay() - 1], // Convert to Mon-Sun (0=Sun -> 6, 1=Mon -> 0)
       date: formatDateforServer(d),
     };
   });
 
   const checkIns = habit.checkIns || [];
 
-  // Calculate current streak (consecutive checked days from today backwards)
+  // Calculate current streak (consecutive checked days from last allowed date backwards)
   let currentStreak = 0;
   for (let i = lastDays.length - 1; i >= 0; i--) {
     const dayCheckIn = checkIns.find((c) => c.date === lastDays[i].date);
@@ -53,12 +48,17 @@ export function HabitItem({
     else break;
   }
 
-  // Count checked check-ins in current week (Monday to Sunday)
+  // Count checked check-ins in the displayed 7-day window (not calendar week)
+  const windowStart = startOfDay(parseLocalDate(lastDays[0].date)); // First day in window (6 days ago)
+  const windowEnd = startOfDay(parseLocalDate(lastDays[6].date)); // Last day in window (lastAllowedDate)
+
   const weeklyCheckedCount = checkIns.filter((checkIn) => {
     if (!checkIn.isChecked) return false;
-    // Parse check-in date as local date to avoid timezone issues
     const checkInDate = startOfDay(parseLocalDate(checkIn.date));
-    return isWithinInterval(checkInDate, { start: weekStart, end: weekEnd });
+    return isWithinInterval(checkInDate, {
+      start: windowStart,
+      end: windowEnd,
+    });
   }).length;
 
   // Get the goal (frequency: number of times per week)
@@ -95,10 +95,11 @@ export function HabitItem({
           const check = habit.checkIns.find((c) => c.date === date);
           const done = check ? check.isChecked : false;
 
-          // Allow check-ins on any day of the current week (Monday to Sunday)
-          // Only disable dates that are beyond the current week (after Sunday)
           const checkInDate = startOfDay(parseLocalDate(date));
-          const isDisabled = checkInDate.getTime() > weekEnd.getTime();
+
+          // Disable if date is in the future (after last allowed date)
+          const isFuture = isAfter(checkInDate, lastAllowedDate);
+          const isDisabled = isFuture;
 
           return (
             <div
