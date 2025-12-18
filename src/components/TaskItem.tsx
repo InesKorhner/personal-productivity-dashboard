@@ -32,12 +32,12 @@ export function TaskItem({
   };
 
   return task.deleted ? (
-    <li className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5">
+    <li className="border-border bg-muted/50 flex items-center justify-between rounded-lg border px-3 py-2.5">
       <div
         className="flex-1 cursor-pointer"
         onClick={() => onSelectTask(task.id)}
       >
-        <p className="text-sm font-medium text-gray-600 line-through">
+        <p className="text-muted-foreground text-sm font-medium line-through">
           {task.text}
         </p>
       </div>
@@ -46,7 +46,7 @@ export function TaskItem({
           type="button"
           onClick={() => onUndo(task.id)}
           size="icon"
-          className="h-8 w-8 cursor-pointer bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+          className="h-8 w-8 cursor-pointer bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:hover:bg-yellow-900/50"
           aria-label="Restore task"
           title="Restore task"
         >
@@ -56,7 +56,7 @@ export function TaskItem({
           type="button"
           onClick={() => onPermanentDelete(task.id)}
           size="icon"
-          className="h-8 w-8 cursor-pointer bg-red-100 text-red-700 hover:bg-red-200"
+          className="h-8 w-8 cursor-pointer bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
           aria-label="Delete forever"
           title="Delete forever"
         >
@@ -65,13 +65,13 @@ export function TaskItem({
       </div>
     </li>
   ) : (
-    <li className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2.5 transition-colors hover:bg-gray-50">
+    <li className="border-border bg-card hover:bg-accent flex items-center justify-between rounded-lg border px-3 py-2.5 transition-colors">
       <div className="flex flex-1 items-center gap-3">
         <input
           type="checkbox"
           checked={isDone}
           onChange={toggleDone}
-          className="text-primary focus:ring-primary h-4 w-4 cursor-pointer rounded border-gray-300 focus:ring-2 focus:ring-offset-0"
+          className="text-primary focus:ring-primary border-border h-4 w-4 cursor-pointer rounded focus:ring-2 focus:ring-offset-0"
           aria-label="Mark completed"
         />
         <div
@@ -79,11 +79,11 @@ export function TaskItem({
           onClick={() => onSelectTask(task.id)}
         >
           <p
-            className={`text-sm font-medium transition-all ${
-              task.status === TaskStatus.DONE
-                ? 'text-gray-400 line-through'
-                : 'text-gray-800'
-            }`}
+            className={cn('text-sm font-medium transition-all', {
+              'text-muted-foreground line-through':
+                task.status === TaskStatus.DONE,
+              'text-foreground': task.status !== TaskStatus.DONE,
+            })}
           >
             {task.text}
           </p>
@@ -94,11 +94,12 @@ export function TaskItem({
         {dateLabel && (
           <span
             className={cn('text-xs font-medium', {
-              'text-gray-400': isDone,
-              'text-blue-600':
+              'text-muted-foreground': isDone,
+              'text-blue-600 dark:text-blue-400':
                 !isDone &&
                 (dateVariant === 'today' || dateVariant === 'future'),
-              'text-red-600': !isDone && dateVariant === 'past',
+              'text-red-600 dark:text-red-400':
+                !isDone && dateVariant === 'past',
             })}
           >
             {dateLabel}
@@ -109,7 +110,7 @@ export function TaskItem({
           onClick={() => onDelete(task.id)}
           size="icon"
           variant="ghost"
-          className="h-8 w-8 cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-700"
+          className="h-8 w-8 cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/30 dark:hover:text-red-300"
           aria-label="Move to trash"
           title="Move to trash"
         >

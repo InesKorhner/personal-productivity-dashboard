@@ -2,8 +2,9 @@ import type { Habit } from '@/types';
 import { triggerConfetti } from '@/lib/confetti';
 import { Edit2 } from 'lucide-react';
 import { DeleteHabitDialog } from './DeleteHabitDialog';
-import { startOfWeek, endOfWeek, isWithinInterval, startOfDay } from 'date-fns';
+import { isWithinInterval, startOfDay, isAfter, subDays } from 'date-fns';
 import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
+import { cn } from '@/lib/utils';
 
 interface HabitItemProps {
   habit: Habit;
@@ -20,31 +21,26 @@ export function HabitItem({
 }: HabitItemProps) {
   const daysOfWeek = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
-  const today = new Date();
+  const today = startOfDay(new Date());
+  const habitStartDate = startOfDay(parseLocalDate(habit.startDate));
 
-  // Calculate weekly progress (Monday to Sunday)
-  // Get the current week boundaries: Monday 00:00:00 to Sunday 23:59:59.999
-  const weekStart = startOfDay(startOfWeek(today, { weekStartsOn: 1 })); // Monday
-  const weekEnd = endOfWeek(today, { weekStartsOn: 1 }); // Sunday end of day
+  // Last allowed check-in date is the earlier of: creation date or today
+  const lastAllowedDate = today < habitStartDate ? today : habitStartDate;
 
-  // Generate current week days (Monday to Sunday)
-  // These are the 7 check-in buttons that match the current week
+  // Generate rolling 7-day window going backwards from last allowed date
+  // Show the last 7 days: [6 days ago, 5 days ago, ..., yesterday, lastAllowedDate]
   const lastDays = Array.from({ length: 7 }, (_, i) => {
-    // Create new date immutably by adding days to weekStart (Monday)
-    const d = new Date(
-      weekStart.getFullYear(),
-      weekStart.getMonth(),
-      weekStart.getDate() + i,
-    );
+    const daysBack = 6 - i; // 6, 5, 4, 3, 2, 1, 0
+    const d = subDays(lastAllowedDate, daysBack);
     return {
-      label: daysOfWeek[i], // Mo, Tu, We, Th, Fr, Sa, Su
+      label: daysOfWeek[d.getDay() === 0 ? 6 : d.getDay() - 1], // Convert to Mon-Sun (0=Sun -> 6, 1=Mon -> 0)
       date: formatDateforServer(d),
     };
   });
 
   const checkIns = habit.checkIns || [];
 
-  // Calculate current streak (consecutive checked days from today backwards)
+  // Calculate current streak (consecutive checked days from last allowed date backwards)
   let currentStreak = 0;
   for (let i = lastDays.length - 1; i >= 0; i--) {
     const dayCheckIn = checkIns.find((c) => c.date === lastDays[i].date);
@@ -52,12 +48,17 @@ export function HabitItem({
     else break;
   }
 
-  // Count checked check-ins in current week (Monday to Sunday)
+  // Count checked check-ins in the displayed 7-day window (not calendar week)
+  const windowStart = startOfDay(parseLocalDate(lastDays[0].date)); // First day in window (6 days ago)
+  const windowEnd = startOfDay(parseLocalDate(lastDays[6].date)); // Last day in window (lastAllowedDate)
+
   const weeklyCheckedCount = checkIns.filter((checkIn) => {
     if (!checkIn.isChecked) return false;
-    // Parse check-in date as local date to avoid timezone issues
     const checkInDate = startOfDay(parseLocalDate(checkIn.date));
-    return isWithinInterval(checkInDate, { start: weekStart, end: weekEnd });
+    return isWithinInterval(checkInDate, {
+      start: windowStart,
+      end: windowEnd,
+    });
   }).length;
 
   // Get the goal (frequency: number of times per week)
@@ -72,19 +73,19 @@ export function HabitItem({
     goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
 
   return (
-    <li className="flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
+    <li className="border-border bg-card flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
       <div className="flex w-full flex-col items-start text-left">
-        <p className="text-base font-medium text-gray-800">{habit.name}</p>
+        <p className="text-foreground text-sm font-medium">{habit.name}</p>
         <div className="mt-1 flex items-center gap-4 text-xs">
-          <span className="text-gray-500">Streak: {currentStreak}</span>
-          <span className="text-gray-500">
+          <span className="text-muted-foreground">Streak: {currentStreak}</span>
+          <span className="text-muted-foreground">
             Week: {weeklyCheckedCount}/{goal} ({percentage}%)
           </span>
         </div>
         {/* Progress bar */}
-        <div className="mt-1.5 h-1.5 w-full max-w-[100px] overflow-hidden rounded-full bg-gray-200">
+        <div className="bg-muted mt-1.5 h-1.5 w-full max-w-[100px] overflow-hidden rounded-full">
           <div
-            className="h-full bg-blue-500 transition-all"
+            className="h-full bg-blue-500 transition-all dark:bg-blue-400"
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />
         </div>
@@ -94,10 +95,11 @@ export function HabitItem({
           const check = habit.checkIns.find((c) => c.date === date);
           const done = check ? check.isChecked : false;
 
-          // Allow check-ins on any day of the current week (Monday to Sunday)
-          // Only disable dates that are beyond the current week (after Sunday)
           const checkInDate = startOfDay(parseLocalDate(date));
-          const isDisabled = checkInDate.getTime() > weekEnd.getTime();
+
+          // Disable if date is in the future (after last allowed date)
+          const isFuture = isAfter(checkInDate, lastAllowedDate);
+          const isDisabled = isFuture;
 
           return (
             <div
@@ -108,21 +110,28 @@ export function HabitItem({
                   if (!done) triggerConfetti(e.clientX, e.clientY);
                 }
               }}
-              className={`flex h-[24px] w-[24px] items-center justify-center rounded-full border text-[12px] ${
-                done ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-500'
-              } ${isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              className={cn(
+                'flex h-[24px] w-[24px] items-center justify-center rounded-full border text-[12px]',
+                {
+                  'bg-blue-500 text-white dark:bg-blue-400': done,
+                  'bg-muted text-muted-foreground': !done,
+                  'cursor-not-allowed opacity-50': isDisabled,
+                  'cursor-pointer': !isDisabled,
+                },
+              )}
               title={date}
             >
               {label}
             </div>
           );
         })}
-        <div className="mx-3 h-6 border-l border-gray-300"></div>
+        <div className="border-border mx-3 h-6 border-l"></div>
         <button
           type="button"
           onClick={() => onEdit(habit)}
           aria-label="Edit habit"
           title="Edit Habit"
+          className="text-muted-foreground hover:text-foreground"
         >
           <Edit2 size={16} />
         </button>

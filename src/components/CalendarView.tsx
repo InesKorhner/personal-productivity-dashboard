@@ -17,6 +17,7 @@ import { useUpdateTask } from '@/lib/useTasks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CheckCircle2, ListTodo } from 'lucide-react';
+import { useThemeStore } from '@/lib/useThemeStore';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
@@ -28,7 +29,7 @@ const locales = {
 const localizer = dateFnsLocalizer({
   format,
   parse,
-  startOfWeek,
+  startOfWeek: (date: Date) => startOfWeek(date, { weekStartsOn: 1 }),
   getDay,
   locales,
 });
@@ -90,6 +91,7 @@ function CustomEvent({ event }: { event: CalendarEvent }) {
 
 export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
   const updateTask = useUpdateTask();
+  const theme = useThemeStore((state) => state.theme);
   const [currentView, setCurrentView] = useState<View>('month');
   const [currentDate, setCurrentDate] = useState(() => new Date());
 
@@ -200,16 +202,28 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
   // Event styling based on type and status
   const eventPropGetter = (event: CalendarEvent | object) => {
     const calendarEvent = event as CalendarEvent;
+    const isDark = theme === 'dark';
 
     if (calendarEvent.type === 'task') {
       const task = calendarEvent.resource as Task;
       const isDone = task.status === TaskStatus.DONE;
 
+      if (isDone) {
+        return {
+          className: 'opacity-60 line-through',
+          style: {
+            backgroundColor: isDark ? '#6b7280' : '#9ca3af',
+            borderColor: isDark ? '#4b5563' : '#6b7280',
+            color: '#ffffff',
+          },
+        };
+      }
+
       return {
-        className: isDone ? 'opacity-60 line-through' : '',
+        className: '',
         style: {
-          backgroundColor: isDone ? '#9ca3af' : '#3b82f6',
-          borderColor: isDone ? '#6b7280' : '#2563eb',
+          backgroundColor: isDark ? '#2563eb' : '#3b82f6',
+          borderColor: isDark ? '#1d4ed8' : '#2563eb',
           color: '#ffffff',
         },
       };
@@ -218,8 +232,8 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
       return {
         className: '',
         style: {
-          backgroundColor: '#10b981', // Green for checked
-          borderColor: '#059669',
+          backgroundColor: isDark ? '#059669' : '#10b981',
+          borderColor: isDark ? '#047857' : '#059669',
           color: '#ffffff',
           opacity: 1,
         },
@@ -229,16 +243,24 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
 
   // Custom formats to remove time display completely
   const formats = {
-    dayFormat: 'ddd D',
-    dayHeaderFormat: 'ddd M/D',
-    dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) =>
-      `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`,
+    dayFormat: (date: Date) => format(date, 'd'), // Day number in month view (1, 2, 3, etc.)
+    dayHeaderFormat: (date: Date) => format(date, 'EEEE, MMMM d, yyyy'), // Day view: "Monday, January 15, 2024"
+    dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) => {
+      // Week view: "December 15 - December 21, 2025"
+      if (start.getFullYear() === end.getFullYear()) {
+        if (start.getMonth() === end.getMonth()) {
+          return `${format(start, 'MMMM d')} - ${format(end, 'MMMM d, yyyy')}`;
+        }
+        return `${format(start, 'MMMM d')} - ${format(end, 'MMMM d, yyyy')}`;
+      }
+      return `${format(start, 'MMMM d, yyyy')} - ${format(end, 'MMMM d, yyyy')}`;
+    },
     eventTimeRangeFormat: () => '', // No time display
     eventTimeRangeStartFormat: () => '',
     eventTimeRangeEndFormat: () => '',
     timeGutterFormat: () => '',
-    monthHeaderFormat: 'MMMM YYYY',
-    weekdayFormat: 'ddd',
+    monthHeaderFormat: 'MMMM yyyy', // Month view header: "January 2024"
+    weekdayFormat: (date: Date) => format(date, 'EEEE'), // Full weekday names: "Monday", "Tuesday", etc.
     selectRangeFormat: ({ start, end }: { start: Date; end: Date }) =>
       `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`,
   };

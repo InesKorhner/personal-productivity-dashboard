@@ -72,7 +72,7 @@ export function EditHabitDialog({
               />
             </div>
             <div className="mb-2 flex flex-col items-start space-x-2">
-              <label className="mb-2 block text-sm font-medium">
+              <label className="text-foreground mb-2 block text-sm font-medium">
                 Frequency
               </label>
               <div className="relative w-full">
@@ -87,11 +87,14 @@ export function EditHabitDialog({
                 />
                 <div className="absolute top-1/2 left-0 flex h-0.5 w-full -translate-y-1/2 justify-between">
                   {Array.from({ length: 7 }, (_, i) => (
-                    <span key={i} className="block h-1 w-0.5 bg-gray-400" />
+                    <span
+                      key={i}
+                      className="bg-muted-foreground/40 block h-1 w-0.5"
+                    />
                   ))}
                 </div>
               </div>
-              <span className="mt-2 text-sm">
+              <span className="text-muted-foreground mt-2 text-sm">
                 {formData.frequency} times per week
               </span>
             </div>
@@ -125,9 +128,7 @@ export function EditHabitDialog({
               <Button variant="outline">Cancel</Button>
             </DialogClose>
 
-            <Button type="submit" className="bg-[#4772FA]">
-              Save Changes
-            </Button>
+            <Button type="submit">Save Changes</Button>
           </DialogFooter>
         </form>
       </DialogContent>

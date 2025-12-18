@@ -51,7 +51,7 @@ export function TaskView({
         <>
           {todoTasks.length > 0 ? (
             <>
-              <h3 className="mb-3 text-lg font-semibold text-gray-800">To Do</h3>
+              <h3 className="mb-3 text-lg font-semibold text-foreground">To Do</h3>
               <TaskList
                 tasks={todoTasks}
                 onStatusChange={onStatusChange}
@@ -62,7 +62,7 @@ export function TaskView({
               />
             </>
           ) : (
-            <div className="py-8 text-center text-sm text-gray-500">
+            <div className="py-8 text-center text-sm text-muted-foreground">
               No tasks to do
             </div>
           )}
@@ -73,7 +73,7 @@ export function TaskView({
         <>
           {completedTasks.length > 0 ? (
             <>
-              <h3 className="mb-3 text-lg font-semibold text-gray-800">Completed</h3>
+              <h3 className="mb-3 text-lg font-semibold text-foreground">Completed</h3>
               <TaskList
                 tasks={completedTasks}
                 onStatusChange={onStatusChange}
@@ -84,7 +84,7 @@ export function TaskView({
               />
             </>
           ) : (
-            <div className="py-8 text-center text-sm text-gray-500">
+            <div className="py-8 text-center text-sm text-muted-foreground">
               No completed tasks
             </div>
           )}
@@ -95,7 +95,7 @@ export function TaskView({
         <>
           {deletedTasks.length > 0 ? (
             <>
-              <h3 className="mb-3 text-lg font-semibold text-gray-800">Deleted</h3>
+              <h3 className="mb-3 text-lg font-semibold text-foreground">Deleted</h3>
               <TaskList
                 tasks={deletedTasks}
                 onStatusChange={onStatusChange}
@@ -106,7 +106,7 @@ export function TaskView({
               />
             </>
           ) : (
-            <div className="py-8 text-center text-sm text-gray-500">
+            <div className="py-8 text-center text-sm text-muted-foreground">
               Trash is empty
             </div>
           )}

@@ -1,5 +1,5 @@
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Calendar, ListTodo, CheckCircle2 } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 import {
   Sidebar,
@@ -15,57 +15,47 @@ import {
 
 const items = [
   {
-    title: 'Tasks',
+    title: 'My Tasks',
     url: '/tasks',
-    icon: Home,
+    icon: ListTodo,
   },
   {
     title: 'Habit Tracker',
     url: '/habits',
-    icon: Inbox,
+    icon: CheckCircle2,
   },
   {
-    title: 'Calendar',
+    title: 'Calendar View',
     url: '/calendar',
     icon: Calendar,
-  },
-  {
-    title: 'Stats',
-    url: '/stats',
-    icon: Search,
-  },
-  {
-    title: 'Search',
-    url: '/search',
-    icon: Search,
-  },
-  {
-    title: 'Theme',
-    url: '/theme',
-    icon: Settings,
   },
 ];
 
 export function AppSidebar() {
+  const location = useLocation();
+
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className='relative flex items-center justify-between p-2'>
-        <SidebarTrigger className='absolute top-1 right-2 z-50'/>
+      <SidebarHeader className="relative flex items-center justify-between p-2">
+        <SidebarTrigger className="absolute top-1 right-2 z-50" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {items.map((item) => {
+                const isActive = location.pathname === item.url;
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={isActive}>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

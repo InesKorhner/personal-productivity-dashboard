@@ -35,7 +35,7 @@ export function HabitList({
 
   if (habits.length === 0) {
     return (
-      <div className="mt-4 text-center text-gray-500">
+      <div className="mt-4 text-center text-muted-foreground">
         No habits yet — add your first one!
       </div>
     );
@@ -52,7 +52,7 @@ export function HabitList({
 
         return (
           <div key={section}>
-            <h2 className="mb-2 text-sm font-semibold text-gray-800">
+            <h2 className="mb-2 text-sm font-semibold text-foreground">
               {section}
             </h2>
             <ul className="space-y-2">

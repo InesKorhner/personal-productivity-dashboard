@@ -19,7 +19,7 @@ export function CategoryList({
 }: CategoryListProps) {
   return (
     <nav className="p-4">
-      <div className="mb-4 text-sm font-semibold">Lists</div>
+      <div className="text-foreground mb-4 text-sm font-semibold">Lists</div>
       <ul className="space-y-1">
         {categories.map((c) => (
           <li key={c}>
@@ -30,7 +30,7 @@ export function CategoryList({
                 onSelectCategory(c);
               }}
               className={cn(
-                'w-full rounded-md px-3 py-2 text-left hover:bg-gray-100',
+                'hover:bg-accent w-full rounded-md px-3 py-2 text-left',
                 selectedView === 'category' && selectedCategory === c
                   ? 'bg-primary/10 font-medium'
                   : '',
@@ -42,14 +42,14 @@ export function CategoryList({
         ))}
       </ul>
 
-      <div className="mt-6 text-sm font-semibold">Sections</div>
+      <div className="text-foreground mt-6 text-sm font-semibold">Sections</div>
       <ul className="mt-2 space-y-1">
         <li>
           <button
             type="button"
             onClick={() => onSelectView('completed')}
             className={cn(
-              'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors hover:bg-gray-100',
+              'hover:bg-accent flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors',
               selectedView === 'completed' ? 'bg-primary/10 font-medium' : '',
             )}
           >
@@ -62,7 +62,7 @@ export function CategoryList({
             type="button"
             onClick={() => onSelectView('deleted')}
             className={cn(
-              'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors hover:bg-gray-100',
+              'hover:bg-accent flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors',
               selectedView === 'deleted' ? 'bg-primary/10 font-medium' : '',
             )}
           >

@@ -139,12 +139,15 @@ export function HabitTrackerPage() {
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
+  const resetDismissed = () => {
+    setIsErrorDismissed(false);
+  };
+
   useEffect(() => {
-    if (error && isErrorDismissed) {
-      // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
-      setIsErrorDismissed(false);
+    if (error) {
+      resetDismissed();
     }
-  }, [error, isErrorDismissed]);
+  }, [error]);
 
   return (
     <div className="mx-auto max-w-4xl px-4">
