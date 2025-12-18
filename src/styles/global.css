@@ -145,15 +145,16 @@
 }
 
 .rbc-toolbar button:hover {
-  background-color: var(--accent);
-  color: var(--accent-foreground);
+  background-color: var(--muted);
+  color: var(--foreground);
 }
 
 .rbc-toolbar button:active,
 .rbc-toolbar button.rbc-active {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
+  background-color: var(--accent);
+  color: var(--foreground);
   border-color: var(--primary);
+  font-weight: 500;
 }
 
 .rbc-toolbar button:focus {

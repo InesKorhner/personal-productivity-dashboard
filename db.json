@@ -1,43 +1,55 @@
 {
   "habits": [
     {
-      "id": "491d",
-      "name": "ggdg",
+      "id": "d0d8",
+      "name": "steva",
       "frequency": 1,
       "section": "Others",
-      "startDate": "2025-12-17"
+      "startDate": "2025-12-18"
     },
     {
-      "id": "0313",
-      "name": "fsf",
+      "id": "53b2",
+      "name": "dadada",
       "frequency": 1,
-      "section": "Morning",
+      "section": "Afternoon",
       "startDate": "2025-12-18"
     }
   ],
   "checkIns": [
     {
-      "id": "f27e",
-      "habitId": "491d",
-      "date": "2025-12-11",
+      "id": "fa5d",
+      "habitId": "d0d8",
+      "date": "2025-12-12",
       "isChecked": true
     },
     {
-      "id": "d9be",
-      "habitId": "491d",
+      "id": "5276",
+      "habitId": "d0d8",
+      "date": "2025-12-13",
+      "isChecked": true
+    },
+    {
+      "id": "734c",
+      "habitId": "d0d8",
       "date": "2025-12-14",
       "isChecked": true
     },
     {
-      "id": "6446",
-      "habitId": "491d",
-      "date": "2025-12-17",
+      "id": "97d9",
+      "habitId": "d0d8",
+      "date": "2025-12-15",
       "isChecked": true
     },
     {
-      "id": "01b5",
-      "habitId": "0313",
-      "date": "2025-12-13",
+      "id": "6eea",
+      "habitId": "d0d8",
+      "date": "2025-12-16",
+      "isChecked": true
+    },
+    {
+      "id": "3786",
+      "habitId": "d0d8",
+      "date": "2025-12-17",
       "isChecked": true
     }
   ],
@@ -98,24 +110,6 @@
       "category": "Work"
     },
     {
-      "id": "5386",
-      "text": "xada",
-      "category": "Exercise",
-      "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "7fcd",
-      "text": "dada",
-      "category": "Exercise",
-      "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
       "id": "6307",
       "text": "sada",
       "category": "Exercise",
@@ -123,7 +117,7 @@
       "deleted": false,
       "deletedAt": null,
       "notes": "",
-      "date": "2025-12-10"
+      "date": "2025-12-03"
     },
     {
       "id": "3cfb",
@@ -135,16 +129,6 @@
       "notes": ""
     },
     {
-      "id": "a1a7",
-      "text": "dada",
-      "category": "Exercise",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-18"
-    },
-    {
       "id": "25ef",
       "text": "dadad",
       "category": "Exercise",
@@ -152,7 +136,7 @@
       "deleted": false,
       "deletedAt": null,
       "notes": "",
-      "date": "2025-12-26"
+      "date": "2025-12-18"
     }
   ]
 }
