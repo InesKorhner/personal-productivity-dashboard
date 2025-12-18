@@ -1,8 +1,12 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Tailwind CSS v4 directive - valid but linter doesn't recognize it */
+/* eslint-disable-next-line */
 @custom-variant dark (&:is(.dark *));
 
+/* Tailwind CSS v4 directive - valid but linter doesn't recognize it */
+/* eslint-disable-next-line */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -112,10 +116,12 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: color-mix(in oklch, var(--ring) 50%, transparent);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
 
