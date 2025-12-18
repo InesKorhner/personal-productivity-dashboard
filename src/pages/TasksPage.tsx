@@ -141,11 +141,15 @@ export default function TasksPage() {
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
+  const resetErrorDismissed = () => {
+    setIsErrorDismissed(false);
+  };
+
   useEffect(() => {
-    if (error && isErrorDismissed) {
-      setIsErrorDismissed(false);
+    if (error) {
+      resetErrorDismissed();
     }
-  }, [error, isErrorDismissed]);
+  }, [error]);
 
   return (
     <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">

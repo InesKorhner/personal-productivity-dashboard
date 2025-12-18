@@ -25,7 +25,7 @@ const items = [
     icon: CheckCircle2,
   },
   {
-    title: 'Calendar',
+    title: 'Calendar View',
     url: '/calendar',
     icon: Calendar,
   },

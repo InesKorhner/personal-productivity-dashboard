@@ -246,14 +246,14 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
     dayFormat: (date: Date) => format(date, 'd'), // Day number in month view (1, 2, 3, etc.)
     dayHeaderFormat: (date: Date) => format(date, 'EEEE, MMMM d, yyyy'), // Day view: "Monday, January 15, 2024"
     dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) => {
-      // Week view: "Monday, January 15 - Sunday, January 21, 2024"
+      // Week view: "December 15 - December 21, 2025"
       if (start.getFullYear() === end.getFullYear()) {
         if (start.getMonth() === end.getMonth()) {
-          return `${format(start, 'EEEE, MMMM d')} - ${format(end, 'EEEE, MMMM d, yyyy')}`;
+          return `${format(start, 'MMMM d')} - ${format(end, 'MMMM d, yyyy')}`;
         }
-        return `${format(start, 'EEEE, MMMM d')} - ${format(end, 'EEEE, MMMM d, yyyy')}`;
+        return `${format(start, 'MMMM d')} - ${format(end, 'MMMM d, yyyy')}`;
       }
-      return `${format(start, 'EEEE, MMMM d, yyyy')} - ${format(end, 'EEEE, MMMM d, yyyy')}`;
+      return `${format(start, 'MMMM d, yyyy')} - ${format(end, 'MMMM d, yyyy')}`;
     },
     eventTimeRangeFormat: () => '', // No time display
     eventTimeRangeStartFormat: () => '',

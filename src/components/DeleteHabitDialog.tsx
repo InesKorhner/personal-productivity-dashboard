@@ -46,7 +46,7 @@ export function DeleteHabitDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-[#4772FA]" onClick={handleConfirm}>
+          <AlertDialogAction onClick={handleConfirm}>
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

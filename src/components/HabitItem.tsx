@@ -75,7 +75,7 @@ export function HabitItem({
   return (
     <li className="border-border bg-card flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
       <div className="flex w-full flex-col items-start text-left">
-        <p className="text-foreground text-base font-medium">{habit.name}</p>
+        <p className="text-foreground text-sm font-medium">{habit.name}</p>
         <div className="mt-1 flex items-center gap-4 text-xs">
           <span className="text-muted-foreground">Streak: {currentStreak}</span>
           <span className="text-muted-foreground">

@@ -19,7 +19,7 @@ export function CategoryList({
 }: CategoryListProps) {
   return (
     <nav className="p-4">
-      <div className="mb-4 text-sm font-semibold">Lists</div>
+      <div className="text-foreground mb-4 text-sm font-semibold">Lists</div>
       <ul className="space-y-1">
         {categories.map((c) => (
           <li key={c}>
@@ -42,7 +42,7 @@ export function CategoryList({
         ))}
       </ul>
 
-      <div className="mt-6 text-sm font-semibold">Sections</div>
+      <div className="text-foreground mt-6 text-sm font-semibold">Sections</div>
       <ul className="mt-2 space-y-1">
         <li>
           <button
