@@ -51,6 +51,42 @@
       "habitId": "d0d8",
       "date": "2025-12-17",
       "isChecked": true
+    },
+    {
+      "id": "f01d",
+      "habitId": "53b2",
+      "date": "2025-12-12",
+      "isChecked": true
+    },
+    {
+      "id": "e074",
+      "habitId": "53b2",
+      "date": "2025-12-13",
+      "isChecked": true
+    },
+    {
+      "id": "04b7",
+      "habitId": "53b2",
+      "date": "2025-12-14",
+      "isChecked": false
+    },
+    {
+      "id": "9407",
+      "habitId": "53b2",
+      "date": "2025-12-15",
+      "isChecked": true
+    },
+    {
+      "id": "281f",
+      "habitId": "53b2",
+      "date": "2025-12-16",
+      "isChecked": true
+    },
+    {
+      "id": "47d7",
+      "habitId": "53b2",
+      "date": "2025-12-17",
+      "isChecked": true
     }
   ],
   "tasks": [
