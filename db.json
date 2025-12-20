@@ -132,7 +132,7 @@
       "text": "hkbk",
       "category": "MyList",
       "status": "DONE",
-      "deleted": false,
+      "deleted": true,
       "deletedAt": null,
       "notes": ""
     },
@@ -141,7 +141,7 @@
       "text": "ffs",
       "category": "MyList",
       "status": "DONE",
-      "deleted": false,
+      "deleted": true,
       "deletedAt": null,
       "notes": ""
     },
@@ -159,6 +159,34 @@
       "text": "eqe",
       "category": "MyList",
       "status": "DONE",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "91c7",
+      "text": "gdg",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "db5b",
+      "text": "gdg",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-17"
+    },
+    {
+      "id": "fbe2",
+      "text": "fsf",
+      "category": "MyList",
+      "status": "TODO",
       "deleted": false,
       "deletedAt": null,
       "notes": ""

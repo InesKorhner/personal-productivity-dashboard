@@ -1,7 +1,7 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
 import { TaskStatus, type Task } from '@/types';
 import { CATEGORIES } from '@/types';
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo} from 'react';
 import { CategoryList } from '@/components/CategoryList';
 import { TaskView } from '@/components/TaskView';
 import { NotesAside } from '@/components/NotesAside';
@@ -45,23 +45,6 @@ export default function TasksPage() {
   const updateTask = useUpdateTask();
   const deleteTask = useDeleteTask();
   const isMobile = useIsMobile();
-  const [isDesktop, setIsDesktop] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth >= 1024;
-    }
-    return false;
-  });
-
-  // Check if we're on desktop (≥ 1024px) for grid layout
-  useEffect(() => {
-    const updateDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-    updateDesktop();
-    window.addEventListener('resize', updateDesktop);
-    return () => window.removeEventListener('resize', updateDesktop);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     () => {
@@ -82,14 +65,18 @@ export default function TasksPage() {
 
   const [selectedView, setSelectedView] = useState<'category'>('category');
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
-  const [isErrorDismissed, setIsErrorDismissed] = useState(false);
   const [notesSheetOpen, setNotesSheetOpen] = useState(false);
-  const setIsErrorDismissedRef = useRef(setIsErrorDismissed);
+  const [isErrorDismissed, setIsErrorDismissed] = useState(false);
 
-  // Keep ref updated
+  const resetErrorDismissed = () => {
+    setIsErrorDismissed(false);
+  };
+  
   useEffect(() => {
-    setIsErrorDismissedRef.current = setIsErrorDismissed;
-  }, []);
+    if (error) {
+      resetErrorDismissed();
+    }
+  }, [error]);
 
   const handleAddTask = async (taskData: {
     text: string;
@@ -163,8 +150,9 @@ export default function TasksPage() {
 
   const handleSelectTask = (taskId: string | null) => {
     setSelectedTaskId(taskId);
-    // Open notes sheet on mobile/tablet (< 1024px) when task is selected
-    if (taskId && !isDesktop) {
+    // Open notes sheet on mobile (< 768px) when task is selected
+    // On desktop (≥ 1024px), Notes are always visible in the grid sidebar
+    if (taskId && isMobile) {
       setNotesSheetOpen(true);
     }
   };
@@ -197,12 +185,6 @@ export default function TasksPage() {
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
-  useEffect(() => {
-    if (error) {
-      // Reset error dismissed state when error changes
-      setIsErrorDismissedRef.current(false);
-    }
-  }, [error]);
 
   // Memoize context value to avoid unnecessary re-renders
   const contextValue = useMemo(
@@ -225,7 +207,7 @@ export default function TasksPage() {
         </div>
 
         {/* Main content area */}
-        <div className="flex min-w-0 flex-1 flex-col overflow-hidden lg:min-h-0">
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden lg:h-full lg:min-h-0 lg:flex-none">
           {/* Mobile: Filter bar with category select only */}
           {isMobile && (
             <div className="bg-background shrink-0 border-b px-4 py-3">
@@ -310,12 +292,13 @@ export default function TasksPage() {
           </div>
         </div>
 
-        {/* NotesAside - Sheet on mobile/tablet, sidebar on desktop (third column in grid) */}
-        {isDesktop ? (
-          <div className="bg-background hidden min-w-0 lg:block">
-            {renderNotesComponent(selectedTask, handleSaveNotes, true)}
-          </div>
-        ) : (
+        {/* NotesAside - CSS controls layout: hidden on mobile/tablet, visible in grid on desktop (≥ 1024px) */}
+        <div className="bg-background hidden min-w-0 lg:block">
+          {renderNotesComponent(selectedTask, handleSaveNotes, true)}
+        </div>
+
+        {/* NotesAside - Sheet for mobile only (< 768px) */}
+        {isMobile && (
           <Sheet open={notesSheetOpen} onOpenChange={setNotesSheetOpen}>
             <SheetContent side="right" className="w-full sm:max-w-md">
               {renderNotesComponent(selectedTask, handleSaveNotes, false)}
