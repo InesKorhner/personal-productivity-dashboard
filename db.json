@@ -110,33 +110,58 @@
       "category": "Work"
     },
     {
-      "id": "6307",
-      "text": "sada",
-      "category": "Exercise",
-      "status": "TODO",
-      "deleted": false,
+      "id": "1853",
+      "text": "ines korhner",
+      "category": "MyList",
+      "status": "DONE",
+      "deleted": true,
       "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-03"
+      "notes": ""
     },
     {
-      "id": "3cfb",
-      "text": "sDAsad",
-      "category": "Exercise",
+      "id": "1405",
+      "text": "dadad",
+      "category": "Work",
+      "status": "DONE",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "e9bd",
+      "text": "hkbk",
+      "category": "MyList",
+      "status": "DONE",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "aa62",
+      "text": "ffs",
+      "category": "MyList",
+      "status": "DONE",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "3351",
+      "text": "fsfs",
+      "category": "MyList",
       "status": "TODO",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
     },
     {
-      "id": "25ef",
-      "text": "dadad",
-      "category": "Exercise",
-      "status": "TODO",
+      "id": "7516",
+      "text": "eqe",
+      "category": "MyList",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-18"
+      "notes": ""
     }
   ]
 }

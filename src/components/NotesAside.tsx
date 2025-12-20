@@ -3,11 +3,12 @@ import type { Task } from '@/types';
 interface NotesAsideProps {
   selectedTask: Task | null;
   onSaveNotes: (taskId: string, notes: string) => void;
+  scrollable?: boolean;
 }
 
-export function NotesAside({ selectedTask, onSaveNotes }: NotesAsideProps) {
+export function NotesAside({ selectedTask, onSaveNotes, scrollable = true }: NotesAsideProps) {
   return (
-    <aside className="h-full overflow-y-auto border-l p-6">
+    <aside className={`h-full p-6 ${scrollable ? 'overflow-y-auto' : ''}`}>
       <div className="mb-4 text-lg font-semibold text-foreground">Notes</div>
       {selectedTask ? (
         <div className="space-y-4">

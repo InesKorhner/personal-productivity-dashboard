@@ -1,7 +1,7 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
 import { TaskStatus, type Task } from '@/types';
 import { CATEGORIES } from '@/types';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 import { TaskView } from '@/components/TaskView';
 import { NotesAside } from '@/components/NotesAside';
@@ -15,29 +15,81 @@ import {
   useUpdateTask,
 } from '@/lib/useTasks';
 import { toast } from 'sonner';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { TasksPageContext } from '@/contexts/TasksPageContext';
+
+// Notes component helper - rendered as Sheet on mobile/tablet, aside on desktop
+const renderNotesComponent = (
+  selectedTask: Task | null,
+  onSaveNotes: (taskId: string, notes: string) => void,
+  scrollable: boolean,
+) => (
+  <NotesAside
+    selectedTask={selectedTask}
+    onSaveNotes={onSaveNotes}
+    scrollable={scrollable}
+  />
+);
 
 export default function TasksPage() {
   const { data: tasks = [], isLoading, error, refetch } = useTasks();
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
   const deleteTask = useDeleteTask();
+  const isMobile = useIsMobile();
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 1024;
+    }
+    return false;
+  });
+
+  // Check if we're on desktop (≥ 1024px) for grid layout
+  useEffect(() => {
+    const updateDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    updateDesktop();
+    window.addEventListener('resize', updateDesktop);
+    return () => window.removeEventListener('resize', updateDesktop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     () => {
-      const savedCategory = localStorage.getItem('selectedCategory');
-      return savedCategory || 'MyList';
+      if (typeof window !== 'undefined') {
+        const savedCategory = localStorage.getItem('selectedCategory');
+        return savedCategory || null;
+      }
+      return null;
     },
   );
 
+  // Save category to localStorage when it changes
   useEffect(() => {
-    localStorage.setItem('selectedCategory', selectedCategory ?? '');
+    if (selectedCategory) {
+      localStorage.setItem('selectedCategory', selectedCategory);
+    }
   }, [selectedCategory]);
 
-  const [selectedView, setSelectedView] = useState<
-    'category' | 'completed' | 'deleted'
-  >('category');
+  const [selectedView, setSelectedView] = useState<'category'>('category');
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [isErrorDismissed, setIsErrorDismissed] = useState(false);
+  const [notesSheetOpen, setNotesSheetOpen] = useState(false);
+  const setIsErrorDismissedRef = useRef(setIsErrorDismissed);
+
+  // Keep ref updated
+  useEffect(() => {
+    setIsErrorDismissedRef.current = setIsErrorDismissed;
+  }, []);
 
   const handleAddTask = async (taskData: {
     text: string;
@@ -111,6 +163,10 @@ export default function TasksPage() {
 
   const handleSelectTask = (taskId: string | null) => {
     setSelectedTaskId(taskId);
+    // Open notes sheet on mobile/tablet (< 1024px) when task is selected
+    if (taskId && !isDesktop) {
+      setNotesSheetOpen(true);
+    }
   };
 
   const handleSaveNotes = async (taskId: string, notes: string) => {
@@ -134,92 +190,139 @@ export default function TasksPage() {
     onSelectTask: handleSelectTask,
   };
 
-  const categoryTasks = useMemo(
-    () => tasks.filter((t) => t.category === selectedCategory),
-    [tasks, selectedCategory],
-  );
+  const categoryTasks = useMemo(() => {
+    if (!selectedCategory) return [];
+    return tasks.filter((t) => t.category === selectedCategory);
+  }, [tasks, selectedCategory]);
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
-  const resetErrorDismissed = () => {
-    setIsErrorDismissed(false);
-  };
-
   useEffect(() => {
     if (error) {
-      resetErrorDismissed();
+      // Reset error dismissed state when error changes
+      setIsErrorDismissedRef.current(false);
     }
   }, [error]);
 
+  // Memoize context value to avoid unnecessary re-renders
+  const contextValue = useMemo(
+    () => ({ selectedView, onSelectView: setSelectedView }),
+    [selectedView],
+  );
+
   return (
-    <div className="grid h-screen grid-cols-[250px_1fr_400px] gap-6 p-6">
-      <CategoryList
-        categories={CATEGORIES}
-        selectedCategory={selectedCategory}
-        selectedView={selectedView}
-        onSelectCategory={setSelectedCategory}
-        onSelectView={setSelectedView}
-      />
+    <TasksPageContext.Provider value={contextValue}>
+      <div className="flex h-screen w-full flex-col overflow-hidden lg:grid lg:grid-cols-[250px_1fr_400px] lg:gap-6 lg:p-6">
+        {/* Desktop: CategoryList sidebar */}
+        <div className="hidden lg:block">
+          <CategoryList
+            categories={CATEGORIES}
+            selectedCategory={selectedCategory}
+            selectedView="category"
+            onSelectCategory={setSelectedCategory}
+            onSelectView={setSelectedView}
+          />
+        </div>
 
-      <div className="flex flex-col gap-4">
-        <AddTaskForm
-          onAddTask={handleAddTask}
-          selectedCategory={selectedCategory}
-        />
-
-        {errorMessage && !isErrorDismissed && (
-          <div className="border-destructive/50 bg-destructive/10 flex items-center justify-between gap-4 rounded-lg border p-4">
-            <div className="flex items-center gap-3">
-              <AlertCircle className="text-destructive size-5 shrink-0" />
-              <p className="text-destructive text-sm font-semibold">
-                {errorMessage}
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button onClick={() => refetch()} variant="outline" size="sm">
-                <RefreshCw className="size-4" />
-                Retry Load
-              </Button>
-              <Button
-                onClick={() => setIsErrorDismissed(true)}
-                variant="ghost"
-                size="sm"
-                aria-label="Dismiss error"
+        {/* Main content area */}
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden lg:min-h-0">
+          {/* Mobile: Filter bar with category select only */}
+          {isMobile && (
+            <div className="bg-background shrink-0 border-b px-4 py-3">
+              <Select
+                value={selectedCategory || undefined}
+                onValueChange={(value) => {
+                  setSelectedView('category');
+                  setSelectedCategory(value);
+                }}
               >
-                <X className="size-4" />
-              </Button>
+                <SelectTrigger className="h-9 w-full text-base">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CATEGORIES.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* Tasks area - single scroll */}
+          <div className="flex min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+            <div className="w-full min-w-0 flex-1">
+              <div className="w-full max-w-full p-4 md:p-6">
+                <div className="mx-auto max-w-full space-y-4 lg:max-w-3xl">
+                  <AddTaskForm
+                    onAddTask={handleAddTask}
+                    selectedCategory={selectedCategory}
+                  />
+
+                  {errorMessage && !isErrorDismissed && (
+                    <div className="border-destructive/50 bg-destructive/10 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex min-w-0 items-center gap-3">
+                        <AlertCircle className="text-destructive size-5 shrink-0" />
+                        <p className="text-destructive text-sm font-semibold break-words">
+                          {errorMessage}
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 gap-2">
+                        <Button
+                          onClick={() => refetch()}
+                          variant="outline"
+                          size="sm"
+                        >
+                          <RefreshCw className="size-4" />
+                          <span className="hidden sm:inline">Retry Load</span>
+                        </Button>
+                        <Button
+                          onClick={() => setIsErrorDismissed(true)}
+                          variant="ghost"
+                          size="sm"
+                          aria-label="Dismiss error"
+                        >
+                          <X className="size-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {isLoading ? (
+                    <div className="flex flex-col gap-4">
+                      <Skeleton className="h-12 w-full" />
+                      <Skeleton className="h-32 w-full" />
+                      <Skeleton className="h-32 w-full" />
+                    </div>
+                  ) : (
+                    <TaskView
+                      {...taskListProps}
+                      tasks={categoryTasks}
+                      showToDo
+                      showCompleted
+                      showDeleted
+                    />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-        )}
+        </div>
 
-        {isLoading ? (
-          <div className="flex flex-col gap-4">
-            <Skeleton className="h-12 w-full" />
-            <Skeleton className="h-32 w-full" />
-            <Skeleton className="h-32 w-full" />
+        {/* NotesAside - Sheet on mobile/tablet, sidebar on desktop (third column in grid) */}
+        {isDesktop ? (
+          <div className="bg-background hidden min-w-0 lg:block">
+            {renderNotesComponent(selectedTask, handleSaveNotes, true)}
           </div>
         ) : (
-          <>
-            {selectedView === 'category' && (
-              <TaskView
-                {...taskListProps}
-                tasks={categoryTasks}
-                showToDo
-                showCompleted
-              />
-            )}
-
-            {selectedView === 'completed' && (
-              <TaskView {...taskListProps} tasks={tasks} showCompleted />
-            )}
-
-            {selectedView === 'deleted' && (
-              <TaskView {...taskListProps} tasks={tasks} showDeleted />
-            )}
-          </>
+          <Sheet open={notesSheetOpen} onOpenChange={setNotesSheetOpen}>
+            <SheetContent side="right" className="w-full sm:max-w-md">
+              {renderNotesComponent(selectedTask, handleSaveNotes, false)}
+            </SheetContent>
+          </Sheet>
         )}
       </div>
-      <NotesAside selectedTask={selectedTask} onSaveNotes={handleSaveNotes} />
-    </div>
+    </TasksPageContext.Provider>
   );
 }

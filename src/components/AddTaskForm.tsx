@@ -44,7 +44,7 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-4 flex w-full items-center gap-3"
+      className="mb-4 flex w-full flex-col gap-3 lg:flex-row lg:items-center"
     >
       {/* Input group with date picker */}
       <div className="focus-within:ring-ring flex flex-1 items-center overflow-hidden rounded-md border focus-within:ring-2 focus-within:ring-offset-2">
@@ -53,7 +53,7 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
           placeholder="Add a new task..."
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="flex-1 border-0 px-4 py-2 focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="flex-1 border-0 px-4 py-2 text-base focus-visible:ring-0 focus-visible:ring-offset-0 lg:px-6 lg:py-3 lg:text-base"
           disabled={isSubmitting}
         />
 
@@ -66,7 +66,12 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
         </div>
       </div>
 
-      <Button type="submit" className="shrink-0" disabled={isSubmitting}>
+      <Button
+        type="submit"
+        className="h-10 w-full shrink-0 px-4 text-sm lg:h-8 lg:w-auto lg:px-3"
+        size="sm"
+        disabled={isSubmitting}
+      >
         {isSubmitting ? (
           <>
             <Loader2 className="size-4 animate-spin" />
