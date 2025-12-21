@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, use } from 'react';
 
 // Context for sharing TasksPage state with AppSidebar
 type TasksPageContextType = {
@@ -6,9 +6,16 @@ type TasksPageContextType = {
   onSelectView: (view: 'category') => void;
 };
 
-export const TasksPageContext = createContext<TasksPageContextType | null>(null);
+export const TasksPageContext = createContext<TasksPageContextType | null>(
+  null,
+);
 
 export function useTasksPageContext() {
-  return useContext(TasksPageContext);
+  const context = use(TasksPageContext);
+  if (!context) {
+    throw new Error(
+      'useTasksPageContext must be used within TasksPageContext.Provider',
+    );
+  }
+  return context;
 }
-
