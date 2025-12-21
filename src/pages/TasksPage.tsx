@@ -227,6 +227,8 @@ export default function TasksPage() {
           {/* Mobile/Tablet: Filter bar with category select */}
           {!isDesktop && (
             <div className="bg-background shrink-0 border-b px-4 py-3">
+    <div className="mx-auto w-full max-w-3xl">
+
               <Select
                 value={selectedCategory || undefined}
                 onValueChange={() => {
@@ -244,6 +246,7 @@ export default function TasksPage() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
             </div>
           )}
 
