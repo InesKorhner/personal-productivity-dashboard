@@ -146,15 +146,6 @@
       "category": "Work"
     },
     {
-      "id": "1853",
-      "text": "ines korhner",
-      "category": "MyList",
-      "status": "DONE",
-      "deleted": true,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
       "id": "1405",
       "text": "dadad",
       "category": "Work",
@@ -164,65 +155,10 @@
       "notes": ""
     },
     {
-      "id": "e9bd",
-      "text": "hkbk",
-      "category": "MyList",
-      "status": "DONE",
-      "deleted": true,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "aa62",
-      "text": "ffs",
-      "category": "MyList",
-      "status": "DONE",
-      "deleted": true,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "3351",
+      "id": "01eb",
       "text": "fsfs",
       "category": "MyList",
       "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "7516",
-      "text": "eqe",
-      "category": "MyList",
-      "status": "DONE",
-      "deleted": true,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "91c7",
-      "text": "gdg",
-      "category": "MyList",
-      "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "db5b",
-      "text": "gdg",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-17"
-    },
-    {
-      "id": "fbe2",
-      "text": "fsf",
-      "category": "MyList",
-      "status": "TODO",
       "deleted": false,
       "deletedAt": null,
       "notes": ""

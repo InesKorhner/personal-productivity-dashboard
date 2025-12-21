@@ -249,8 +249,8 @@ export default function TasksPage() {
           <div className="flex min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
             <div className="w-full min-w-0 flex-1">
               <div className="w-full max-w-full p-4 md:p-6">
-                <div className="w-full space-y-4">
-                  <AddTaskForm
+              <div className="mx-auto w-full max-w-3xl space-y-4">
+              <AddTaskForm
                     onAddTask={handleAddTask}
                     selectedCategory={selectedCategory}
                   />
