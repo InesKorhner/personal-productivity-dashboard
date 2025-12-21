@@ -3,7 +3,6 @@ import { TaskList } from './TaskList';
 import { useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface TaskViewProps {
   tasks: Task[];
@@ -28,7 +27,6 @@ export function TaskView({
   onPermanentDelete,
   onSelectTask,
 }: TaskViewProps) {
-  const isMobile = useIsMobile();
   const [isCompletedOpen, setIsCompletedOpen] = useState(true);
   const [isDeletedOpen, setIsDeletedOpen] = useState(true);
 
@@ -85,90 +83,54 @@ export function TaskView({
 
       {showCompleted && completedTasks.length > 0 && (
         <div className="lg:max-w-3xl">
-          {isMobile ? (
-            <>
-              <Button
-                variant="ghost"
-                className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
-                onClick={() => setIsCompletedOpen(!isCompletedOpen)}
-              >
-                <span>Completed</span>
-                {isCompletedOpen ? (
-                  <ChevronUp className="h-5 w-5" />
-                ) : (
-                  <ChevronDown className="h-5 w-5" />
-                )}
-              </Button>
-              {isCompletedOpen && (
-                <TaskList
-                  tasks={completedTasks}
-                  onStatusChange={onStatusChange}
-                  onDelete={onDelete}
-                  onUndo={onUndo}
-                  onPermanentDelete={onPermanentDelete}
-                  onSelectTask={onSelectTask}
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <h3 className="text-foreground mb-3 text-lg font-semibold">
-                Completed
-              </h3>
-              <TaskList
-                tasks={completedTasks}
-                onStatusChange={onStatusChange}
-                onDelete={onDelete}
-                onUndo={onUndo}
-                onPermanentDelete={onPermanentDelete}
-                onSelectTask={onSelectTask}
-              />
-            </>
+          <Button
+            variant="ghost"
+            className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
+            onClick={() => setIsCompletedOpen(!isCompletedOpen)}
+          >
+            <span>Completed</span>
+            {isCompletedOpen ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </Button>
+          {isCompletedOpen && (
+            <TaskList
+              tasks={completedTasks}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+              onUndo={onUndo}
+              onPermanentDelete={onPermanentDelete}
+              onSelectTask={onSelectTask}
+            />
           )}
         </div>
       )}
 
       {showDeleted && deletedTasks.length > 0 && (
         <div className="lg:max-w-3xl">
-          {isMobile ? (
-            <>
-              <Button
-                variant="ghost"
-                className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
-                onClick={() => setIsDeletedOpen(!isDeletedOpen)}
-              >
-                <span>Trash</span>
-                {isDeletedOpen ? (
-                  <ChevronUp className="h-5 w-5" />
-                ) : (
-                  <ChevronDown className="h-5 w-5" />
-                )}
-              </Button>
-              {isDeletedOpen && (
-                <TaskList
-                  tasks={deletedTasks}
-                  onStatusChange={onStatusChange}
-                  onDelete={onDelete}
-                  onUndo={onUndo}
-                  onPermanentDelete={onPermanentDelete}
-                  onSelectTask={onSelectTask}
-                />
-              )}
-            </>
-          ) : (
-            <>
-              <h3 className="text-foreground mb-3 text-lg font-semibold">
-                Trash
-              </h3>
-              <TaskList
-                tasks={deletedTasks}
-                onStatusChange={onStatusChange}
-                onDelete={onDelete}
-                onUndo={onUndo}
-                onPermanentDelete={onPermanentDelete}
-                onSelectTask={onSelectTask}
-              />
-            </>
+          <Button
+            variant="ghost"
+            className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
+            onClick={() => setIsDeletedOpen(!isDeletedOpen)}
+          >
+            <span>Trash</span>
+            {isDeletedOpen ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </Button>
+          {isDeletedOpen && (
+            <TaskList
+              tasks={deletedTasks}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+              onUndo={onUndo}
+              onPermanentDelete={onPermanentDelete}
+              onSelectTask={onSelectTask}
+            />
           )}
         </div>
       )}
