@@ -45,28 +45,31 @@ export default function TasksPage() {
   const deleteTask = useDeleteTask();
   const [isDesktop, setIsDesktop] = useState(() => {
     if (typeof window !== 'undefined') {
-      return window.innerWidth >= 1280; // xl breakpoint
+      return window.matchMedia('(min-width: 1280px)').matches;
     }
     return false;
   });
 
   // Check if we're on desktop (≥ 1280px) for grid layout
   useEffect(() => {
-    const updateDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1280);
+    const mediaQuery = window.matchMedia('(min-width: 1280px)');
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      setIsDesktop(e.matches);
     };
-    updateDesktop();
-    window.addEventListener('resize', updateDesktop);
-    return () => window.removeEventListener('resize', updateDesktop);
+
+    mediaQuery.addEventListener('change', handleMediaQueryChange);
+    return () => {
+      mediaQuery.removeEventListener('change', handleMediaQueryChange);
+    };
   }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     () => {
       if (typeof window !== 'undefined') {
         const savedCategory = localStorage.getItem('selectedCategory');
-        return savedCategory || null;
+        return savedCategory || CATEGORIES[0];
       }
-      return null;
+      return CATEGORIES[0];
     },
   );
 
@@ -226,9 +229,8 @@ export default function TasksPage() {
             <div className="bg-background shrink-0 border-b px-4 py-3">
               <Select
                 value={selectedCategory || undefined}
-                onValueChange={(value) => {
+                onValueChange={() => {
                   setSelectedView('category');
-                  setSelectedCategory(value);
                 }}
               >
                 <SelectTrigger className="h-9 w-full text-base">
@@ -249,8 +251,8 @@ export default function TasksPage() {
           <div className="flex min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
             <div className="w-full min-w-0 flex-1">
               <div className="w-full max-w-full p-4 md:p-6">
-              <div className="mx-auto w-full max-w-3xl space-y-4">
-              <AddTaskForm
+                <div className="mx-auto w-full max-w-3xl space-y-4">
+                  <AddTaskForm
                     onAddTask={handleAddTask}
                     selectedCategory={selectedCategory}
                   />
