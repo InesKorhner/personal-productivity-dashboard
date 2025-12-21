@@ -51,6 +51,42 @@
       "habitId": "d0d8",
       "date": "2025-12-17",
       "isChecked": true
+    },
+    {
+      "id": "f01d",
+      "habitId": "53b2",
+      "date": "2025-12-12",
+      "isChecked": true
+    },
+    {
+      "id": "e074",
+      "habitId": "53b2",
+      "date": "2025-12-13",
+      "isChecked": true
+    },
+    {
+      "id": "04b7",
+      "habitId": "53b2",
+      "date": "2025-12-14",
+      "isChecked": false
+    },
+    {
+      "id": "9407",
+      "habitId": "53b2",
+      "date": "2025-12-15",
+      "isChecked": true
+    },
+    {
+      "id": "281f",
+      "habitId": "53b2",
+      "date": "2025-12-16",
+      "isChecked": true
+    },
+    {
+      "id": "47d7",
+      "habitId": "53b2",
+      "date": "2025-12-17",
+      "isChecked": true
     }
   ],
   "tasks": [
@@ -110,33 +146,22 @@
       "category": "Work"
     },
     {
-      "id": "6307",
-      "text": "sada",
-      "category": "Exercise",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-03"
-    },
-    {
-      "id": "3cfb",
-      "text": "sDAsad",
-      "category": "Exercise",
-      "status": "TODO",
+      "id": "1405",
+      "text": "dadad",
+      "category": "Work",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
     },
     {
-      "id": "25ef",
-      "text": "dadad",
-      "category": "Exercise",
-      "status": "TODO",
+      "id": "01eb",
+      "text": "fsfs",
+      "category": "MyList",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-18"
+      "notes": ""
     }
   ]
 }

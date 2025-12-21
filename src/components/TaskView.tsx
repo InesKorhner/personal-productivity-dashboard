@@ -1,6 +1,8 @@
 import { type Task, TaskStatus } from '@/types';
 import { TaskList } from './TaskList';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface TaskViewProps {
   tasks: Task[];
@@ -25,6 +27,9 @@ export function TaskView({
   onPermanentDelete,
   onSelectTask,
 }: TaskViewProps) {
+  const [isCompletedOpen, setIsCompletedOpen] = useState(true);
+  const [isDeletedOpen, setIsDeletedOpen] = useState(true);
+
   const { todoTasks, completedTasks, deletedTasks } = useMemo(() => {
     const lists = {
       todoTasks: [] as Task[],
@@ -33,11 +38,16 @@ export function TaskView({
     };
 
     for (const task of tasks) {
+      // Deleted tasks go to trash regardless of status
       if (task.deleted) {
         lists.deletedTasks.push(task);
-      } else if (task.status === TaskStatus.DONE) {
+      }
+      // Non-deleted completed tasks
+      else if (task.status === TaskStatus.DONE) {
         lists.completedTasks.push(task);
-      } else if (task.status === TaskStatus.TODO) {
+      }
+      // Non-deleted todo tasks
+      else if (task.status === TaskStatus.TODO) {
         lists.todoTasks.push(task);
       }
     }
@@ -48,10 +58,12 @@ export function TaskView({
   return (
     <div className="space-y-6">
       {showToDo && (
-        <>
+        <div className="lg:max-w-3xl">
           {todoTasks.length > 0 ? (
             <>
-              <h3 className="mb-3 text-lg font-semibold text-foreground">To Do</h3>
+              <h3 className="text-foreground mb-3 text-lg font-semibold">
+                To Do
+              </h3>
               <TaskList
                 tasks={todoTasks}
                 onStatusChange={onStatusChange}
@@ -62,55 +74,65 @@ export function TaskView({
               />
             </>
           ) : (
-            <div className="py-8 text-center text-sm text-muted-foreground">
+            <div className="text-muted-foreground py-8 text-center text-sm">
               No tasks to do
             </div>
           )}
-        </>
+        </div>
       )}
 
-      {showCompleted && (
-        <>
-          {completedTasks.length > 0 ? (
-            <>
-              <h3 className="mb-3 text-lg font-semibold text-foreground">Completed</h3>
-              <TaskList
-                tasks={completedTasks}
-                onStatusChange={onStatusChange}
-                onDelete={onDelete}
-                onUndo={onUndo}
-                onPermanentDelete={onPermanentDelete}
-                onSelectTask={onSelectTask}
-              />
-            </>
-          ) : (
-            <div className="py-8 text-center text-sm text-muted-foreground">
-              No completed tasks
-            </div>
+      {showCompleted && completedTasks.length > 0 && (
+        <div className="lg:max-w-3xl">
+          <Button
+            variant="ghost"
+            className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
+            onClick={() => setIsCompletedOpen(!isCompletedOpen)}
+          >
+            <span>Completed</span>
+            {isCompletedOpen ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </Button>
+          {isCompletedOpen && (
+            <TaskList
+              tasks={completedTasks}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+              onUndo={onUndo}
+              onPermanentDelete={onPermanentDelete}
+              onSelectTask={onSelectTask}
+            />
           )}
-        </>
+        </div>
       )}
 
-      {showDeleted && (
-        <>
-          {deletedTasks.length > 0 ? (
-            <>
-              <h3 className="mb-3 text-lg font-semibold text-foreground">Deleted</h3>
-              <TaskList
-                tasks={deletedTasks}
-                onStatusChange={onStatusChange}
-                onDelete={onDelete}
-                onUndo={onUndo}
-                onPermanentDelete={onPermanentDelete}
-                onSelectTask={onSelectTask}
-              />
-            </>
-          ) : (
-            <div className="py-8 text-center text-sm text-muted-foreground">
-              Trash is empty
-            </div>
+      {showDeleted && deletedTasks.length > 0 && (
+        <div className="lg:max-w-3xl">
+          <Button
+            variant="ghost"
+            className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
+            onClick={() => setIsDeletedOpen(!isDeletedOpen)}
+          >
+            <span>Trash</span>
+            {isDeletedOpen ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </Button>
+          {isDeletedOpen && (
+            <TaskList
+              tasks={deletedTasks}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+              onUndo={onUndo}
+              onPermanentDelete={onPermanentDelete}
+              onSelectTask={onSelectTask}
+            />
           )}
-        </>
+        </div>
       )}
     </div>
   );
