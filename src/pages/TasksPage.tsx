@@ -1,7 +1,7 @@
 import { AddTaskForm } from '@/components/AddTaskForm';
 import { TaskStatus, type Task } from '@/types';
 import { CATEGORIES } from '@/types';
-import { useState, useEffect, useMemo} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 import { TaskView } from '@/components/TaskView';
 import { NotesAside } from '@/components/NotesAside';
@@ -23,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { TasksPageContext } from '@/contexts/TasksPageContext';
 
 // Notes component helper - rendered as Sheet on mobile/tablet, aside on desktop
@@ -44,7 +43,22 @@ export default function TasksPage() {
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
   const deleteTask = useDeleteTask();
-  const isMobile = useIsMobile();
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 1280; // xl breakpoint
+    }
+    return false;
+  });
+
+  // Check if we're on desktop (≥ 1280px) for grid layout
+  useEffect(() => {
+    const updateDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+    updateDesktop();
+    window.addEventListener('resize', updateDesktop);
+    return () => window.removeEventListener('resize', updateDesktop);
+  }, []);
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     () => {
@@ -71,7 +85,7 @@ export default function TasksPage() {
   const resetErrorDismissed = () => {
     setIsErrorDismissed(false);
   };
-  
+
   useEffect(() => {
     if (error) {
       resetErrorDismissed();
@@ -150,9 +164,9 @@ export default function TasksPage() {
 
   const handleSelectTask = (taskId: string | null) => {
     setSelectedTaskId(taskId);
-    // Open notes sheet on mobile (< 768px) when task is selected
-    // On desktop (≥ 1024px), Notes are always visible in the grid sidebar
-    if (taskId && isMobile) {
+    // Open notes sheet on mobile/tablet (< 1280px) when task is selected
+    // On desktop (≥ 1280px), Notes are always visible in the grid sidebar
+    if (taskId && !isDesktop) {
       setNotesSheetOpen(true);
     }
   };
@@ -185,7 +199,6 @@ export default function TasksPage() {
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
-
   // Memoize context value to avoid unnecessary re-renders
   const contextValue = useMemo(
     () => ({ selectedView, onSelectView: setSelectedView }),
@@ -194,9 +207,9 @@ export default function TasksPage() {
 
   return (
     <TasksPageContext.Provider value={contextValue}>
-      <div className="flex h-screen w-full flex-col overflow-hidden lg:grid lg:grid-cols-[250px_1fr_400px] lg:gap-6 lg:p-6">
+      <div className="flex h-screen w-full flex-col overflow-hidden xl:grid xl:grid-cols-[250px_1fr_400px] xl:gap-6 xl:p-6">
         {/* Desktop: CategoryList sidebar */}
-        <div className="hidden lg:block">
+        <div className="hidden w-full min-w-0 xl:block">
           <CategoryList
             categories={CATEGORIES}
             selectedCategory={selectedCategory}
@@ -207,9 +220,9 @@ export default function TasksPage() {
         </div>
 
         {/* Main content area */}
-        <div className="flex min-w-0 flex-1 flex-col overflow-hidden lg:h-full lg:min-h-0 lg:flex-none">
-          {/* Mobile: Filter bar with category select only */}
-          {isMobile && (
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden lg:h-full lg:min-h-0 lg:w-full">
+          {/* Mobile/Tablet: Filter bar with category select */}
+          {!isDesktop && (
             <div className="bg-background shrink-0 border-b px-4 py-3">
               <Select
                 value={selectedCategory || undefined}
@@ -236,7 +249,7 @@ export default function TasksPage() {
           <div className="flex min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
             <div className="w-full min-w-0 flex-1">
               <div className="w-full max-w-full p-4 md:p-6">
-                <div className="mx-auto max-w-full space-y-4 lg:max-w-3xl">
+                <div className="w-full space-y-4">
                   <AddTaskForm
                     onAddTask={handleAddTask}
                     selectedCategory={selectedCategory}
@@ -292,13 +305,13 @@ export default function TasksPage() {
           </div>
         </div>
 
-        {/* NotesAside - CSS controls layout: hidden on mobile/tablet, visible in grid on desktop (≥ 1024px) */}
-        <div className="bg-background hidden min-w-0 lg:block">
+        {/* NotesAside - Desktop: visible in grid sidebar (≥ 1280px) */}
+        <div className="bg-background hidden w-full min-w-0 xl:block">
           {renderNotesComponent(selectedTask, handleSaveNotes, true)}
         </div>
 
-        {/* NotesAside - Sheet for mobile only (< 768px) */}
-        {isMobile && (
+        {/* NotesAside - Mobile/Tablet: Sheet (< 1280px) */}
+        {!isDesktop && (
           <Sheet open={notesSheetOpen} onOpenChange={setNotesSheetOpen}>
             <SheetContent side="right" className="w-full sm:max-w-md">
               {renderNotesComponent(selectedTask, handleSaveNotes, false)}
