@@ -150,57 +150,66 @@ export function HabitTrackerPage() {
   }, [error]);
 
   return (
-    <div className="mx-auto max-w-4xl px-4">
-      <AddHabitDialog onSave={handleAddHabit} />
+    <div className="flex h-full w-full flex-col">
+      {/* Main content - scrollable */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto">
+        <div className="w-full p-4 md:p-6">
+          <div className="mx-auto w-full max-w-3xl space-y-4">
+            {/* Add Habit Dialog button */}
+            <AddHabitDialog onSave={handleAddHabit} />
 
-      {errorMessage && !isErrorDismissed && (
-        <div className="border-destructive/50 bg-destructive/10 my-4 flex items-center justify-between gap-4 rounded-lg border p-4">
-          <div className="flex items-center gap-3">
-            <AlertCircle className="text-destructive size-5 shrink-0" />
-            <p className="text-destructive text-sm font-semibold">
-              {errorMessage}
-            </p>
+            {/* Error message */}
+            {errorMessage && !isErrorDismissed && (
+              <div className="border-destructive/50 bg-destructive/10 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 items-center gap-3">
+                  <AlertCircle className="text-destructive size-5 shrink-0" />
+                  <p className="text-destructive text-sm font-semibold break-words">
+                    {errorMessage}
+                  </p>
+                </div>
+                <div className="flex shrink-0 gap-2">
+                  <Button
+                    onClick={() => {
+                      refetch();
+                    }}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <RefreshCw className="size-4" />
+                    <span className="hidden sm:inline">Retry</span>
+                  </Button>
+                  <Button
+                    onClick={() => setIsErrorDismissed(true)}
+                    variant="ghost"
+                    size="sm"
+                    aria-label="Dismiss error"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Loading or HabitList */}
+            {isLoading ? (
+              <div className="flex flex-col gap-4">
+                <Skeleton className="h-16 w-full" />
+                <Skeleton className="h-16 w-full" />
+                <Skeleton className="h-16 w-full" />
+              </div>
+            ) : (
+              <HabitList
+                habits={habits}
+                onToggleCheckIn={handleToggleCheckIn}
+                onDelete={handleDeleteHabit}
+                onEdit={handleEditHabit}
+              />
+            )}
           </div>
-          <div className="flex gap-2">
-            <Button
-              onClick={() => {
-                refetch();
-              }}
-              variant="outline"
-              size="sm"
-            >
-              <RefreshCw className="size-4" />
-              Retry
-            </Button>
-            <Button
-              onClick={() => setIsErrorDismissed(true)}
-              variant="ghost"
-              size="sm"
-              aria-label="Dismiss error"
-            >
-              <X className="size-4" />
-            </Button>
-          </div>
         </div>
-      )}
+      </div>
 
-      {isLoading ? (
-        <div className="flex flex-col gap-4 p-6">
-          <Skeleton className="h-16 w-full" />
-          <Skeleton className="h-16 w-full" />
-          <Skeleton className="h-16 w-full" />
-        </div>
-      ) : (
-        <div className="p-6">
-          <HabitList
-            habits={habits}
-            onToggleCheckIn={handleToggleCheckIn}
-            onDelete={handleDeleteHabit}
-            onEdit={handleEditHabit}
-          />
-        </div>
-      )}
-
+      {/* EditHabitDialog - outside scrollable area */}
       {editingHabit && (
         <EditHabitDialog
           key={editingHabit.id}
