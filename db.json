@@ -50,12 +50,36 @@
       "id": "47d7",
       "habitId": "53b2",
       "date": "2025-12-17",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "9d93",
       "habitId": "53b2",
       "date": "2025-12-18",
+      "isChecked": true
+    },
+    {
+      "id": "678b",
+      "habitId": "8ee7",
+      "date": "2025-12-18",
+      "isChecked": true
+    },
+    {
+      "id": "5815",
+      "habitId": "8ee7",
+      "date": "2025-12-19",
+      "isChecked": true
+    },
+    {
+      "id": "4349",
+      "habitId": "8ee7",
+      "date": "2025-12-15",
+      "isChecked": true
+    },
+    {
+      "id": "bbf9",
+      "habitId": "8ee7",
+      "date": "2025-12-16",
       "isChecked": true
     }
   ],

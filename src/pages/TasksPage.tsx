@@ -210,7 +210,7 @@ export default function TasksPage() {
 
   return (
     <TasksPageContext.Provider value={contextValue}>
-      <div className="flex h-screen w-full flex-col overflow-hidden xl:grid xl:grid-cols-[250px_1fr_400px] xl:gap-6 xl:p-6">
+      <div className="flex h-full w-full flex-col overflow-hidden xl:grid xl:grid-cols-[250px_1fr_400px] xl:gap-6 xl:p-6">
         {/* Desktop: CategoryList sidebar */}
         <div className="hidden w-full min-w-0 xl:block">
           <CategoryList
