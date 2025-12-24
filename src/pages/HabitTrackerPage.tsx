@@ -151,7 +151,7 @@ export function HabitTrackerPage() {
 
   return (
     <div className="h-full w-full">
-      <div className="mx-auto w-full max-w-3xl space-y-4 p-4 md:p-6">
+      <div className="mx-auto w-full max-w-full space-y-4 p-4 sm:max-w-3xl md:p-6">
         {/* Add Habit Dialog button */}
         <AddHabitDialog onSave={handleAddHabit} />
 

@@ -42,7 +42,7 @@ export function HabitList({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {sectionOrder.map((section) => {
         const sectionHabits = groupedBySection[section];
 
@@ -52,10 +52,10 @@ export function HabitList({
 
         return (
           <div key={section}>
-            <h2 className="mb-2 text-sm font-semibold text-foreground">
+            <h2 className="mb-1 text-sm font-semibold sm:mb-2">
               {section}
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-1 sm:space-y-2">
               {sectionHabits.map((habit) => (
                 <HabitItem
                   key={habit.id}
