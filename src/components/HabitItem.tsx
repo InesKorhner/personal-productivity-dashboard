@@ -73,7 +73,7 @@ export function HabitItem({
     goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
 
   return (
-    <li className="border-border bg-card flex w-full flex-col gap-1 rounded-md border px-2 py-1 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:rounded-lg sm:px-3 sm:py-2">
+    <li className="border-border bg-card flex w-full flex-col gap-2 rounded-lg border px-2 py-1 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-2 sm:rounded-lg sm:px-3 sm:py-2">
       <div className="flex min-w-0 flex-col items-start text-left sm:flex-1">
         <p className="text-foreground text-sm font-medium">{habit.name}</p>
         <div className="mt-1 flex items-center gap-2 text-xs sm:gap-4">
