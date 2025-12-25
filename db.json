@@ -13,6 +13,13 @@
       "frequency": 1,
       "section": "Others",
       "startDate": "2025-12-21"
+    },
+    {
+      "id": "2276",
+      "name": "fsfs",
+      "frequency": 1,
+      "section": "Morning",
+      "startDate": "2025-12-25"
     }
   ],
   "checkIns": [
