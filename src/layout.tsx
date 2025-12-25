@@ -9,9 +9,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <TooltipProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex min-h-dvh w-full">
           <AppSidebar />
-          <div className="flex h-screen flex-1 flex-col">
+          <div className="flex min-h-dvh flex-1 flex-col">
             <Header />
             <main className="mt-8 flex-1 overflow-auto">{children}</main>
             <Footer />

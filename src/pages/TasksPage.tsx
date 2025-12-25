@@ -210,7 +210,7 @@ export default function TasksPage() {
 
   return (
     <TasksPageContext.Provider value={contextValue}>
-      <div className="flex h-screen w-full flex-col overflow-hidden xl:grid xl:grid-cols-[250px_1fr_400px] xl:gap-6 xl:p-6">
+      <div className="flex h-full w-full flex-col overflow-hidden xl:grid xl:grid-cols-[250px_1fr_400px] xl:gap-6 xl:p-6">
         {/* Desktop: CategoryList sidebar */}
         <div className="hidden w-full min-w-0 xl:block">
           <CategoryList
@@ -227,23 +227,26 @@ export default function TasksPage() {
           {/* Mobile/Tablet: Filter bar with category select */}
           {!isDesktop && (
             <div className="bg-background shrink-0 border-b px-4 py-3">
-              <Select
-                value={selectedCategory || undefined}
-                onValueChange={() => {
-                  setSelectedView('category');
-                }}
-              >
-                <SelectTrigger className="h-9 w-full text-base">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CATEGORIES.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="mx-auto w-full max-w-3xl">
+                <Select
+                  value={selectedCategory || undefined}
+                  onValueChange={(value) => {
+                    setSelectedView('category');
+                    setSelectedCategory(value);
+                  }}
+                >
+                  <SelectTrigger className="h-9 w-full text-base">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CATEGORIES.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           )}
 

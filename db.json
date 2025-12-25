@@ -1,62 +1,33 @@
 {
   "habits": [
     {
-      "id": "d0d8",
-      "name": "steva",
-      "frequency": 1,
-      "section": "Others",
-      "startDate": "2025-12-18"
-    },
-    {
       "id": "53b2",
       "name": "dadada",
       "frequency": 1,
       "section": "Afternoon",
       "startDate": "2025-12-18"
+    },
+    {
+      "id": "8ee7",
+      "name": "fdgdgd",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-21"
+    },
+    {
+      "id": "2276",
+      "name": "fsfs",
+      "frequency": 1,
+      "section": "Morning",
+      "startDate": "2025-12-25"
     }
   ],
   "checkIns": [
     {
-      "id": "fa5d",
-      "habitId": "d0d8",
-      "date": "2025-12-12",
-      "isChecked": true
-    },
-    {
-      "id": "5276",
-      "habitId": "d0d8",
-      "date": "2025-12-13",
-      "isChecked": true
-    },
-    {
-      "id": "734c",
-      "habitId": "d0d8",
-      "date": "2025-12-14",
-      "isChecked": true
-    },
-    {
-      "id": "97d9",
-      "habitId": "d0d8",
-      "date": "2025-12-15",
-      "isChecked": true
-    },
-    {
-      "id": "6eea",
-      "habitId": "d0d8",
-      "date": "2025-12-16",
-      "isChecked": true
-    },
-    {
-      "id": "3786",
-      "habitId": "d0d8",
-      "date": "2025-12-17",
-      "isChecked": true
-    },
-    {
       "id": "f01d",
       "habitId": "53b2",
       "date": "2025-12-12",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "e074",
@@ -68,7 +39,7 @@
       "id": "04b7",
       "habitId": "53b2",
       "date": "2025-12-14",
-      "isChecked": false
+      "isChecked": true
     },
     {
       "id": "9407",
@@ -80,12 +51,42 @@
       "id": "281f",
       "habitId": "53b2",
       "date": "2025-12-16",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "47d7",
       "habitId": "53b2",
       "date": "2025-12-17",
+      "isChecked": false
+    },
+    {
+      "id": "9d93",
+      "habitId": "53b2",
+      "date": "2025-12-18",
+      "isChecked": true
+    },
+    {
+      "id": "678b",
+      "habitId": "8ee7",
+      "date": "2025-12-18",
+      "isChecked": true
+    },
+    {
+      "id": "5815",
+      "habitId": "8ee7",
+      "date": "2025-12-19",
+      "isChecked": true
+    },
+    {
+      "id": "4349",
+      "habitId": "8ee7",
+      "date": "2025-12-15",
+      "isChecked": true
+    },
+    {
+      "id": "bbf9",
+      "habitId": "8ee7",
+      "date": "2025-12-16",
       "isChecked": true
     }
   ],
@@ -146,8 +147,8 @@
       "category": "Work"
     },
     {
-      "id": "1405",
-      "text": "dadad",
+      "id": "51af",
+      "text": "fsfs",
       "category": "Work",
       "status": "DONE",
       "deleted": false,
@@ -155,10 +156,46 @@
       "notes": ""
     },
     {
-      "id": "01eb",
-      "text": "fsfs",
+      "id": "0404",
+      "text": "fsfsfs",
       "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "8eaa",
+      "text": "dsfs",
+      "category": "Exercise",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "55a0",
+      "text": "dgd",
+      "category": "Exercise",
       "status": "DONE",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "4a2e",
+      "text": "gdgd",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "4584",
+      "text": "gdgd",
+      "category": "Work",
+      "status": "TODO",
       "deleted": false,
       "deletedAt": null,
       "notes": ""

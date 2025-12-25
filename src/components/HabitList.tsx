@@ -16,7 +16,6 @@ export function HabitList({
   onDelete,
   onEdit,
 }: HabitListProps) {
- 
   const groupedBySection = useMemo(() => {
     const grouped: Partial<Record<Sections, Habit[]>> = {};
 
@@ -30,19 +29,18 @@ export function HabitList({
     return grouped;
   }, [habits]);
 
- 
   const sectionOrder = useMemo(() => SECTIONS, []);
 
   if (habits.length === 0) {
     return (
-      <div className="mt-4 text-center text-muted-foreground">
+      <div className="text-muted-foreground mt-4 text-center">
         No habits yet — add your first one!
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       {sectionOrder.map((section) => {
         const sectionHabits = groupedBySection[section];
 
@@ -52,10 +50,8 @@ export function HabitList({
 
         return (
           <div key={section}>
-            <h2 className="mb-2 text-sm font-semibold text-foreground">
-              {section}
-            </h2>
-            <ul className="space-y-2">
+            <h2 className="mb-1 text-sm font-semibold">{section}</h2>
+            <ul className="space-y-1">
               {sectionHabits.map((habit) => (
                 <HabitItem
                   key={habit.id}

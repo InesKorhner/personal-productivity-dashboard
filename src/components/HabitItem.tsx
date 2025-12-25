@@ -73,10 +73,10 @@ export function HabitItem({
     goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
 
   return (
-    <li className="border-border bg-card flex max-w-[700px] items-center justify-between rounded-lg border px-2 py-1 text-sm">
-      <div className="flex w-full flex-col items-start text-left">
+    <li className="border-border bg-card flex w-full max-w-2xl flex-col gap-2 rounded-lg border px-2 py-1 text-sm sm:flex-row sm:items-center sm:justify-between sm:rounded-lg sm:px-3 sm:py-2">
+      <div className="flex min-w-0 flex-col items-start text-left sm:flex-1">
         <p className="text-foreground text-sm font-medium">{habit.name}</p>
-        <div className="mt-1 flex items-center gap-4 text-xs">
+        <div className="mt-1 flex items-center gap-2 text-xs sm:gap-4">
           <span className="text-muted-foreground">Streak: {currentStreak}</span>
           <span className="text-muted-foreground">
             Week: {weeklyCheckedCount}/{goal} ({percentage}%)
@@ -90,7 +90,7 @@ export function HabitItem({
           />
         </div>
       </div>
-      <div className="flex space-x-2">
+      <div className="flex w-full flex-wrap items-center justify-start gap-2 sm:w-auto sm:justify-start sm:gap-2">
         {lastDays.map(({ label, date }) => {
           const check = habit.checkIns.find((c) => c.date === date);
           const done = check ? check.isChecked : false;
@@ -125,7 +125,7 @@ export function HabitItem({
             </div>
           );
         })}
-        <div className="border-border mx-3 h-6 border-l"></div>
+        <div className="border-border mx-1 h-6 border-l sm:mx-3"></div>
         <button
           type="button"
           onClick={() => onEdit(habit)}
