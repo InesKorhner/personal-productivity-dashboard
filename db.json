@@ -200,7 +200,7 @@
       "text": "fsfsfs",
       "category": "MyList",
       "status": "TODO",
-      "deleted": false,
+      "deleted": true,
       "deletedAt": null,
       "notes": ""
     },
@@ -227,16 +227,25 @@
       "text": "gdgd",
       "category": "MyList",
       "status": "TODO",
+      "deleted": true,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "8c00",
+      "text": "dasd",
+      "category": "Work",
+      "status": "TODO",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
     },
     {
-      "id": "a4c0",
+      "id": "8817",
       "text": "dad",
       "category": "Work",
       "status": "TODO",
-      "deleted": true,
+      "deleted": false,
       "deletedAt": null,
       "notes": ""
     }
