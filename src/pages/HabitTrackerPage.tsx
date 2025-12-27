@@ -150,58 +150,60 @@ export function HabitTrackerPage() {
   }, [error]);
 
   return (
-    <div className="h-full w-full">
-      <div className="mx-auto w-full max-w-full space-y-4 p-4 sm:max-w-3xl md:p-6">
-        {/* Add Habit Dialog button */}
-        <AddHabitDialog onSave={handleAddHabit} />
+    <div className="flex h-full w-full flex-col overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+        <div className="mx-auto w-full max-w-full space-y-4 p-4 sm:max-w-3xl md:p-6">
+          {/* Add Habit Dialog button */}
+          <AddHabitDialog onSave={handleAddHabit} />
 
-        {/* Error message */}
-        {errorMessage && !isErrorDismissed && (
-          <div className="border-destructive/50 bg-destructive/10 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-3">
-              <AlertCircle className="text-destructive size-5 shrink-0" />
-              <p className="text-destructive text-sm font-semibold break-words">
-                {errorMessage}
-              </p>
+          {/* Error message */}
+          {errorMessage && !isErrorDismissed && (
+            <div className="border-destructive/50 bg-destructive/10 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-3">
+                <AlertCircle className="text-destructive size-5 shrink-0" />
+                <p className="text-destructive text-sm font-semibold break-words">
+                  {errorMessage}
+                </p>
+              </div>
+              <div className="flex shrink-0 gap-2">
+                <Button
+                  onClick={() => {
+                    refetch();
+                  }}
+                  variant="outline"
+                  size="sm"
+                >
+                  <RefreshCw className="size-4" />
+                  <span className="hidden sm:inline">Retry</span>
+                </Button>
+                <Button
+                  onClick={() => setIsErrorDismissed(true)}
+                  variant="ghost"
+                  size="sm"
+                  aria-label="Dismiss error"
+                >
+                  <X className="size-4" />
+                </Button>
+              </div>
             </div>
-            <div className="flex shrink-0 gap-2">
-              <Button
-                onClick={() => {
-                  refetch();
-                }}
-                variant="outline"
-                size="sm"
-              >
-                <RefreshCw className="size-4" />
-                <span className="hidden sm:inline">Retry</span>
-              </Button>
-              <Button
-                onClick={() => setIsErrorDismissed(true)}
-                variant="ghost"
-                size="sm"
-                aria-label="Dismiss error"
-              >
-                <X className="size-4" />
-              </Button>
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* Loading or HabitList */}
-        {isLoading ? (
-          <div className="flex flex-col gap-4">
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-          </div>
-        ) : (
-          <HabitList
-            habits={habits}
-            onToggleCheckIn={handleToggleCheckIn}
-            onDelete={handleDeleteHabit}
-            onEdit={handleEditHabit}
-          />
-        )}
+          {/* Loading or HabitList */}
+          {isLoading ? (
+            <div className="flex flex-col gap-4">
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+            </div>
+          ) : (
+            <HabitList
+              habits={habits}
+              onToggleCheckIn={handleToggleCheckIn}
+              onDelete={handleDeleteHabit}
+              onEdit={handleEditHabit}
+            />
+          )}
+        </div>
       </div>
 
       {/* EditHabitDialog - outside scrollable area */}

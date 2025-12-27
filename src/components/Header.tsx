@@ -10,9 +10,9 @@ export function Header() {
     <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <div className="relative flex h-14 items-center px-4">
         <SidebarTrigger className="md:hidden" />
-        <h1 className="text-foreground absolute left-1/2 -translate-x-1/2 text-xl font-bold">
+        {/* <h1 className="text-foreground absolute left-1/2 -translate-x-1/2 text- sm:text-2xl font-bold">
           Productivity Dashboard
-        </h1>
+        </h1> */}
         <Button
           variant="ghost"
           size="icon"

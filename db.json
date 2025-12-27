@@ -20,6 +20,55 @@
       "frequency": 1,
       "section": "Morning",
       "startDate": "2025-12-25"
+    },
+    {
+      "id": "9155",
+      "name": "fsdfss",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-27"
+    },
+    {
+      "id": "de66",
+      "name": "fsfsf",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-27"
+    },
+    {
+      "id": "4e99",
+      "name": "fsfs",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-27"
+    },
+    {
+      "id": "79e7",
+      "name": "fsfs",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-27"
+    },
+    {
+      "id": "8633",
+      "name": "fsfs",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-27"
+    },
+    {
+      "id": "69e0",
+      "name": "fsfs",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-27"
+    },
+    {
+      "id": "c281",
+      "name": "fsfs",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-27"
     }
   ],
   "checkIns": [
@@ -147,15 +196,6 @@
       "category": "Work"
     },
     {
-      "id": "51af",
-      "text": "fsfs",
-      "category": "Work",
-      "status": "DONE",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
       "id": "0404",
       "text": "fsfsfs",
       "category": "MyList",
@@ -192,11 +232,11 @@
       "notes": ""
     },
     {
-      "id": "4584",
-      "text": "gdgd",
+      "id": "a4c0",
+      "text": "dad",
       "category": "Work",
       "status": "TODO",
-      "deleted": false,
+      "deleted": true,
       "deletedAt": null,
       "notes": ""
     }
