@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer, type View } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import type { withDragAndDropProps } from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -18,9 +18,18 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CheckCircle2, ListTodo } from 'lucide-react';
 import { useThemeStore } from '@/lib/useThemeStore';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
+
+// Responsive breakpoint constants
+const MOBILE_BREAKPOINT = 768;
+const TABLET_BREAKPOINT = 1024;
 
 const locales = {
   'en-US': enUS,
@@ -56,44 +65,129 @@ interface CalendarEvent {
   isChecked?: boolean; // For habits: true = checked, false = unchecked
 }
 
-// Custom Event Component
-function CustomEvent({ event }: { event: CalendarEvent }) {
-  const navigate = useNavigate();
+// Factory function to create CustomEvent component with reactive state
+function createCustomEvent(
+  isMobile: boolean,
+  navigate: ReturnType<typeof useNavigate>,
+) {
+  return function CustomEvent(props: { event: CalendarEvent }) {
+    const { event } = props;
 
-  const handleClick = () => {
-    if (event.type === 'task') {
-      // Navigate to tasks page - no edit dialog available
-      navigate('/tasks');
-    } else {
-      // Navigate to habits page with habit ID in state to open edit dialog
-      const habit = event.resource as Habit;
-      navigate('/habits', {
-        state: { editHabitId: habit.id },
-      });
+    const handleClick = () => {
+      if (event.type === 'task') {
+        // Navigate to tasks page - no edit dialog available
+        navigate('/tasks');
+      } else {
+        // Navigate to habits page with habit ID in state to open edit dialog
+        const habit = event.resource as Habit;
+        navigate('/habits', {
+          state: { editHabitId: habit.id },
+        });
+      }
+    };
+
+    // On mobile, show popover with full text; on desktop, use title attribute
+    if (isMobile) {
+      return (
+        <Popover>
+          <PopoverTrigger asChild>
+            <div className="flex h-full cursor-pointer items-center gap-0.5 px-0.5 text-[10px]">
+              {event.type === 'task' ? (
+                <ListTodo className="h-2.5 w-2.5 shrink-0" />
+              ) : (
+                <CheckCircle2 className="h-2.5 w-2.5 shrink-0" />
+              )}
+              <span className="truncate">{event.title}</span>
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="w-64 p-3" side="top">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                {event.type === 'task' ? (
+                  <ListTodo className="h-4 w-4 shrink-0" />
+                ) : (
+                  <CheckCircle2 className="h-4 w-4 shrink-0" />
+                )}
+                <p className="font-semibold break-words">{event.title}</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleClick}
+                className="text-primary text-sm underline hover:no-underline"
+              >
+                {event.type === 'task' ? 'View Task' : 'View Habit'}
+              </button>
+            </div>
+          </PopoverContent>
+        </Popover>
+      );
     }
-  };
 
-  return (
-    <div
-      onClick={handleClick}
-      className="flex h-full cursor-pointer items-center gap-1 px-1 text-xs"
-      title={event.title}
-    >
-      {event.type === 'task' ? (
-        <ListTodo className="h-3 w-3 shrink-0" />
-      ) : (
-        <CheckCircle2 className="h-3 w-3 shrink-0" />
-      )}
-      <span className="truncate">{event.title}</span>
-    </div>
-  );
+    // Desktop: current behavior with title attribute for hover tooltip
+    return (
+      <div
+        onClick={handleClick}
+        className="flex h-full cursor-pointer items-center gap-1 px-1 text-xs"
+        title={event.title}
+      >
+        {event.type === 'task' ? (
+          <ListTodo className="h-3 w-3 shrink-0" />
+        ) : (
+          <CheckCircle2 className="h-3 w-3 shrink-0" />
+        )}
+        <span className="truncate">{event.title}</span>
+      </div>
+    );
+  };
 }
 
 export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
   const updateTask = useUpdateTask();
   const theme = useThemeStore((state) => state.theme);
+  const navigate = useNavigate();
+
+  // Responsive breakpoints: mobile (< 768px), tablet (768-1023px), desktop (≥ 1024px)
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < MOBILE_BREAKPOINT;
+    }
+    return false;
+  });
+
+  const [isTablet, setIsTablet] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return (
+        window.innerWidth >= MOBILE_BREAKPOINT &&
+        window.innerWidth < TABLET_BREAKPOINT
+      );
+    }
+    return false;
+  });
+
+  // Detect screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+      setIsTablet(
+        window.innerWidth >= MOBILE_BREAKPOINT &&
+          window.innerWidth < TABLET_BREAKPOINT,
+      );
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Default to month view on all screen sizes
   const [currentView, setCurrentView] = useState<View>('month');
+
   const [currentDate, setCurrentDate] = useState(() => new Date());
+
+  // Create CustomEvent component with reactive state
+  const CustomEvent = useMemo(
+    () => createCustomEvent(isMobile, navigate),
+    [isMobile, navigate],
+  );
 
   // Transform tasks to calendar events
   const taskEvents = useMemo<CalendarEvent[]>(() => {
@@ -241,55 +335,99 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
     }
   };
 
-  // Custom formats to remove time display completely
-  const formats = {
-    dayFormat: (date: Date) => format(date, 'd'), // Day number in month view (1, 2, 3, etc.)
-    dayHeaderFormat: (date: Date) => format(date, 'EEEE, MMMM d, yyyy'), // Day view: "Monday, January 15, 2024"
-    dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) => {
-      // Week view: "December 15 - December 21, 2025"
-      if (start.getFullYear() === end.getFullYear()) {
-        if (start.getMonth() === end.getMonth()) {
+  // Responsive formats - shorter on mobile
+  const formats = useMemo(
+    () => ({
+      dayFormat: (date: Date) => format(date, 'd'), // Day number in month view (1, 2, 3, etc.)
+      dayHeaderFormat: (date: Date) => {
+        // Mobile: shorter format, Desktop: full format
+        return isMobile
+          ? format(date, 'EEE, MMM d')
+          : format(date, 'EEEE, MMMM d, yyyy');
+      },
+      dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) => {
+        // Mobile: shorter format
+        if (isMobile) {
+          if (start.getFullYear() === end.getFullYear()) {
+            if (start.getMonth() === end.getMonth()) {
+              return `${format(start, 'MMM d')} - ${format(end, 'd, yyyy')}`;
+            }
+            return `${format(start, 'MMM d')} - ${format(end, 'MMM d, yyyy')}`;
+          }
+          return `${format(start, 'MMM d, yyyy')} - ${format(end, 'MMM d, yyyy')}`;
+        }
+        // Desktop: full format
+        if (start.getFullYear() === end.getFullYear()) {
+          if (start.getMonth() === end.getMonth()) {
+            // Same month: "December 15 - 21, 2024"
+            return `${format(start, 'MMMM d')} - ${format(end, 'd, yyyy')}`;
+          }
+          // Different months, same year: "December 29 - January 4, 2025"
           return `${format(start, 'MMMM d')} - ${format(end, 'MMMM d, yyyy')}`;
         }
-        return `${format(start, 'MMMM d')} - ${format(end, 'MMMM d, yyyy')}`;
-      }
-      return `${format(start, 'MMMM d, yyyy')} - ${format(end, 'MMMM d, yyyy')}`;
-    },
-    eventTimeRangeFormat: () => '', // No time display
-    eventTimeRangeStartFormat: () => '',
-    eventTimeRangeEndFormat: () => '',
-    timeGutterFormat: () => '',
-    monthHeaderFormat: 'MMMM yyyy', // Month view header: "January 2024"
-    weekdayFormat: (date: Date) => format(date, 'EEEE'), // Full weekday names: "Monday", "Tuesday", etc.
-    selectRangeFormat: ({ start, end }: { start: Date; end: Date }) =>
-      `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`,
-  };
+        // Different years: "December 29, 2024 - January 4, 2025"
+        return `${format(start, 'MMMM d, yyyy')} - ${format(end, 'MMMM d, yyyy')}`;
+      },
+      eventTimeRangeFormat: () => '', // No time display
+      eventTimeRangeStartFormat: () => '',
+      eventTimeRangeEndFormat: () => '',
+      timeGutterFormat: () => '',
+      monthHeaderFormat: isMobile ? 'MMM yyyy' : 'MMMM yyyy', // Mobile: "Jan 2024", Desktop: "January 2024"
+      weekdayFormat: (date: Date) => {
+        // Mobile & Tablet: abbreviated (Mon, Tue), Desktop: full (Monday, Tuesday)
+        if (isMobile || isTablet) {
+          return format(date, 'EEE'); // Mon, Tue, Wed
+        }
+        return format(date, 'EEEE'); // Monday, Tuesday
+      },
+      selectRangeFormat: ({ start, end }: { start: Date; end: Date }) =>
+        `${format(start, 'MMM d')} - ${format(end, 'MMM d')}`,
+    }),
+    [isMobile, isTablet],
+  );
+
+  // Responsive views: all views available on all screen sizes
+  // Must be before early return to follow React hooks rules
+  const availableViews = useMemo<View[]>(() => ['month', 'week', 'day'], []);
+
+  // Ensure currentView is valid for available views
+  const validView = useMemo(() => {
+    if (availableViews.includes(currentView)) {
+      return currentView;
+    }
+    // Fallback to first available view if current view is not available
+    return availableViews[0] || 'month';
+  }, [currentView, availableViews]);
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="bg-background flex h-full items-center justify-center">
         <div className="text-muted-foreground">Loading calendar...</div>
       </div>
     );
   }
 
   return (
-    <div className="h-full">
+    <div className="bg-background h-full w-full">
       <DnDCalendar
         localizer={localizer}
         events={filteredEvents}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: '100%', minHeight: '600px' }}
-        onEventDrop={handleEventDrop}
+        style={{
+          height: '100%',
+          minHeight: isMobile ? '300px' : isTablet ? '500px' : '600px',
+        }}
+        className="rbc-calendar"
+        onEventDrop={isMobile ? undefined : handleEventDrop} // Disable drag-drop on mobile
         onView={setCurrentView}
         onNavigate={setCurrentDate}
-        view={currentView}
+        view={validView}
         date={currentDate}
         selectable={false}
         resizable={false}
         defaultView="month"
-        views={['month', 'week', 'day']}
+        views={availableViews}
         eventPropGetter={eventPropGetter}
         formats={formats}
         components={{

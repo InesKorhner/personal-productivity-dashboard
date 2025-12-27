@@ -9,12 +9,8 @@ export default function CalendarPage() {
   const isLoading = tasksLoading || habitsLoading;
 
   return (
-    <div className="h-screen p-6">
-      <CalendarView
-        tasks={tasks}
-        habits={habits}
-        isLoading={isLoading}
-      />
+    <div className="bg-background h-full w-full p-4 md:p-6">
+      <CalendarView tasks={tasks} habits={habits} isLoading={isLoading} />
     </div>
   );
 }
