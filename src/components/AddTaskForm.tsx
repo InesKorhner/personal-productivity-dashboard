@@ -44,7 +44,7 @@ export function AddTaskForm({ onAddTask, selectedCategory }: AddTaskFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-4 flex w-full flex-col gap-3 lg:flex-row lg:items-center"
+      className="mb-4 flex w-full flex-col gap-4 lg:flex-row lg:items-center"
     >
       {/* Input group with date picker */}
       <div className="focus-within:ring-ring flex flex-1 items-center overflow-hidden rounded-md border focus-within:ring-2 focus-within:ring-offset-2">

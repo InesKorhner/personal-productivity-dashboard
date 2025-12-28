@@ -69,6 +69,13 @@
       "frequency": 1,
       "section": "Others",
       "startDate": "2025-12-27"
+    },
+    {
+      "id": "81cc",
+      "name": "fsf",
+      "frequency": 1,
+      "section": "Others",
+      "startDate": "2025-12-28"
     }
   ],
   "checkIns": [
@@ -76,7 +83,7 @@
       "id": "f01d",
       "habitId": "53b2",
       "date": "2025-12-12",
-      "isChecked": false
+      "isChecked": true
     },
     {
       "id": "e074",
@@ -236,7 +243,7 @@
       "text": "dasd",
       "category": "Work",
       "status": "TODO",
-      "deleted": false,
+      "deleted": true,
       "deletedAt": null,
       "notes": ""
     },
@@ -246,6 +253,24 @@
       "category": "Work",
       "status": "TODO",
       "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "08d7",
+      "text": "fsf",
+      "category": "Study",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "37fc",
+      "text": "dasds",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": true,
       "deletedAt": null,
       "notes": ""
     }

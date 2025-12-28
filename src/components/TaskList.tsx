@@ -19,7 +19,7 @@ export function TaskList({
   onSelectTask,
 }: TaskListProps) {
   return (
-    <ul className="space-y-2 px-0">
+    <ul className="space-y-1 px-0">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}

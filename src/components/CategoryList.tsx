@@ -18,7 +18,7 @@ export function CategoryList({
 }: CategoryListProps) {
   return (
     <nav className="p-4">
-      <div className="text-foreground mb-4 text-sm font-semibold">
+      <div className="text-foreground mb-4 text-base font-semibold">
         Categories
       </div>
       <ul className="space-y-1">
