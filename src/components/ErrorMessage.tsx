@@ -28,6 +28,7 @@ export function ErrorMessage({
             onClick={onRetry}
             variant="outline"
             size="sm"
+            aria-label={retryLabel}
           >
             <RefreshCw className="size-4" />
             <span className="hidden sm:inline">{retryLabel}</span>
