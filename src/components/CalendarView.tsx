@@ -26,6 +26,7 @@ import {
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import { formatDateforServer, parseLocalDate } from '@/lib/dateUtils';
+import { CalendarSkeleton } from '@/components/loading/CalendarSkeleton';
 
 // Responsive breakpoint constants
 const MOBILE_BREAKPOINT = 768;
@@ -402,7 +403,7 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
   if (isLoading) {
     return (
       <div className="bg-background flex h-full items-center justify-center">
-        <div className="text-muted-foreground">Loading calendar...</div>
+        <CalendarSkeleton />
       </div>
     );
   }
