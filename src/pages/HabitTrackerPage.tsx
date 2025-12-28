@@ -5,9 +5,8 @@ import { HabitList } from '@/components/HabitList';
 import { AddHabitDialog } from '@/components/AddHabitDialog';
 import { EditHabitDialog } from '@/components/EditHabitDialog';
 import { toast } from 'sonner';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, RefreshCw, X } from 'lucide-react';
+import { HabitListSkeleton } from '@/components/loading/HabitListSkeleton';
+import { ErrorMessage } from '@/components/ErrorMessage';
 import {
   useCreateHabit,
   useDeleteHabit,
@@ -158,43 +157,17 @@ export function HabitTrackerPage() {
 
           {/* Error message */}
           {errorMessage && !isErrorDismissed && (
-            <div className="border-destructive/50 bg-destructive/10 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex min-w-0 items-center gap-3">
-                <AlertCircle className="text-destructive size-5 shrink-0" />
-                <p className="text-destructive text-sm font-semibold break-words">
-                  {errorMessage}
-                </p>
-              </div>
-              <div className="flex shrink-0 gap-2">
-                <Button
-                  onClick={() => {
-                    refetch();
-                  }}
-                  variant="outline"
-                  size="sm"
-                >
-                  <RefreshCw className="size-4" />
-                  <span className="hidden sm:inline">Retry</span>
-                </Button>
-                <Button
-                  onClick={() => setIsErrorDismissed(true)}
-                  variant="ghost"
-                  size="sm"
-                  aria-label="Dismiss error"
-                >
-                  <X className="size-4" />
-                </Button>
-              </div>
-            </div>
+            <ErrorMessage
+              message={errorMessage}
+              onRetry={() => refetch()}
+              onDismiss={() => setIsErrorDismissed(true)}
+              retryLabel="Retry"
+            />
           )}
 
           {/* Loading or HabitList */}
           {isLoading ? (
-            <div className="flex flex-col gap-4">
-              <Skeleton className="h-16 w-full" />
-              <Skeleton className="h-16 w-full" />
-              <Skeleton className="h-16 w-full" />
-            </div>
+            <HabitListSkeleton />
           ) : (
             <HabitList
               habits={habits}

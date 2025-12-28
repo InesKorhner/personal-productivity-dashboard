@@ -56,12 +56,12 @@ export function TaskView({
   }, [tasks]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {showToDo && (
         <div className="lg:max-w-3xl">
           {todoTasks.length > 0 ? (
             <>
-              <h3 className="text-foreground mb-3 text-lg font-semibold">
+              <h3 className="text-foreground mb-4 text-lg font-semibold">
                 To Do
               </h3>
               <TaskList
@@ -85,7 +85,7 @@ export function TaskView({
         <div className="lg:max-w-3xl">
           <Button
             variant="ghost"
-            className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
+            className="text-foreground mb-4 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
             onClick={() => setIsCompletedOpen(!isCompletedOpen)}
           >
             <span>Completed</span>
@@ -112,7 +112,7 @@ export function TaskView({
         <div className="lg:max-w-3xl">
           <Button
             variant="ghost"
-            className="text-foreground mb-3 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
+            className="text-foreground mb-4 flex h-auto w-full items-center justify-between p-0 text-lg font-semibold hover:bg-transparent"
             onClick={() => setIsDeletedOpen(!isDeletedOpen)}
           >
             <span>Trash</span>

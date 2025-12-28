@@ -73,7 +73,7 @@ export function HabitItem({
     goal > 0 ? Math.round((weeklyCheckedCount / goal) * 100) : 0;
 
   return (
-    <li className="border-border bg-card flex w-full max-w-2xl flex-col gap-2 rounded-lg border px-2 py-1 text-sm sm:flex-row sm:items-center sm:justify-between sm:rounded-lg sm:px-3 sm:py-2">
+    <li className="border-border bg-card hover:bg-accent flex w-full max-w-2xl flex-col gap-2 rounded-lg border px-2 py-1 text-sm transition-colors duration-200 sm:flex-row sm:items-center sm:justify-between sm:rounded-lg sm:px-3 sm:py-2">
       <div className="flex min-w-0 flex-col items-start text-left sm:flex-1">
         <p className="text-foreground text-sm font-medium">{habit.name}</p>
         <div className="mt-1 flex items-center gap-2 text-xs sm:gap-4">
@@ -85,7 +85,7 @@ export function HabitItem({
         {/* Progress bar */}
         <div className="bg-muted mt-1.5 h-1.5 w-full max-w-[100px] overflow-hidden rounded-full">
           <div
-            className="h-full bg-blue-500 transition-all dark:bg-blue-400"
+            className="bg-habit-checkin h-full transition-all duration-300 ease-out"
             style={{ width: `${Math.min(percentage, 100)}%` }}
           />
         </div>
@@ -111,12 +111,13 @@ export function HabitItem({
                 }
               }}
               className={cn(
-                'flex h-[24px] w-[24px] items-center justify-center rounded-full border text-[12px]',
+                'flex h-[24px] w-[24px] items-center justify-center rounded-full border text-[12px] transition-all duration-200',
                 {
-                  'bg-blue-500 text-white dark:bg-blue-400': done,
+                  'bg-habit-checkin text-habit-checkin-foreground': done,
                   'bg-muted text-muted-foreground': !done,
                   'cursor-not-allowed opacity-50': isDisabled,
-                  'cursor-pointer': !isDisabled,
+                  'cursor-pointer hover:scale-105': !isDisabled && !done,
+                  'hover:opacity-90': !isDisabled && done,
                 },
               )}
               title={date}
@@ -131,7 +132,7 @@ export function HabitItem({
           onClick={() => onEdit(habit)}
           aria-label="Edit habit"
           title="Edit Habit"
-          className="text-muted-foreground hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground transition-colors duration-200"
         >
           <Edit2 size={16} />
         </button>

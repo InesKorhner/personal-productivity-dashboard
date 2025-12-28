@@ -5,9 +5,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { CategoryList } from '@/components/CategoryList';
 import { TaskView } from '@/components/TaskView';
 import { NotesAside } from '@/components/NotesAside';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, RefreshCw, X } from 'lucide-react';
+import { TaskListSkeleton } from '@/components/loading/TaskListSkeleton';
+import { ErrorMessage } from '@/components/ErrorMessage';
 import {
   useCreateTask,
   useDeleteTask,
@@ -261,40 +260,16 @@ export default function TasksPage() {
                   />
 
                   {errorMessage && !isErrorDismissed && (
-                    <div className="border-destructive/50 bg-destructive/10 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
-                      <div className="flex min-w-0 items-center gap-3">
-                        <AlertCircle className="text-destructive size-5 shrink-0" />
-                        <p className="text-destructive text-sm font-semibold break-words">
-                          {errorMessage}
-                        </p>
-                      </div>
-                      <div className="flex shrink-0 gap-2">
-                        <Button
-                          onClick={() => refetch()}
-                          variant="outline"
-                          size="sm"
-                        >
-                          <RefreshCw className="size-4" />
-                          <span className="hidden sm:inline">Retry Load</span>
-                        </Button>
-                        <Button
-                          onClick={() => setIsErrorDismissed(true)}
-                          variant="ghost"
-                          size="sm"
-                          aria-label="Dismiss error"
-                        >
-                          <X className="size-4" />
-                        </Button>
-                      </div>
-                    </div>
+                    <ErrorMessage
+                      message={errorMessage}
+                      onRetry={() => refetch()}
+                      onDismiss={() => setIsErrorDismissed(true)}
+                      retryLabel="Retry"
+                    />
                   )}
 
                   {isLoading ? (
-                    <div className="flex flex-col gap-4">
-                      <Skeleton className="h-12 w-full" />
-                      <Skeleton className="h-32 w-full" />
-                      <Skeleton className="h-32 w-full" />
-                    </div>
+                    <TaskListSkeleton />
                   ) : (
                     <TaskView
                       {...taskListProps}

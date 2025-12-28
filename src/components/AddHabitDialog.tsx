@@ -67,12 +67,12 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Create Habit</DialogTitle>
-            <DialogDescription className="mb-3">
+            <DialogDescription className="mb-4">
               Set up a new habit and start tracking your progress today.
             </DialogDescription>
           </DialogHeader>
-          <div className="mb-2 grid gap-4">
-            <div className="grid gap-3">
+          <div className="mb-6 grid gap-4">
+            <div className="grid gap-4">
               <Label htmlFor="habit-name">Habit Name</Label>
               <input
                 id="habit-name"
@@ -111,8 +111,8 @@ export function AddHabitDialog({ onSave }: AddHabitFormProps) {
               </span>
             </div>
 
-            <div className="mb-2 flex flex-col gap-3">
-              <Label className="mt-2 mb-1 px-1">Section</Label>
+            <div className="flex flex-col gap-4">
+              <Label className="px-1">Section</Label>
               <Select
                 value={section}
                 onValueChange={(value) => setSection(value as Sections)}

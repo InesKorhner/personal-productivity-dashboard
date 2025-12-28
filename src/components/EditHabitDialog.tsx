@@ -55,12 +55,12 @@ export function EditHabitDialog({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Habit</DialogTitle>
-            <DialogDescription className="mb-3">
+            <DialogDescription className="mb-4">
               Update your habit details and save the changes.
             </DialogDescription>
           </DialogHeader>
-          <div className="mb-2 grid gap-4">
-            <div className="grid gap-3">
+          <div className="mb-6 grid gap-4">
+            <div className="grid gap-4">
               <Label htmlFor="habit-name">Habit Name</Label>
               <input
                 className="border-input bg-background placeholder:text-muted-foreground flex h-9 w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:outline-none"
@@ -71,7 +71,7 @@ export function EditHabitDialog({
                 required
               />
             </div>
-            <div className="mb-2 flex flex-col items-start space-x-2">
+            <div className="flex flex-col items-start space-x-2">
               <label className="text-foreground mb-2 block text-sm font-medium">
                 Frequency
               </label>
@@ -99,8 +99,8 @@ export function EditHabitDialog({
               </span>
             </div>
 
-            <div className="mb-1 flex flex-col gap-3">
-              <Label className="mt-1 px-1">Section</Label>
+            <div className="flex flex-col gap-4">
+              <Label className="px-1">Section</Label>
               <Select
                 value={formData.section}
                 onValueChange={(value) =>
@@ -123,7 +123,7 @@ export function EditHabitDialog({
               </Select>
             </div>
           </div>
-          <DialogFooter className="mt-5">
+          <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>

@@ -50,7 +50,7 @@ export function HabitList({
 
         return (
           <div key={section}>
-            <h2 className="mb-1 text-sm font-semibold">{section}</h2>
+            <h2 className="mb-3 text-base font-semibold">{section}</h2>
             <ul className="space-y-1">
               {sectionHabits.map((habit) => (
                 <HabitItem
