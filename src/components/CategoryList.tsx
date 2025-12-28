@@ -31,7 +31,7 @@ export function CategoryList({
                 onSelectCategory(c);
               }}
               className={cn(
-                'hover:bg-accent w-full rounded-md px-3 py-2 text-left',
+                'hover:bg-accent w-full rounded-md px-3 py-2 text-left transition-colors duration-200',
                 selectedView === 'category' && selectedCategory === c
                   ? 'bg-primary/10 font-medium'
                   : '',

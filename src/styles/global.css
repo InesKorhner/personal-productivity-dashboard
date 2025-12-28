@@ -58,6 +58,15 @@
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.85 0.15 85);
+  --warning-foreground: oklch(0.3 0.1 85);
+  --success: oklch(0.6 0.15 150);
+  --success-foreground: oklch(0.985 0 0);
+  --info: oklch(0.6 0.15 220);
+  --info-foreground: oklch(0.985 0 0);
+  --habit-checkin: oklch(0.65 0.15 250);
+  --habit-checkin-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
@@ -92,6 +101,15 @@
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.75 0.15 85);
+  --warning-foreground: oklch(0.2 0.05 85);
+  --success: oklch(0.65 0.15 150);
+  --success-foreground: oklch(0.985 0 0);
+  --info: oklch(0.65 0.15 220);
+  --info-foreground: oklch(0.985 0 0);
+  --habit-checkin: oklch(0.7 0.15 250);
+  --habit-checkin-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.552 0.016 285.938);
@@ -119,6 +137,55 @@
     background-color: var(--background);
     color: var(--foreground);
   }
+}
+
+/* Status color utilities */
+.bg-warning {
+  background-color: var(--warning);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.bg-warning\/10 {
+  background-color: color-mix(in oklch, var(--warning) 10%, transparent);
+}
+
+.bg-warning\/20 {
+  background-color: color-mix(in oklch, var(--warning) 20%, transparent);
+}
+
+.hover\:bg-warning\/20:hover {
+  background-color: color-mix(in oklch, var(--warning) 20%, transparent);
+}
+
+.bg-success {
+  background-color: var(--success);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.bg-info {
+  background-color: var(--info);
+}
+
+.text-info {
+  color: var(--info);
+}
+
+.bg-habit-checkin {
+  background-color: var(--habit-checkin);
+}
+
+.text-habit-checkin {
+  color: var(--habit-checkin);
+}
+
+.text-habit-checkin-foreground {
+  color: var(--habit-checkin-foreground);
 }
 
 /* Toolbar Base Styles */

@@ -46,7 +46,7 @@ export function TaskItem({
           type="button"
           onClick={() => onUndo(task.id)}
           size="icon"
-          className="h-8 w-8 cursor-pointer bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:hover:bg-yellow-900/50"
+          className="h-8 w-8 cursor-pointer bg-warning/10 text-warning hover:bg-warning/20 transition-colors duration-200"
           aria-label="Restore task"
           title="Restore task"
         >
@@ -56,7 +56,7 @@ export function TaskItem({
           type="button"
           onClick={() => onPermanentDelete(task.id)}
           size="icon"
-          className="h-8 w-8 cursor-pointer bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+          className="h-8 w-8 cursor-pointer bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors duration-200"
           aria-label="Delete forever"
           title="Delete forever"
         >
@@ -65,7 +65,7 @@ export function TaskItem({
       </div>
     </li>
   ) : (
-    <li className="border-border bg-card hover:bg-accent flex items-center justify-between rounded-lg border px-3 py-2.5 transition-colors">
+    <li className="border-border bg-card hover:bg-accent flex items-center justify-between rounded-lg border px-3 py-2.5 transition-colors duration-200">
       <div className="flex flex-1 items-center gap-3">
         <input
           type="checkbox"
@@ -79,7 +79,7 @@ export function TaskItem({
           onClick={() => onSelectTask(task.id)}
         >
           <p
-            className={cn('text-sm font-medium transition-all', {
+            className={cn('text-sm font-medium transition-colors duration-200', {
               'text-muted-foreground line-through':
                 task.status === TaskStatus.DONE,
               'text-foreground': task.status !== TaskStatus.DONE,
@@ -93,12 +93,12 @@ export function TaskItem({
       <div className="ml-3 flex items-center gap-2">
         {dateLabel && (
           <span
-            className={cn('text-xs font-medium', {
+            className={cn('text-xs font-medium transition-colors duration-200', {
               'text-muted-foreground': isDone,
-              'text-blue-600 dark:text-blue-400':
+              'text-info':
                 !isDone &&
                 (dateVariant === 'today' || dateVariant === 'future'),
-              'text-red-600 dark:text-red-400':
+              'text-destructive':
                 !isDone && dateVariant === 'past',
             })}
           >
@@ -110,7 +110,7 @@ export function TaskItem({
           onClick={() => onDelete(task.id)}
           size="icon"
           variant="ghost"
-          className="h-8 w-8 cursor-pointer text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/30 dark:hover:text-red-300"
+          className="h-8 w-8 cursor-pointer text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors duration-200"
           aria-label="Move to trash"
           title="Move to trash"
         >

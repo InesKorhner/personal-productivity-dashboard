@@ -83,19 +83,19 @@
       "id": "f01d",
       "habitId": "53b2",
       "date": "2025-12-12",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "e074",
       "habitId": "53b2",
       "date": "2025-12-13",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "04b7",
       "habitId": "53b2",
       "date": "2025-12-14",
-      "isChecked": true
+      "isChecked": false
     },
     {
       "id": "9407",
@@ -143,6 +143,30 @@
       "id": "bbf9",
       "habitId": "8ee7",
       "date": "2025-12-16",
+      "isChecked": true
+    },
+    {
+      "id": "c7af",
+      "habitId": "2276",
+      "date": "2025-12-19",
+      "isChecked": true
+    },
+    {
+      "id": "5b6d",
+      "habitId": "2276",
+      "date": "2025-12-20",
+      "isChecked": true
+    },
+    {
+      "id": "6bbd",
+      "habitId": "2276",
+      "date": "2025-12-21",
+      "isChecked": true
+    },
+    {
+      "id": "f1a9",
+      "habitId": "2276",
+      "date": "2025-12-23",
       "isChecked": true
     }
   ],
@@ -251,7 +275,7 @@
       "id": "8817",
       "text": "dad",
       "category": "Work",
-      "status": "TODO",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
@@ -271,6 +295,15 @@
       "category": "Work",
       "status": "TODO",
       "deleted": true,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "7308",
+      "text": "dfs",
+      "category": "Work",
+      "status": "TODO",
+      "deleted": false,
       "deletedAt": null,
       "notes": ""
     }
