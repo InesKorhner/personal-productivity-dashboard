@@ -318,7 +318,7 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
         className: '',
         style: {
           backgroundColor: 'var(--info)',
-          borderColor: isDark ? 'oklch(0.5 0.15 250)' : 'oklch(0.6 0.15 250)',
+          borderColor: 'color-mix(in oklch, var(--info) 90%, black)',
           color: '#ffffff',
         },
       };

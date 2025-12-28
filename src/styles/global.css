@@ -108,7 +108,7 @@
   --success-foreground: oklch(0.985 0 0);
   --info: oklch(0.55 0.15 250);
   --info-foreground: oklch(0.985 0 0);
-  --habit-checkin: oklch(0.55 0.15 250);
+  --habit-checkin: var(--info);
   --habit-checkin-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
