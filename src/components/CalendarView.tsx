@@ -17,7 +17,6 @@ import { useUpdateTask } from '@/lib/useTasks';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CheckCircle2, ListTodo } from 'lucide-react';
-import { useThemeStore } from '@/lib/useThemeStore';
 import {
   Popover,
   PopoverContent,
@@ -144,7 +143,6 @@ function createCustomEvent(
 
 export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
   const updateTask = useUpdateTask();
-  const theme = useThemeStore((state) => state.theme);
   const navigate = useNavigate();
 
   // Responsive breakpoints: mobile (< 768px), tablet (768-1023px), desktop (≥ 1024px)
@@ -297,7 +295,6 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
   // Event styling based on type and status
   const eventPropGetter = (event: CalendarEvent | object) => {
     const calendarEvent = event as CalendarEvent;
-    const isDark = theme === 'dark';
 
     if (calendarEvent.type === 'task') {
       const task = calendarEvent.resource as Task;
@@ -307,8 +304,8 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
         return {
           className: 'opacity-60 line-through',
           style: {
-            backgroundColor: isDark ? '#6b7280' : '#9ca3af',
-            borderColor: isDark ? '#4b5563' : '#6b7280',
+            backgroundColor: 'var(--muted)',
+            borderColor: 'color-mix(in oklch, var(--muted) 90%, black)',
             color: '#ffffff',
           },
         };
@@ -317,18 +314,18 @@ export function CalendarView({ tasks, habits, isLoading }: CalendarViewProps) {
       return {
         className: '',
         style: {
-          backgroundColor: 'var(--info)',
-          borderColor: 'color-mix(in oklch, var(--info) 90%, black)',
+          backgroundColor: 'var(--success)',
+          borderColor: 'color-mix(in oklch, var(--success) 90%, black)',
           color: '#ffffff',
         },
       };
     } else {
-      // Habit events - always green (only checked check-ins are shown)
+      // Habit events - always blue (only checked check-ins are shown)
       return {
         className: '',
         style: {
-          backgroundColor: isDark ? '#059669' : '#10b981',
-          borderColor: isDark ? '#047857' : '#059669',
+          backgroundColor: 'var(--info)',
+          borderColor: 'color-mix(in oklch, var(--info) 90%, black)',
           color: '#ffffff',
           opacity: 1,
         },

@@ -26,6 +26,18 @@
       "habitId": "8803",
       "date": "2025-12-22",
       "isChecked": true
+    },
+    {
+      "id": "017c",
+      "habitId": "8803",
+      "date": "2025-12-23",
+      "isChecked": true
+    },
+    {
+      "id": "1bbe",
+      "habitId": "8803",
+      "date": "2025-12-24",
+      "isChecked": true
     }
   ],
   "tasks": [
@@ -131,6 +143,25 @@
       "deletedAt": null,
       "notes": "",
       "date": "2025-12-28"
+    },
+    {
+      "id": "1e85",
+      "text": "njknj",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": ""
+    },
+    {
+      "id": "79bf",
+      "text": "njknj",
+      "category": "MyList",
+      "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": "",
+      "date": "2025-12-29"
     }
   ]
 }
