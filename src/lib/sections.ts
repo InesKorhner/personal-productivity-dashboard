@@ -13,7 +13,7 @@ import { SECTIONS } from '@/types';
  * getSectionDisplayName('Morning') // returns 'Morning'
  */
 export function getSectionDisplayName(section: Sections): string {
-  return section === 'Other' ? 'Others' : section;
+  return section === 'Others' ? 'Others' : section;
 }
 
 /**

@@ -1,42 +1,68 @@
 {
   "habits": [
     {
-      "id": "8803",
-      "name": "mbb ",
+      "id": "1fee",
+      "name": "jybh",
+      "frequency": 5,
+      "section": "Afternoon",
+      "startDate": "2026-01-13"
+    },
+    {
+      "id": "2898",
+      "name": "fsf",
+      "frequency": 3,
+      "section": "Afternoon",
+      "startDate": "2026-01-20"
+    },
+    {
+      "id": "60c1",
+      "name": "gjg",
       "frequency": 1,
       "section": "Others",
-      "startDate": "2025-12-28"
+      "startDate": "2026-02-02"
     }
   ],
   "checkIns": [
     {
-      "id": "4fd8",
-      "habitId": "8803",
-      "date": "2025-12-25",
+      "id": "40b4",
+      "habitId": "1fee",
+      "date": "2026-01-11",
       "isChecked": true
     },
     {
-      "id": "9982",
-      "habitId": "8803",
-      "date": "2025-12-26",
+      "id": "6203",
+      "habitId": "1fee",
+      "date": "2026-01-12",
       "isChecked": true
     },
     {
-      "id": "eef3",
-      "habitId": "8803",
-      "date": "2025-12-22",
+      "id": "f420",
+      "habitId": "1fee",
+      "date": "2026-01-13",
       "isChecked": true
     },
     {
-      "id": "017c",
-      "habitId": "8803",
-      "date": "2025-12-23",
+      "id": "b5b4",
+      "habitId": "1fee",
+      "date": "2026-01-08",
       "isChecked": true
     },
     {
-      "id": "1bbe",
-      "habitId": "8803",
-      "date": "2025-12-24",
+      "id": "8e3e",
+      "habitId": "2898",
+      "date": "2026-01-16",
+      "isChecked": true
+    },
+    {
+      "id": "4f40",
+      "habitId": "2898",
+      "date": "2026-01-17",
+      "isChecked": true
+    },
+    {
+      "id": "c2c5",
+      "habitId": "60c1",
+      "date": "2026-01-27",
       "isChecked": true
     }
   ],
@@ -97,71 +123,41 @@
       "category": "Work"
     },
     {
-      "id": "015d",
-      "text": "n b",
+      "id": "ece9",
+      "text": "buy groceries",
       "category": "MyList",
       "status": "TODO",
+      "deleted": false,
+      "deletedAt": null,
+      "notes": "pottato, lettuce",
+      "date": "2026-01-14"
+    },
+    {
+      "id": "3523",
+      "text": "gdd",
+      "category": "Exercise",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
     },
     {
-      "id": "8be6",
-      "text": ",n",
-      "category": "MyList",
+      "id": "5832",
+      "text": "gyy",
+      "category": "Exercise",
       "status": "TODO",
-      "deleted": false,
+      "deleted": true,
       "deletedAt": null,
       "notes": ""
     },
     {
-      "id": "42e0",
-      "text": "nn",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-11"
-    },
-    {
-      "id": "a6ea",
-      "text": "mm,m,",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-30"
-    },
-    {
-      "id": "f81f",
-      "text": "m n",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-28"
-    },
-    {
-      "id": "1e85",
-      "text": "njknj",
-      "category": "MyList",
-      "status": "TODO",
+      "id": "7ed1",
+      "text": "ffs",
+      "category": "Work",
+      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
       "notes": ""
-    },
-    {
-      "id": "79bf",
-      "text": "njknj",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "",
-      "date": "2025-12-29"
     }
   ]
 }
