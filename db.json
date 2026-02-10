@@ -1,71 +1,14 @@
 {
   "habits": [
     {
-      "id": "1fee",
-      "name": "jybh",
+      "id": "190d",
+      "name": "Read book",
       "frequency": 5,
-      "section": "Afternoon",
-      "startDate": "2026-01-13"
-    },
-    {
-      "id": "2898",
-      "name": "fsf",
-      "frequency": 3,
-      "section": "Afternoon",
-      "startDate": "2026-01-20"
-    },
-    {
-      "id": "60c1",
-      "name": "gjg",
-      "frequency": 1,
-      "section": "Others",
-      "startDate": "2026-02-02"
+      "section": "Evening",
+      "startDate": "2026-02-08"
     }
   ],
-  "checkIns": [
-    {
-      "id": "40b4",
-      "habitId": "1fee",
-      "date": "2026-01-11",
-      "isChecked": true
-    },
-    {
-      "id": "6203",
-      "habitId": "1fee",
-      "date": "2026-01-12",
-      "isChecked": true
-    },
-    {
-      "id": "f420",
-      "habitId": "1fee",
-      "date": "2026-01-13",
-      "isChecked": true
-    },
-    {
-      "id": "b5b4",
-      "habitId": "1fee",
-      "date": "2026-01-08",
-      "isChecked": true
-    },
-    {
-      "id": "8e3e",
-      "habitId": "2898",
-      "date": "2026-01-16",
-      "isChecked": true
-    },
-    {
-      "id": "4f40",
-      "habitId": "2898",
-      "date": "2026-01-17",
-      "isChecked": true
-    },
-    {
-      "id": "c2c5",
-      "habitId": "60c1",
-      "date": "2026-01-27",
-      "isChecked": true
-    }
-  ],
+  "checkIns": [],
   "tasks": [
     {
       "id": "f443",
@@ -123,41 +66,24 @@
       "category": "Work"
     },
     {
-      "id": "ece9",
-      "text": "buy groceries",
-      "category": "MyList",
-      "status": "TODO",
-      "deleted": false,
-      "deletedAt": null,
-      "notes": "pottato, lettuce",
-      "date": "2026-01-14"
-    },
-    {
-      "id": "3523",
-      "text": "gdd",
+      "id": "efb8",
+      "text": "Go to the gym",
       "category": "Exercise",
       "status": "DONE",
       "deleted": false,
       "deletedAt": null,
-      "notes": ""
+      "notes": "Leg day",
+      "date": "2026-02-08"
     },
     {
-      "id": "5832",
-      "text": "gyy",
+      "id": "9a72",
+      "text": "Volleyball training",
       "category": "Exercise",
       "status": "TODO",
-      "deleted": true,
-      "deletedAt": null,
-      "notes": ""
-    },
-    {
-      "id": "7ed1",
-      "text": "ffs",
-      "category": "Work",
-      "status": "DONE",
       "deleted": false,
       "deletedAt": null,
-      "notes": ""
+      "notes": "",
+      "date": "2026-02-10"
     }
   ]
 }
