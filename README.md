@@ -1,8 +1,8 @@
 # Personal Productivity Dashboard
 
-A React productivity app for managing daily tasks, tracking habits, and visualizing schedules through an interactive calendar.
+A productivity dashboard built with React for organizing tasks, building daily habits, and planning your schedule with an interactive calendar.
 
-**[Live Demo](https://soft-chaja-5b3c54.netlify.app/)** | **[Video Walkthrough](YOUR_LOOM_LINK_HERE)**
+**[Live Demo](https://soft-chaja-5b3c54.netlify.app/)** | **[Video Walkthrough](https://www.loom.com/share/44a4d080f74146adb36420deb19dff25)**
 
 ## Features
 
