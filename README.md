@@ -1,50 +1,55 @@
-## Introduction
+# Personal Productivity Dashboard
 
-A starter [Vite](https://vitejs.dev/) template having:
+A React productivity app for managing daily tasks, tracking habits, and visualizing schedules through an interactive calendar.
 
-- [React](https://react.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- Multiple [ESLint](https://eslint.org/) & [Prettier](https://prettier.io/) plugins installed
+**[Live Demo](https://soft-chaja-5b3c54.netlify.app/)** | **[Video Walkthrough](YOUR_LOOM_LINK_HERE)**
 
-## Usage
+## Features
 
-> [!TIP]
-> 
-> The fastest way to use this template is to click the “Use this template” button on the top right of this repository. It will help you create a new repository quickly, and you can make any modifications to your own repository. If you still want to download this template separately, please continue reading.
-> 
-> 使用该模板的最快方式，就是点击本仓库右上角的“使用该模板”按扭。这帮助你使用该模板迅速创建一个新的仓库，然后你可以对自己的仓库进行任何修改。如果你仍然希望单独下载此模板，可继续往下读。
+**Task Management**
+- Create, edit, and delete tasks across categories (Work, Exercise, Study, My List)
+- Mark tasks as complete with soft-delete and trash/restore support
+- Add notes to individual tasks
+- Filter tasks by category
 
-If you need a copy of this repository. You can [download](https://github.com/RoyRao2333/template-vite-react-ts-tailwind/archive/refs/heads/main.zip) a copy as zip but [tiged](https://github.com/tiged/tiged) is recommended.
+**Habit Tracker**
+- Set habits with weekly frequency goals (1-7 days/week)
+- 7-day rolling check-in window with streak tracking
+- Visual progress bars and weekly completion stats
+- Organized by time of day (Morning, Afternoon, Evening)
 
-After you installed tiged, please excute the following commands:
+**Calendar View**
+- Month, week, and day views with drag-and-drop rescheduling
+- Tasks and habit check-ins displayed as color-coded events
+- Click events to navigate to task/habit details
 
-```sh
-$ cd path-to-save-your-project
-$ tiged royrao2333/template-vite-react-ts-tailwind your-project-name
+**General**
+- Fully responsive design (mobile, tablet, desktop)
+- Dark/light theme with system preference detection
+- Skeleton loading states and toast notifications
+- Optimistic updates with error recovery
+
+## Tech Stack
+
+| Category | Technologies |
+|---|---|
+| Frontend | React 19, TypeScript, Vite |
+| Styling | Tailwind CSS, Radix UI, Lucide Icons |
+| State Management | TanStack React Query, Zustand |
+| Routing | React Router v7 |
+| REST API | JSON Server |
+
+## Deployment
+
+- **Frontend** hosted on [Netlify](https://www.netlify.com/)
+- **REST API** (JSON Server) hosted on [Vercel](https://vercel.com/)
+
+## Local Setup
+
+```bash
+pnpm install
+pnpm json-server   # starts API on http://localhost:3001
+pnpm dev            # starts app on http://localhost:5173
 ```
 
-After getting a copy of this repository, you can use your package manager to install dependecies:
-
-```sh
-$ cd path-to-your-project
-$ pnpm install
-
-# npm install
-# yarn install
-```
-
-Let's run!
-
-```sh
-$ pnpm run dev
-
-# npm run dev
-# yarn run dev
-```
-
-> We've already implemented some recommended configurations in `eslint.config.mjs`, `prettier.config.mjs`. Feel free to edit them if you have your own preferences.
-
-## Contributing
-
-Feel free to dive in! [Open an issue](https://github.com/RoyRao2333/template-vite-react-ts-tailwind/issues/new) or submit PRs.
+Run both commands in separate terminals.
